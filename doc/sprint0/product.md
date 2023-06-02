@@ -18,7 +18,7 @@ Carl is a 17 year old student currently in their third year of high school. He's
 Let's consider a scenario where a user desires to attend a concert but hesitates to go alone. Our app will enable them to connect with like-minded users who have also experienced similar discouragement due to the absence of companions. By facilitating these connections, our app not only allows users to forge new friendships with shared interests but also benefits from the potential attendance of two individuals who might have otherwise opted out.
 
 ### Q4: What does "DONE" means to your Team?
-We consider 'done' as the project owner being satisfied with the final result (i.e. all of the required user stories have been implemented and fully functioning). We also must be thorough with reviewing/testing our code to ensure consistency and stability, as well as make sure that the project meets the requirements of Scalability, Availability, Maintenance, and Portability (Non-Functional Requirements). Lastly, we want to ensure that we meet the requirements of the sprints/phases set out to us by this course. 
+We consider 'done' as the project owner being satisfied with the final result (i.e. all of the required user stories have been implemented and fully functioning). We also must be thorough with reviewing/testing our code to ensure consistency and stability, as well as make sure that the project meets the requirements of Scalability, Availability, Maintenance, and Portability (Non-Functional Requirements). Lastly, we want to ensure that we meet the requirements of the sprints/phases set out to us by this course.
 
 ### Highlights
 
