@@ -1,10 +1,10 @@
 ### Q1: What are you planning to build?
-We are planning to build an experience based, social meetup web application. Our aim is to connect individuals who are interested in specific events but lack companionship. 
+We are planning to build an experience based, social meetup web application. Our aim is to connect individuals who are interested in specific events but lack companionship.
 
 ### Q2: Who are your target users? (2-3 personas)
 Persona 1 - Alice
 
-Alice is a 20 year old student, currently in her second year of university. She aims to get into a biomedical engineering program, so she often stays on top of her work while balancing a part-time job as a cashier to earn some cash to help pay for her textbooks. Recently, she has been able to save enough money to go to an upcoming concert, but her friends (mostly in her program) are swamped with work and are unable to go with her. Alice doesn't want to go alone, but really wants to attend.     
+Alice is a 20 year old student, currently in her second year of university. She aims to get into a biomedical engineering program, so she often stays on top of her work while balancing a part-time job as a cashier to earn some cash to help pay for her textbooks. Recently, she has been able to save enough money to go to an upcoming concert, but her friends (mostly in her program) are swamped with work and are unable to go with her. Alice doesn't want to go alone, but really wants to attend.
 
 Persona 2 - Alex
 
