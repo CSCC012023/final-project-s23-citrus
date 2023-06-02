@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     var params = [];
     // If no cursor is provided, return the first page
     if (!next_id && !prev_id) {
-        query = query + " ORDER BY id DESC LIMIT $1";
+        query = query + " ORDER BY username DESC LIMIT $1";
         params = [limit];
     }
     else if (next_id && prev_id) {
@@ -50,11 +50,11 @@ export async function POST(request: Request) {
     const username = body.username;
     const password = body.password;
     // Check if the username is already taken
-    const check = await db.query("SELECT * FROM users WHERE username = $1", [username]);
+    const check = await db.query("SELECT * FROM _temp WHERE username = $1", [username]);
     if (check.rows.length > 0) {
         return NextResponse.json({error: "Username already taken"}, {status: 400});
     }
     // Create the new user
-    await db.query("INSERT INTO users (username, password) VALUES ($1, $2)", [username, password]);
+    await db.query("INSERT INTO _temp (username) VALUES ($1)", [username]);
     return NextResponse.json({username: username, message: "User created successfully"});
 }
