@@ -1,5 +1,14 @@
+# Motivation
+**What is it?**
+
+Citrus/GoGo is a next-generation experience-sharing platform that aims to connect like-minded people who would otherwise have missed out on experiences they didn't want to attend alone.
+
+**What problems does it solve?**
+
+Many businesses lose out on sales due to people not wanting to go alone, and many individuals miss out on a fun experience because they have no one to go with. Citrus/GoGo solves this problem by bringing strangers together through joint interest in events.
+
 # Installation
-Citrus has the following dependencies.
+Clone the repository using Git. Citrus has the following additional dependencies:
 - [Next.js](https://nextjs.org/docs/getting-started/installation)
 - [A CockroachDB cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart.html) (has a free tier)
 
@@ -16,7 +25,7 @@ After cloning the repository and installing the requirements, run the following 
 cd citrus
 cp .env.template .env
 ```
-Populate the `.env` file with the relevant environment variables. Specifically, `DATABASE_URL` is required to run Citrus.
+Populate the `.env` file with the relevant environment variables. Specifically, `DATABASE_URL`, a PostgreSQL connection string, is required to run Citrus.
 
 ---
 ## Running Citrus

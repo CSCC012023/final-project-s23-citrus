@@ -34,3 +34,4 @@ citrus/.vercel
 # typescript
 citrus/*.tsbuildinfo
 citrus/next-env.d.ts
+.vercel
