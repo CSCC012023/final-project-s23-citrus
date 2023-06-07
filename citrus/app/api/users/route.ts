@@ -2,6 +2,15 @@ import * as db from '../../../lib/db'
 import { NextResponse } from 'next/server';
 
 const bcrypt = require('bcrypt');
+const passwordValidator = require('password-validator');
+const schema = new passwordValidator();
+schema
+    .is().min(8)
+    .is().max(20)
+    .has().uppercase()
+    .has().lowercase()
+    .has().digits()
+    .has().not().spaces();
 
 // Retrieve a paginated list of all users in the database
 export async function GET(request: Request) {
@@ -19,9 +28,9 @@ export async function GET(request: Request) {
     else if (next_id && prev_id) {
         // If both cursors are provided, indicate an error
         return NextResponse.json(
-            {error: "You must provide either a next_cursor or a prev_cursor, but not both"},
-            {status: 400});
-        }
+            { error: "You must provide either a next_cursor or a prev_cursor, but not both" },
+            { status: 400 });
+    }
     else if (next_id) {
         // If a next_cursor is provided, return the next page
         query = query + " WHERE username > $1 ORDER BY username DESC LIMIT $2";
@@ -43,7 +52,8 @@ export async function GET(request: Request) {
         "next_cursor": next_cursor || null,
         "prev_cursor": prev_cursor || null,
         "limit": limit,
-        users });
+        users
+    });
 }
 
 // Endpoint to create a new user
@@ -54,16 +64,19 @@ export async function POST(request: Request) {
     // Check if the username is already taken
     const check = await db.query("SELECT * FROM _temp WHERE username = $1", [username]);
     if (check.rows.length > 0) {
-        return NextResponse.json({error: "Username already taken"}, {status: 400});
+        return NextResponse.json({ error: "USER_TAKEN" }, { status: 400 });
+    }
+    if (!schema.validate(password)) {
+        return NextResponse.json({ error: "PASS_INVALID" }, { status: 400 });
     }
 
-    bcrypt.hash(password, 10, async function(err: Error, hash: string) {
+    bcrypt.hash(password, 10, async function (err: Error, hash: string) {
         if (err) {
-            return NextResponse.json({error: err}, {status: 500});
+            return NextResponse.json({ error: err }, { status: 500 });
         }
         // Store user in the database
         await db.query("INSERT INTO _temp (username, password) VALUES ($1, $2)", [username, hash]);
     });
 
-    return NextResponse.json({username: username, message: "User created successfully"});
+    return NextResponse.json({ username: username, message: "SUCCESS" });
 }

@@ -14,8 +14,8 @@ const Signup = (): JSX.Element => {
 
     // Handle form submission here
     const res = await fetch('/api/users', {
-        method: 'POST',
-        body: JSON.stringify({"username": name, "email": email, "password": password})
+      method: 'POST',
+      body: JSON.stringify({ "username": name, "email": email, "password": password })
     });
     console.log(res);
   };
