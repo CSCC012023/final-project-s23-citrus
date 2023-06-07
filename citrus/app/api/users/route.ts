@@ -1,6 +1,8 @@
 import * as db from '../../../lib/db'
 import { NextResponse } from 'next/server';
 
+const bcrypt = require('bcrypt');
+
 // Retrieve a paginated list of all users in the database
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -54,7 +56,14 @@ export async function POST(request: Request) {
     if (check.rows.length > 0) {
         return NextResponse.json({error: "Username already taken"}, {status: 400});
     }
-    // Create the new user
-    await db.query("INSERT INTO _temp (username) VALUES ($1)", [username]);
+
+    bcrypt.hash(password, 10, async function(err: Error, hash: string) {
+        if (err) {
+            return NextResponse.json({error: err}, {status: 500});
+        }
+        // Store user in the database
+        await db.query("INSERT INTO _temp (username, password) VALUES ($1, $2)", [username, hash]);
+    });
+
     return NextResponse.json({username: username, message: "User created successfully"});
 }
