@@ -9,16 +9,7 @@
 //   const [email, setEmail] = useState<string>('');
 //   const [password, setPassword] = useState<string>('');
 
-//   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-
-//     // Handle form submission here
-//     const res = await fetch('/api/users', {
-//         method: 'POST',
-//         body: JSON.stringify({"username": name}),
-//     });
-//     console.log(res);
-//   };
+  
 
 //   return (
 //     <div>
@@ -63,7 +54,7 @@
 
 "use client"
 
-import { useState } from "react";
+import { useState, FormEvent} from "react";
 import styles from "./signup.module.css";
 
 import {
@@ -80,6 +71,7 @@ import {
   FormHelperText,
   InputRightElement
 } from "@chakra-ui/react";
+
 
 const App = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
@@ -110,6 +102,19 @@ const App = (): JSX.Element => {
     setLname(event.target.value);
   };
 
+const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  // Handle form submission here
+  const res = await fetch('/api/users', {
+      method: 'POST',
+      body: JSON.stringify({"fname": fname, "lname": lname, "email": email, "password": password }),
+  });
+  console.log(res);
+};
+
+
+
   return (
     <Flex
      className={styles["custom-background"]}
@@ -134,7 +139,7 @@ const App = (): JSX.Element => {
           Sign Up
         </Heading>
         <Box minW={{ base: "90%", md: "468px" }}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <Stack
               className={styles["custom-avatar-container"]} // Apply the custom CSS class
               flexDir="column"
