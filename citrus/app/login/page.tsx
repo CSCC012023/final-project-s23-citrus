@@ -1,8 +1,7 @@
-
 "use client"
 
-import { useState, FormEvent, ChangeEvent} from "react";
-import styles from "./signup.module.css";
+import { useState } from "react";
+import styles from "./login.module.css";
 
 import {
   Flex,
@@ -19,45 +18,20 @@ import {
   InputRightElement
 } from "@chakra-ui/react";
 
-
-const App = (): JSX.Element => {
+const App = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
-
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
-  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
-  const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-import styles from '../styles/Signup.module.css';
-
-
-
-const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  // Handle form submission here
-  const res = await fetch('/api/users', {
-      method: 'POST',
-      body: JSON.stringify({"username" : username, "password": password, email: email }),
-  });
-  console.log(res);
-};
-
-
 
   return (
     <Flex
@@ -75,15 +49,15 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       boxShadow="md"
       className={styles["custom-box"]}
       >
-        {/* <Avatar
-        className={`${styles["custom-box"]} ${styles["custom-avatar"]}`}
-        /> */}
-        {/* <Heading color="teal.400" fontSize="4xl"> */}
-        <Heading className={styles["custom-heading"]} textAlign="center">
-          Sign Up
+        <Avatar
+            className={`${styles["custom-box"]} ${styles["custom-avatar"]} ${styles["custom-avatar-container"]}`} 
+        />
+        <Heading 
+            className={styles["custom-heading"]} textAlign="center">
+          Welcome
         </Heading>
         <Box minW={{ base: "90%", md: "468px" }}>
-          <form onSubmit={handleSubmit}>
+          <form>
             <Stack
               className={styles["custom-avatar-container"]} // Apply the custom CSS class
               flexDir="column"
@@ -91,24 +65,12 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               justifyContent="center"
               alignItems="center"
             >
-
-
               <FormControl>
                 <Input
                   type="email"
                   placeholder="Email"
                   value={email}
                   onChange={handleEmailChange}
-                  className={styles["custom-input"]}
-                />
-              </FormControl>
-
-              <FormControl>
-                <Input
-                  type="username"
-                  placeholder="Username"
-                  value={username}
-                  onChange={handleUsernameChange}
                   className={styles["custom-input"]}
                 />
               </FormControl>
@@ -127,22 +89,21 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-             
+                <FormHelperText textAlign="left">
+                  <Link>Forgot password?</Link>
+                </FormHelperText>
               </FormControl>
-
-
-
-              <Button type="submit" className={styles["custom-acc-button"]}>
-              Create Account
+              <Button className={styles["custom-login-button"]}>
+              Login
             </Button>
             </Stack>
           </form>
         </Box>
       </Stack>
       <Box>
-        Already have an account?{" "}
+        Don't have an account?{" "}
         <Link color="teal.500" href="#">
-          Log In
+          Sign Up
         </Link>
       </Box>
     </Flex>
