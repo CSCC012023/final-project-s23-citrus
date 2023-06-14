@@ -81,7 +81,7 @@ import {
   InputRightElement
 } from "@chakra-ui/react";
 
-const App = () => {
+const App = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
