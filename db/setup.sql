@@ -1,3 +1,5 @@
+-- WIP: Scripts need to run in specific order, also is split across multiple schemas
+
 CREATE TABLE users (
     username VARCHAR(32) PRIMARY KEY,
     pass VARCHAR(60) NOT NULL,
@@ -5,11 +7,15 @@ CREATE TABLE users (
     phone_number VARCHAR(15) UNIQUE,
     socials TEXT[] NULL,
     premium BOOLEAN DEFAULT FALSE,
-    attending_events TEXT[] NULL,
-    attended_events TEXT[] NULL,
-    interested_events TEXT[] NULL,
-    organized_events TEXT[] NULL
 );
+
+CREATE TYPE attending_status_type AS ENUM ('attending', 'attended', 'interested');
+
+CREATE TABLE user_attending_status (
+    username VARCHAR(32) PRIMARY KEY references users(username),
+    event_id VARCHAR(255) references experiences.experiences(event_id),
+    attending attending_status_type
+)
 
 CREATE TABLE experiences (
     event_id VARCHAR(255) PRIMARY KEY,
@@ -22,21 +28,9 @@ CREATE TABLE experiences (
     category TEXT,
     tags TEXT[],
     attendees TEXT[],
-    org_id VARCHAR(255) FOREIGN KEY
-);
-
-CREATE TABLE user_experiences (
-    event_id VARCHAR(255) PRIMARY KEY,
-    event_name VARCHAR(255) NOT NULL,
-    capacity INT,
-    event_location TEXT,
-    event_start TIMESTAMPTZ,
-    event_end TIMESTAMPTZ,
-    event_description TEXT,
-    category TEXT,
-    tags TEXT[],
-    attendees TEXT[],
-    user_id VARCHAR(255) FOREIGN KEY
+    org_id VARCHAR(32) references organizers(org_id),
+    user_id VARCHAR(32) references users(username),
+    CHECK ((org_id IS NOT NULL AND user_id IS NULL) OR (org_id IS NULL AND user_id IS NOT NULL))
 );
 
 CREATE TABLE organizers (
@@ -48,5 +42,4 @@ CREATE TABLE organizers (
     phone_number VARCHAR(13) UNIQUE,
     socials TEXT[] NULL,
     premium BOOLEAN DEFAULT FALSE,
-    events TEXT[] NULL
 )
