@@ -94,3 +94,59 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ username: username, message: "SUCCESS" });
 }
+
+// Endpoint to update a user
+export async function PUT(request: Request) {
+    const body = await request.json();
+    const username = body.username;
+    const password = body.password;
+    const email = body.email;
+    const premium = body.premium;
+    const phone_number = body.phone_number;
+    const socials = body.socials;
+
+    let update = {
+        pass: password,
+        email: email,
+        premium: premium,
+        phone_number: phone_number,
+        socials: socials
+    }
+
+    try {
+        await prisma.users.update({
+            where: { username: username },
+            data: update
+        });
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code === 'P2001') {
+                return NextResponse.json({ error: "record not found" }, { status: 404 });
+            }
+        }
+    }
+
+    return NextResponse.json({ username: username, message: "SUCCESS" });
+
+}
+
+// Endpoint to delete a user
+export async function DELETE(request: Request) {
+    const body = await request.json();
+    const username = body.username;
+
+    try {
+        await prisma.users.delete({
+            where: { username: username }
+        });
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code === 'P2001') {
+                return NextResponse.json({ error: "record not found" }, { status: 404 });
+            }
+        }
+    }
+
+    return NextResponse.json({ username: username, message: "SUCCESS" });
+
+}
