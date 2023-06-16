@@ -1,56 +1,3 @@
-// "use client"
-
-// import Image from "next/image"
-
-// import { useState, FormEvent } from 'react';
-
-// const Signup = (): JSX.Element => {
-//   const [name, setName] = useState<string>('');
-//   const [email, setEmail] = useState<string>('');
-//   const [password, setPassword] = useState<string>('');
-
-  
-
-//   return (
-//     <div>
-//       <h1>Sign Up</h1>
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           <label>Name:</label>
-//           <input
-//             type="text"
-//             value={name}
-//             onChange={(e) => setName(e.target.value)}
-//           />
-//         </div>
-//         <div>
-//           <label>Email:</label>
-//           <input
-//             type="email"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//           />
-//         </div>
-//         <div>
-//           <label>Password:</label>
-//           <input
-//             type="password"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//           />
-//         </div>
-//         <button type="submit">Sign Up</button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Signup;
-
-
-
-
-
 
 "use client"
 
@@ -75,18 +22,24 @@ import {
 
 const App = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
+  //const [email, setEmail] = useState("");
+
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [fname, setFname] = useState("");
-  const [lname, setLname] = useState("");
+  //const [fname, setFname] = useState("");
+  //const [lname, setLname] = useState("");
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+  // const handleEmailChange = (event) => {
+  //   setEmail(event.target.value);
+  // };
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
@@ -94,13 +47,13 @@ const App = (): JSX.Element => {
   };
   
 
-  const handleFnameChange = (event) => {
-    setFname(event.target.value);
-  };
+  // const handleFnameChange = (event) => {
+  //   setFname(event.target.value);
+  // };
 
-  const handleLnameChange = (event) => {
-    setLname(event.target.value);
-  };
+  // const handleLnameChange = (event) => {
+  //   setLname(event.target.value);
+  // };
 
 const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -108,7 +61,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   // Handle form submission here
   const res = await fetch('/api/users', {
       method: 'POST',
-      body: JSON.stringify({"fname": fname, "lname": lname, "email": email, "password": password }),
+      body: JSON.stringify({"username" : username, "password": password }),
   });
   console.log(res);
 };
@@ -148,18 +101,18 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               alignItems="center"
             >
 
-<FormControl>
-                <Input
+{/* <FormControl>
+                {/* <Input
                   type="Fname"
                   placeholder="First Name"
                   value={fname}
                   onChange={handleFnameChange}
                   className={styles["custom-input"]}
                 />
-              </FormControl>
+              </FormControl> */}
 
 
-              <FormControl>
+              {/* <FormControl>
                 <Input
                   type="Lname"
                   placeholder="Last Name"
@@ -167,15 +120,25 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                   onChange={handleLnameChange}
                   className={styles["custom-input"]}
                 />
-              </FormControl>
+              </FormControl> */} 
 
 
-              <FormControl>
+              {/* <FormControl>
                 <Input
                   type="email"
                   placeholder="Email"
                   value={email}
                   onChange={handleEmailChange}
+                  className={styles["custom-input"]}
+                />
+              </FormControl> */}
+
+              <FormControl>
+                <Input
+                  type="username"
+                  placeholder="Username"
+                  value={username}
+                  onChange={handleUsernameChange}
                   className={styles["custom-input"]}
                 />
               </FormControl>
