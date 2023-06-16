@@ -24,7 +24,7 @@ CREATE TABLE organizers.organizers (
 
 CREATE SCHEMA experiences;
 CREATE TABLE experiences.experiences (
-    event_id VARCHAR(255) PRIMARY KEY,
+    event_id UUID PRIMARY key default gen_random_uuid(),
     event_name VARCHAR(255) NOT NULL,
     capacity INT,
     event_location TEXT,
@@ -36,7 +36,11 @@ CREATE TABLE experiences.experiences (
     attendees TEXT[],
     org_id VARCHAR(32) references organizers.organizers(org_id),
     user_id VARCHAR(32) references users.users(username),
-    CHECK ((org_id IS NOT NULL AND user_id IS NULL) OR (org_id IS NULL AND user_id IS NOT NULL))
+    CHECK ((org_id IS NOT NULL AND user_id IS NULL) OR (org_id IS NULL AND user_id IS NOT NULL)),
+    CHECK (event_start < event_end),
+    CHECK (capacity > 0),
+    UNIQUE (event_name, org_id),
+    UNIQUE (event_name, user_id)
 );
 
 CREATE TYPE attending_status_type AS ENUM ('attending', 'attended', 'interested');
