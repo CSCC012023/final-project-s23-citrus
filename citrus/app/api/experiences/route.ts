@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { PrismaClient, Prisma } from '@prisma/client'
 import '../../../lib/patch'
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 /**
  * @api {get} /events Get all events
@@ -93,20 +93,26 @@ export async function GET(request: Request) {
                 lte: end_time != null ? new Date(end_time) : undefined
             }
         }
-        ],
-        OR: [
-            {
-                event_name: {
-                    contains: search != null ? search : undefined
-                }
-            },
-            {
-                event_description: {
-                    contains: search != null ? search : undefined
-                }
-            },
         ]
     };
+
+    if (search) {
+        where_clause = {
+            ...where_clause,
+            OR: [
+                {
+                    event_name: {
+                        contains: search
+                    }
+                },
+                {
+                    event_description: {
+                        contains: search
+                    }
+                }
+            ]
+        }
+    }
 
     if (tags) {
         where_clause = {
@@ -116,6 +122,8 @@ export async function GET(request: Request) {
             }
         }
     }
+
+    console.log(where_clause);
 
     if (next_id && prev_id) {
         return NextResponse.json({ error: "You must provide either a next_cursor or a prev_cursor, but not both" }, { status: 400 });
