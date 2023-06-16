@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
+  previewFeatures = ["fullTextSearch", "multiSchema"]
 }
 
 datasource db {
@@ -11,7 +11,7 @@ datasource db {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model experiences {
-  event_id              String                  @id @db.VarChar(255)
+  event_id              String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   event_name            String                  @db.VarChar(255)
   capacity              BigInt?
   event_location        String?
@@ -27,6 +27,7 @@ model experiences {
   users                 users?                  @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
   user_attending_status user_attending_status[]
 
+  @@unique([event_name, org_id, user_id], map: "event_unique")
   @@schema("experiences")
 }
 
@@ -46,7 +47,7 @@ model organizers {
 
 model user_attending_status {
   username    String                 @id @db.VarChar(32)
-  event_id    String?                @db.VarChar(255)
+  event_id    String?                @db.Uuid
   attending   attending_status_type?
   experiences experiences?           @relation(fields: [event_id], references: [event_id], onDelete: NoAction, onUpdate: NoAction)
   users       users                  @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
