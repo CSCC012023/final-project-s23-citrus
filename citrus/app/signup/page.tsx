@@ -45,7 +45,7 @@ const App = (): JSX.Element => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-  
+
 
   // const handleFnameChange = (event) => {
   //   setFname(event.target.value);
@@ -85,7 +85,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       className={styles["custom-box"]}
       >
         {/* <Avatar
-        className={`${styles["custom-box"]} ${styles["custom-avatar"]}`} 
+        className={`${styles["custom-box"]} ${styles["custom-avatar"]}`}
         /> */}
         {/* <Heading color="teal.400" fontSize="4xl"> */}
         <Heading className={styles["custom-heading"]} textAlign="center">
@@ -120,7 +120,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                   onChange={handleLnameChange}
                   className={styles["custom-input"]}
                 />
-              </FormControl> */} 
+              </FormControl> */}
 
 
               <FormControl>
@@ -163,7 +163,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               </FormControl>
 
 
-              
+
               <Button className={styles["custom-acc-button"]}>
               Create Account
             </Button>
