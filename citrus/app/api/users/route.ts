@@ -4,6 +4,17 @@ import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+const bcrypt = require('bcrypt');
+const passwordValidator = require('password-validator');
+const schema = new passwordValidator();
+schema
+    .is().min(8)
+    .is().max(20)
+    .has().uppercase()
+    .has().lowercase()
+    .has().digits()
+    .has().not().spaces();
+
 // Retrieve a paginated list of all users in the database
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -62,14 +73,24 @@ export async function POST(request: Request) {
     const username = body.username;
     const password = body.password;
     const email = body.email;
-    try {
-        await prisma.users.create({ data: { username: username, pass: password, email: email } });
-    } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2002') {
-                return NextResponse.json({ error: "Username already exists" }, { status: 400 });
+    if (!schema.validate(password)) {
+        return NextResponse.json({ error: "PASS_INVALID" }, { status: 400 });
+    }
+
+    bcrypt.hash(password, 10, async function (err: Error, hash: string) {
+        if (err) {
+            return NextResponse.json({ error: err }, { status: 500 });
+        }
+        try {
+            await prisma.users.create({ data: { username: username, pass: hash, email: email } });
+        } catch (e) {
+            if (e instanceof Prisma.PrismaClientKnownRequestError) {
+                if (e.code === 'P2002') {
+                    return NextResponse.json({ error: "Username already exists" }, { status: 400 });
+                }
             }
         }
-    }
-    return NextResponse.json({ username: username, message: "User created successfully" });
+    });
+
+    return NextResponse.json({ username: username, message: "SUCCESS" });
 }
