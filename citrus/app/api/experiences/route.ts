@@ -108,8 +108,6 @@ export async function GET(request: Request) {
         ]
     };
 
-    console.log(where_clause)
-
     if (tags) {
         where_clause = {
             ...where_clause,
@@ -130,8 +128,6 @@ export async function GET(request: Request) {
             event_id: 'desc'
         },
     });
-
-    console.log(experiences)
 
     var next_cursor = null;
     var prev_cursor = null;
