@@ -1,23 +1,29 @@
--- WIP: Scripts need to run in specific order, also is split across multiple schemas
+-- Not tested yet
 
-CREATE TABLE users (
+CREATE SCHEMA users;
+CREATE TABLE users.users (
     username VARCHAR(32) PRIMARY KEY,
     pass VARCHAR(60) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     phone_number VARCHAR(15) UNIQUE,
     socials TEXT[] NULL,
-    premium BOOLEAN DEFAULT FALSE,
+    premium BOOLEAN DEFAULT FALSE
 );
 
-CREATE TYPE attending_status_type AS ENUM ('attending', 'attended', 'interested');
+CREATE SCHEMA organizers;
+CREATE TABLE organizers.organizers (
+    org_id VARCHAR(32) PRIMARY KEY,
+    display_name VARCHAR(64),
+    organizer_description TEXT,
+    pass VARCHAR(60) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    phone_number VARCHAR(13) UNIQUE,
+    socials TEXT[] NULL,
+    premium BOOLEAN DEFAULT FALSE
+);
 
-CREATE TABLE user_attending_status (
-    username VARCHAR(32) PRIMARY KEY references users(username),
-    event_id VARCHAR(255) references experiences.experiences(event_id),
-    attending attending_status_type
-)
-
-CREATE TABLE experiences (
+CREATE SCHEMA experiences;
+CREATE TABLE experiences.experiences (
     event_id VARCHAR(255) PRIMARY KEY,
     event_name VARCHAR(255) NOT NULL,
     capacity INT,
@@ -28,18 +34,14 @@ CREATE TABLE experiences (
     category TEXT,
     tags TEXT[],
     attendees TEXT[],
-    org_id VARCHAR(32) references organizers(org_id),
-    user_id VARCHAR(32) references users(username),
+    org_id VARCHAR(32) references organizers.organizers(org_id),
+    user_id VARCHAR(32) references users.users(username),
     CHECK ((org_id IS NOT NULL AND user_id IS NULL) OR (org_id IS NULL AND user_id IS NOT NULL))
 );
 
-CREATE TABLE organizers (
-    org_id VARCHAR(32) PRIMARY KEY,
-    display_name VARCHAR(64),
-    organizer_description TEXT,
-    pass VARCHAR(60) NOT NULL,
-    email VARCHAR(255) UNIQUE,
-    phone_number VARCHAR(13) UNIQUE,
-    socials TEXT[] NULL,
-    premium BOOLEAN DEFAULT FALSE,
-)
+CREATE TYPE attending_status_type AS ENUM ('attending', 'attended', 'interested');
+CREATE TABLE users.user_attending_status (
+    username VARCHAR(32) PRIMARY KEY references users(username),
+    event_id VARCHAR(255) references experiences.experiences(event_id),
+    attending attending_status_type
+);
