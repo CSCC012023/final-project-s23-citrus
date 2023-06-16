@@ -1,6 +1,7 @@
 import * as db from '../../../lib/db'
 import { NextResponse } from 'next/server';
 import { PrismaClient, Prisma } from '@prisma/client'
+import '../../../lib/patch.ts'
 
 const prisma = new PrismaClient()
 
@@ -132,13 +133,14 @@ export async function PUT(request: Request) {
 
 // Endpoint to delete a user
 export async function DELETE(request: Request) {
-    const body = await request.json();
+    const body = await request.clone().json();
     const username = body.username;
 
     try {
         await prisma.users.delete({
             where: { username: username }
         });
+        // return NextResponse.json({ username: username, message: "SUCCESS" });
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             if (e.code === 'P2001') {
@@ -146,7 +148,7 @@ export async function DELETE(request: Request) {
             }
         }
     }
-
+    // return NextResponse.json({ error: "An error occurred" }, { status: 500 });
     return NextResponse.json({ username: username, message: "SUCCESS" });
 
 }
