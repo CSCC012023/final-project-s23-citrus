@@ -4,15 +4,39 @@ import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-// Retrieve a paginated list of all users in the database
+/**
+ * @api {get} /users/:id Get user named ID
+ * @apiName GetUser
+ * @apiGroup Users
+ * 
+ * @apiSuccess {String} username The username of the user
+ * @apiSuccess {String} email The email of the user
+ * @apiSuccess {Boolean} premium Whether the user is a premium user
+ * @apiSuccess {Object[]} experiences The experiences of the user
+ * 
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ *     {
+ *         "username": "sampleUsername",
+ *         "email": "sampleEmail@mail.com",
+ *         "phone_number": "16471234567",
+ *         "socials": [
+ *             "https://www.instagram.com/sampleUsername/", 
+ *             "https://www.facebook.com/sampleUsername/"
+ *         ],
+ *         "premium": true,
+ *         "experiences": []
+ *     }
+ */ 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     const username = params.id;
 
     let select = {
         username: true,
         email: true,
+        socials: true,
         premium: true,
-        experiences: true,
+        experiences: true
     };
 
     var user = await prisma.users.findUnique({
@@ -23,7 +47,29 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return NextResponse.json( user );
 }
 
-// Endpoint to delete a user
+/**
+ * @api {delete} /users/:id Delete user named ID
+ * @apiName DeleteUser
+ * @apiGroup Users
+ * 
+ * @apiSuccess {String} username The username of the user
+ * @apiSuccess {String} message The message
+ * 
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "username": "sampleUsername",
+ *         "message": "SUCCESS"
+ *     }
+ * 
+ * @apiError {String} error The error message
+ * 
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *          "error": "record not found"
+ *     }
+ */
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     const username = params.id;
 
@@ -39,5 +85,4 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
         }
     }
     return NextResponse.json({ username: username, message: "SUCCESS" });
-
 }
