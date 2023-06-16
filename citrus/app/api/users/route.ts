@@ -70,9 +70,9 @@ export async function GET(request: Request) {
 // Endpoint to create a new user
 export async function POST(request: Request) {
     const body = await request.json();
-    const username = body.username;
+    const username:string = body.username;
     const password = body.password;
-    const email = body.email;
+    const email:string = body.email;
     if (!schema.validate(password)) {
         return NextResponse.json({ error: "PASS_INVALID" }, { status: 400 });
     }
