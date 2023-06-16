@@ -61,7 +61,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   // Handle form submission here
   const res = await fetch('/api/users', {
       method: 'POST',
-      body: JSON.stringify({"username" : username, "password": password }),
+      body: JSON.stringify({"username" : username, "password": password, email: email }),
   });
   console.log(res);
 };
@@ -164,7 +164,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 
 
 
-              <Button className={styles["custom-acc-button"]}>
+              <Button type="submit" className={styles["custom-acc-button"]}>
               Create Account
             </Button>
             </Stack>
