@@ -22,7 +22,7 @@ import {
 
 const App = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-  //const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -34,9 +34,9 @@ const App = (): JSX.Element => {
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
-  // const handleEmailChange = (event) => {
-  //   setEmail(event.target.value);
-  // };
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -123,7 +123,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               </FormControl> */} 
 
 
-              {/* <FormControl>
+              <FormControl>
                 <Input
                   type="email"
                   placeholder="Email"
@@ -131,7 +131,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                   onChange={handleEmailChange}
                   className={styles["custom-input"]}
                 />
-              </FormControl> */}
+              </FormControl>
 
               <FormControl>
                 <Input
