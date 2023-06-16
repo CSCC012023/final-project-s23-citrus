@@ -1,7 +1,7 @@
 import * as db from '../../../lib/db'
 import { NextResponse } from 'next/server';
 import { PrismaClient, Prisma } from '@prisma/client'
-import '../../../lib/patch.ts'
+import '../../../lib/patch'
 
 const prisma = new PrismaClient()
 
