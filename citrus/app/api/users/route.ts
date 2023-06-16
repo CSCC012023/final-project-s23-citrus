@@ -133,7 +133,7 @@ export async function PUT(request: Request) {
 
 // Endpoint to delete a user
 export async function DELETE(request: Request) {
-    const body = await request.clone().json();
+    const body = await request.json();
     const username = body.username;
 
     try {
