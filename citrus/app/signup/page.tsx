@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState, FormEvent} from "react";
+import { useState, FormEvent, ChangeEvent} from "react";
 import styles from "./signup.module.css";
 
 import {
@@ -34,15 +34,15 @@ const App = (): JSX.Element => {
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
-  const handleEmailChange = (event) => {
+  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
-  const handleUsernameChange = (event) => {
+  const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
   };
 
-  const handlePasswordChange = (event) => {
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
