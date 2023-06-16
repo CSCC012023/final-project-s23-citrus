@@ -29,9 +29,6 @@ const App = (): JSX.Element => {
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  //const [fname, setFname] = useState("");
-  //const [lname, setLname] = useState("");
-
   const handleShowClick = () => setShowPassword(!showPassword);
 
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,14 +43,6 @@ const App = (): JSX.Element => {
     setPassword(event.target.value);
   };
 
-
-  // const handleFnameChange = (event) => {
-  //   setFname(event.target.value);
-  // };
-
-  // const handleLnameChange = (event) => {
-  //   setLname(event.target.value);
-  // };
 
 const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -101,27 +90,6 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               alignItems="center"
             >
 
-{/* <FormControl>
-                {/* <Input
-                  type="Fname"
-                  placeholder="First Name"
-                  value={fname}
-                  onChange={handleFnameChange}
-                  className={styles["custom-input"]}
-                />
-              </FormControl> */}
-
-
-              {/* <FormControl>
-                <Input
-                  type="Lname"
-                  placeholder="Last Name"
-                  value={lname}
-                  onChange={handleLnameChange}
-                  className={styles["custom-input"]}
-                />
-              </FormControl> */}
-
 
               <FormControl>
                 <Input
@@ -157,9 +125,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-                {/* <FormHelperText textAlign="left">
-                  <Link>Forgot password?</Link>
-                </FormHelperText> */}
+             
               </FormControl>
 
 
