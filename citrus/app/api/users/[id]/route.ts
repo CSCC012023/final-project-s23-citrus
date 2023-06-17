@@ -1,11 +1,88 @@
 import * as db from '../../../../lib/db'
 import { NextResponse } from 'next/server';
+import { PrismaClient, Prisma } from '@prisma/client'
 
-// Retrieve a paginated list of all users in the database
-export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-    const res = await db.query("SELECT * FROM _temp WHERE username = $1", [id]);
-    const user = res.rows;
-    return NextResponse.json(user);
+const prisma = new PrismaClient()
+
+/**
+ * @api {get} /users/:id Get user named ID
+ * @apiName GetUser
+ * @apiGroup Users
+ * 
+ * @apiSuccess {String} username The username of the user
+ * @apiSuccess {String} email The email of the user
+ * @apiSuccess {Boolean} premium Whether the user is a premium user
+ * @apiSuccess {Object[]} experiences The experiences of the user
+ * 
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ *     {
+ *         "username": "sampleUsername",
+ *         "email": "sampleEmail@mail.com",
+ *         "phone_number": "16471234567",
+ *         "socials": [
+ *             "https://www.instagram.com/sampleUsername/", 
+ *             "https://www.facebook.com/sampleUsername/"
+ *         ],
+ *         "premium": true,
+ *         "experiences": []
+ *     }
+ */ 
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    const username = params.id;
+
+    let select = {
+        username: true,
+        email: true,
+        socials: true,
+        premium: true,
+        experiences: true
+    };
+
+    var user = await prisma.users.findUnique({
+        where: { username: username },
+        select: select
+    });
+    
+    return NextResponse.json( user );
+}
+
+/**
+ * @api {delete} /users/:id Delete user named ID
+ * @apiName DeleteUser
+ * @apiGroup Users
+ * 
+ * @apiSuccess {String} username The username of the user
+ * @apiSuccess {String} message The message
+ * 
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "username": "sampleUsername",
+ *         "message": "SUCCESS"
+ *     }
+ * 
+ * @apiError {String} error The error message
+ * 
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *          "error": "record not found"
+ *     }
+ */
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+    const username = params.id;
+
+    try {
+        await prisma.users.delete({
+            where: { username: username }
+        });
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code === 'P2001') {
+                return NextResponse.json({ error: "record not found" }, { status: 404 });
+            }
+        }
+    }
+    return NextResponse.json({ username: username, message: "SUCCESS" });
 }
