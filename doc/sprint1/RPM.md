@@ -9,5 +9,10 @@
 - Event search by category, location etc.
 
 # Participants
--Users
--Businesses
+- Ishaan 
+- Miraj
+- Daniel
+- Matthew
+- Shinza
+- Aaliyah
+- Sana

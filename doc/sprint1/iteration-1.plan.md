@@ -1,17 +1,11 @@
 # Citrus
 
- > _Note:_ This document is meant to be written during (or shortly after) your initial planning meeting.     
- > It does not really make sense for you to edit this document much (if at all) while working on the project - Instead, at the end of the planning phase, you can refer back to this document and decide which parts of your plan you are happy with and which parts you would like to change.
-
-
 ## Iteration 1
 
  * Start date: June 5th, 2023
  * End date: June 14th, 2023
 
 ## Process
-
-_This entire section is optional. Note that you will have to fill it out and more for the next 3 deliverables so it's good to start soon and get feedback._ 
 
 #### Roles & responsibilities
 
@@ -22,42 +16,44 @@ _This entire section is optional. Note that you will have to fill it out and mor
 
 Describe meetings (and other events) you are planning to have:
 
- * 
- * When and where? In-person or online?
- * What's the purpose of each meeting?
- * Other events could be coding sessions, code reviews, quick weekly sync' meeting online, etc.
+ * In person meetings on Wednesday at 3:00pm in Bladen Wing
+   * We will discuss progress, blockers, and plan for the next week
+ * Occasional other meetings for filling in gaps in knowledge, filling documents, etc.
 
 #### Artifacts
 
 List/describe the artifacts you will produce in order to organize your team.       
 
- * Artifacts can be To-do lists, Task boards, schedule(s), etc.
- * We want to understand:
-   * How do you keep track of what needs to get done?
-   * How do you prioritize tasks?
-   * How do tasks get assigned to team members?
-
-
-
-
+ * We will use Jira to keep track of the tasks to complete in our sprints.
+ * We will prioritize tasks by order of how many areas of the website and how
+   much functionality it will unlock for the end user.
+ * Daily standups will indicate what work we plan to prioritize on that specific
+ day as well.
 
 
 ## Product
 
-_This entire section is mandatory._
-
 #### Goals and tasks
 
- * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
- * Order the items from most to least important.
- * Feel free (but not obligated) to specify some/all tasks as user stories.
+**Goals:**
+ * Create a landing page for users first visting the website, with a link to the sign-up page and a link to the login page
+   * Properly define a description of our app for end users
+ * Sign-in page for users to create accounts for themselves, with emails associated, focus on security
+   * Learn about how to hash and store passwords, how to securely send data
+ * Events page for users to browse events and indicate interest in them
+   * Learn how to do dynamic page generation based on list of objects 
+
+**Tasks common to all goals:**
+* Set up database schema (users, events, organizer data models) and API endpoints 
+for most use cases (search, create, update, delete)
+
 
 #### Artifacts
 
 List/describe the artifacts you will produce in order to present your project idea.
 
- * Artifacts can be text, code, images, videos, interactive mock-ups and/or any other useful artifact you can think of.
- * Make sure to explain the purpose of each artifact (i.e. Why is it on your to-do list? Why is it useful for your team?)
- * Be concise, yet precise.         
-   For example: "Build the website" is not precise at all, but "Build a static home page and upload it somewhere, so that it is publicly accessible" is much clearer.
+  * Artifacts we currently have include a Figma mockup to create a logical framework for the tasks users can expect to accomplish in each app area, enabling a quick
+  non-technical overview
+  * Have live production deployments (off Github main branch) to Vercel, which auto-build on merge so our latest changes are always presentable
+  * Detailed description of frontend and backend, such as API documentation, so that an overall picture of the application's stack and communication strategy is easily understandable
 
