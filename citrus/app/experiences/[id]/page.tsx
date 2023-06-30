@@ -11,21 +11,23 @@ export default async function Page({ params }: { params: { id: string } }) {
     const map_url = `https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=${data.event_location}`;
     return (
         <div>
-            <h1>{data.event_name}</h1>
-            <p>Description: {data.event_description}</p>
-            <p>Event start time: {start_time.toDateString()}</p>
-            <p>Event end time: {end_time.toDateString()}</p>
-            <p>Event location: {data.event_location}</p>
-            <p>Capacity: {data.capacity}</p>
-            <div id="tags">
+            <h1 className="text-3xl">{data.event_name}</h1>
+            <div id="tags" className="flex">
+                <p className="flex-none bg-cyan-500 rounded-lg border-cyan-200 border-2 px-4 mx-2 text-center">{data.category}</p>
                 {data.tags.map((tag: string) => (
-                    <p key={tag}>Tag: {tag}</p>
+                    <p key={tag} className="flex-none bg-violet-900 rounded-lg border-violet-400 border-2 px-4 mx-2 text-center">{tag}</p>
                 ))}
             </div>
-            <iframe id = "map"
-                width="600"
-                height="450"
-                style={{ border: 0 }}
+            <p>Event dates: {start_time.toLocaleString()} to {end_time.toLocaleString()}</p>
+            <p>Description: {data.event_description}</p>
+            <p>Event location: {data.event_location}</p>
+            <p>Capacity: {data.capacity}</p>
+            <iframe id="map"
+                className="
+                w-full
+                h-96
+                border-none
+                rounded-lg"
                 loading="lazy"
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
