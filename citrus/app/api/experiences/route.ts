@@ -222,11 +222,6 @@ export async function POST(request: Request) {
         });
         return NextResponse.json(event);
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2002') {
-                return NextResponse.json({ error: "Event with same name and organizer already exists" }, { status: 400 });
-            }
-        }
-        return NextResponse.json({ error: "Unknown error" }, { status: 400 });
+        return db.handleError(e);
     }
 }

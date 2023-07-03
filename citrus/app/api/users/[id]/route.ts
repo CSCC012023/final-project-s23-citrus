@@ -78,11 +78,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
             where: { username: username }
         });
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2001') {
-                return NextResponse.json({ error: "record not found" }, { status: 404 });
-            }
-        }
+        return db.handleError(e);
     }
     return NextResponse.json({ username: username, message: "SUCCESS" });
 }

@@ -1,3 +1,4 @@
+import * as db from '../../../../lib/db';
 import { NextResponse } from 'next/server';
 import { PrismaClient, Prisma } from '@prisma/client'
 import '../../../../lib/patch'
@@ -54,18 +55,16 @@ export async function GET(request: Request,
     { params }: { params: { id: string } }) {
 
     const id = params.id;
-    const res = await prisma.experiences.findUnique({
-        where: {
-            id: id
-        }
-    });
-    const event = res;
-    if (!event) {
-        return NextResponse.json(
-            { error: "Event not found" },
-            { status: 404 });
+    try {
+        const res = await prisma.experiences.findUnique({
+            where: {
+                event_id: id
+            }
+        });
+        return NextResponse.json(res);
+    } catch (e) {
+        return db.handleError(e);
     }
-    return NextResponse.json(event);
 }
 
 /**
@@ -124,27 +123,20 @@ export async function GET(request: Request,
  *
  */
 export async function PUT(request: Request,
-                           { params }: { params: { id: string } }) {
+    { params }: { params: { id: string } }) {
     const id = params.id;
-    const res = await prisma.experiences.findUnique({
-        where: {
-            id: id
-        }
-    });
-    const event = res;
-    if (!event) {
-        return NextResponse.json(
-            { error: "Event not found" },
-            { status: 404 });
-    }
     const body = await request.json();
-    const updatedEvent = await prisma.experiences.update({
-        where: {
-            id: id
-        },
-        data: body
-    });
-    return NextResponse.json(updatedEvent);
+    try {
+        const updatedEvent = await prisma.experiences.update({
+            where: {
+                event_id: id
+            },
+            data: body
+        });
+        return NextResponse.json(updatedEvent);
+    } catch (e) {
+        return db.handleError(e);
+    }
 }
 
 /**
@@ -195,21 +187,14 @@ export async function PUT(request: Request,
 export async function DELETE(request: Request,
     { params }: { params: { id: string } }) {
     const id = params.id;
-    const res = await prisma.experiences.findUnique({
-        where: {
-            id: id
-        }
-    });
-    const event = res;
-    if (!event) {
-        return NextResponse.json(
-            { error: "Event not found" },
-            { status: 404 });
+    try {
+        const deletedEvent = await prisma.experiences.delete({
+            where: {
+                event_id: id
+            }
+        });
+        return NextResponse.json(deletedEvent);
+    } catch (e) {
+        return db.handleError(e);
     }
-    const deletedEvent = await prisma.experiences.delete({
-        where: {
-            id: id
-        }
-    });
-    return NextResponse.json(deletedEvent);
 }
