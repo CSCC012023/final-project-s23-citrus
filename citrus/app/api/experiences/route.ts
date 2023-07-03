@@ -23,17 +23,19 @@ const prisma = new PrismaClient();
  * @apiSuccess {String} next_cursor The cursor to use to get the next page of results
  * @apiSuccess {String} prev_cursor The cursor to use to get the previous page of results
  * @apiSuccess {Number} limit The maximum number of results to return
- * @apiSuccess {Object[]} events The events that match the query
- * @apiSuccess {String} events.id The id of the event
- * @apiSuccess {String} events.name The name of the event
- * @apiSuccess {String} events.description The description of the event
- * @apiSuccess {String} events.location The location of the event
- * @apiSuccess {String} events.start_date The start date of the event
- * @apiSuccess {String} events.end_date The end date of the event
- * @apiSuccess {String} events.category The category of the event
- * @apiSuccess {String[]} events.tags The tags of the event
- * @apiSuccess {String[]} events.attendees The attendees of the event
- * @apiSuccess {String} events.org_id The id of the organization that created the event
+ * @apiSuccess {Object[]} experiences The events that match the query
+ * @apiSuccess {String} experiences.event_id The id of the event
+ * @apiSuccess {String} experiences.event_name The name of the event
+ * @apiSuccess {Number} experiences.capacity The capacity of the event
+ * @apiSuccess {String} experiences.event_location The location of the event
+ * @apiSuccess {String} experiences.event_start The start timestamp of the event
+ * @apiSuccess {String} experiences.event_end The end timestamp of the event
+ * @apiSuccess {String} experiences.event_description The description of the event
+ * @apiSuccess {String} experiences.category The category of the event
+ * @apiSuccess {String[]} experiences.tags The tags of the event
+ * @apiSuccess {String[]} experiences.attendees The attendees of the event
+ * @apiSuccess {String} experiences.org_id The id of the organization that created the event
+ * @apiSuccess {String} experiences.user_id The id of the user that created the event
  *
  * @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
@@ -42,18 +44,19 @@ const prisma = new PrismaClient();
  *      "prev_cursor": null,
  *      "limit": 10,
  *      "events": [
- *         {
- *           "id": "1",
- *           "name": "Event 1",
- *           "description": "This is the first event",
- *           "location": "New York",
- *           "start_date": "2021-01-01",
- *           "end_date": "2021-01-02",
- *           "category": "Sports",
- *           "tags": ["tag1", "tag2"],
- *           "attendees": ["user1", "user2"],
- *           "org_id": "1"
- *       },
+ *          {
+ *              "event_id": "1",
+ *              "event_name": "Event 1",
+ *              "event_description": "This is the first event",
+ *              "event_location": "New York",
+ *              "event_start": "2021-01-01T00:00:00.000Z",
+ *              "event_end": "2021-01-02T00:00:00.000Z",
+ *              "category": "Sports",
+ *              "tags": ["tag1", "tag2"],
+ *              "attendees": [],
+ *              "org_id": "1",
+ *              "user_id": null
+ *          }
  *      ]
  */
 export async function GET(request: Request) {
