@@ -41,7 +41,7 @@ export default function RootLayout({
         <div className='flex-1'>
           {children}
         </div>
-        <footer className='flex justify-center space-x-4 bg-sky-700
+        <footer className='flex justify-center space-x-4 bg-blue-600
           text-xl'>
           <p>Test</p>
         </footer>
