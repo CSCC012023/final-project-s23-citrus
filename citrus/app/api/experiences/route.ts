@@ -123,8 +123,6 @@ export async function GET(request: Request) {
         }
     }
 
-    console.log(where_clause);
-
     if (next_id && prev_id) {
         return NextResponse.json({ error: "You must provide either a next_cursor or a prev_cursor, but not both" }, { status: 400 });
     }

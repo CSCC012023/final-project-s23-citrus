@@ -11,6 +11,7 @@ Many businesses lose out on sales due to people not wanting to go alone, and man
 Clone the repository using Git. Citrus has the following additional dependencies:
 - [Next.js](https://nextjs.org/docs/getting-started/installation)
 - [A CockroachDB cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart.html) (has a free tier)
+- [A Google Maps API key](https://developers.google.com/maps/documentation/embed/get-api-key) (Embed requests are always free)
 
 Please note that any flavour of PostgreSQL database can be used as a replacement for the cluster, but development was done with a cloud database in mind. After installing the above dependencies, run the following commands.
 
@@ -25,7 +26,10 @@ After cloning the repository and installing the requirements, run the following 
 cd citrus
 cp .env.template .env
 ```
-Populate the `.env` file with the relevant environment variables. Specifically, `DATABASE_URL`, a PostgreSQL connection string, is required to run Citrus.
+Populate the `.env` file with the relevant environment variables. A list of the required environment variables is provided below:
+
+- `DATABASE_URL`: A PostgreSQL database connection URL.
+- `GOOGLE_MAPS_API_KEY`: A Google API key that, at minimum, has access to the Maps Embed API request scope. 
 
 ---
 ## Running Citrus
