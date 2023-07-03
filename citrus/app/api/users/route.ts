@@ -66,7 +66,7 @@ schema
     const { searchParams } = new URL(request.url);
     const next_id = searchParams.get('next_cursor');
     const prev_id = searchParams.get('prev_cursor');
-    const limit = Number(searchParams.get('limit')) // || 10;
+    const limit = Number(searchParams.get('limit')) || 10;
 
     let where_clause: any = {
         username: {
