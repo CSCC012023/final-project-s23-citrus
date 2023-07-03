@@ -47,16 +47,16 @@ schema
  *                "email": "sampleEmail@mail.com",
  *                "phone_number": "16471234567",
  *                "socials": [
- *                    "https://www.instagram.com/sampleUsername/", 
+ *                    "https://www.instagram.com/sampleUsername/",
  *                    "https://www.facebook.com/sampleUsername/"
  *                ],
  *                "premium": true
  *            }
  *        ]
  *    }
- * 
+ *
  * @apiError {String} error The error message
- * 
+ *
  * @apiErrorExample Error-Response:
  *  HTTP/1.1 400 Bad Request
  *  {
@@ -101,12 +101,12 @@ schema
 
     const users = res;
     // Set up the new cursors to return
-    const next_cursor = users[users.length - 1].username;
-    const prev_cursor = users[0].username;
+    const next_cursor = users.length != 0 ? users[users.length - 1].username : null;
+    const prev_cursor = users.length != 0 ? users[0].username : null;
 
     return NextResponse.json({
-        "next_cursor": next_cursor || null,
-        "prev_cursor": prev_cursor || null,
+        "next_cursor": next_cursor,
+        "prev_cursor": prev_cursor,
         "limit": limit,
         users
     });
@@ -116,29 +116,29 @@ schema
  * @api {post} /users Create a user
  * @apiName CreateUser
  * @apiGroup Users
- * 
+ *
  * @apiParam {String} username The username of the user
  * @apiParam {String} password The password of the user
  * @apiParam {String} email The email of the user
- * 
+ *
  * @apiSuccess {String} username The username of the user
  * @apiSuccess {String} message The message indicating the success of the request
- * 
+ *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 201 Created
  *     {
  *         "username": "sampleUsername",
  *         "message": "SUCCESS"
  *     }
- * 
+ *
  * @apiError {String} error The error message
- * 
+ *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 400 Bad Request
  *     {
  *         "error": "Password is invalid."
  *     }
- * 
+ *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 400 Bad Request
  *     {
@@ -153,8 +153,8 @@ schema
         return NextResponse.json({ error: "Password is invalid." }, { status: 400 });
     }
 
-    // TODO! fix incorrect response return caused by bcrypt running callback 
-    // function which does not return in the main function. 
+    // TODO! fix incorrect response return caused by bcrypt running callback
+    // function which does not return in the main function.
     bcrypt.hash(password, 10, async function (err: Error, hash: string) {
         if (err) {
             return NextResponse.json({ error: err }, { status: 500 });
@@ -177,32 +177,32 @@ schema
  * @api {put} /users Update a user
  * @apiName UpdateUser
  * @apiGroup Users
- * 
+ *
  * @apiParam {String} username The username of the user
  * @apiParam {String} password The password of the user
  * @apiParam {String} email The email of the user
  * @apiParam {Boolean} premium Whether the user is a premium user
  * @apiParam {String} phone_number The phone number of the user
  * @apiParam {String[]} socials The social media links of the user
- * 
+ *
  * @apiSuccess {String} username The username of the user
  * @apiSuccess {String} message The message indicating the success of the request
- * 
+ *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *         "username": "sampleUsername",
  *         "message": "SUCCESS"
  *     }
- * 
+ *
  * @apiError {String} error The error message
- * 
+ *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 404 Not Found
  *     {
  *         "error": "User not found."
  *     }
- */ 
+ */
 // TODO! implement password hashing on update
 export async function PUT(request: Request) {
     const body = await request.json();
