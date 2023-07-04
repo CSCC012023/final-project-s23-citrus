@@ -1,0 +1,96 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Experiences",
+    "dateExported": "2023-07-04T00:46:17.312Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "20e40457-03c4-416d-8c5a-b96dcbf6ed7c",
+            "colId": "e9a5aea8-8bd2-4259-9c9f-4cedad8c920f",
+            "containerId": "",
+            "name": "CREATE event",
+            "url": "http://localhost:3000/api/experiences",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2023-07-03T20:40:54.679Z",
+            "modified": "2023-07-04T00:38:06.325Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"One of the events of all time\",\n  \"capacity\": 3,\n  \"location\": \"Timbuktu\",\n  \"start_time\": \"2023-07-03T21:35:13+0000\",\n  \"end_time\": \"2023-07-03T21:35:35+0000\",\n  \"description\": \"Might even be considered one of the events of all time. Just saying.\",\n  \"category\": \"The Greatest Ever\",\n  \"tags\": [\"Tag 1\"],\n  \"user_id\": \"Test\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.event_id",
+                    "action": "setto",
+                    "value": "{{experienceID}}"
+                }
+            ]
+        },
+        {
+            "_id": "08b95808-793b-40e2-8e76-a71f5794de66",
+            "colId": "e9a5aea8-8bd2-4259-9c9f-4cedad8c920f",
+            "containerId": "",
+            "name": "GET existing event",
+            "url": "http://localhost:3000/api/experiences/{{experienceID}}",
+            "method": "GET",
+            "sortNum": 16250,
+            "created": "2023-07-03T20:39:14.839Z",
+            "modified": "2023-07-04T00:37:33.728Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "150d872b-8f65-4de8-88ce-e6502212c9ec",
+            "colId": "e9a5aea8-8bd2-4259-9c9f-4cedad8c920f",
+            "containerId": "",
+            "name": "UPDATE event",
+            "url": "http://localhost:3000/api/experiences/{{experienceID}}",
+            "method": "POST",
+            "sortNum": 17500,
+            "created": "2023-07-03T20:41:07.952Z",
+            "modified": "2023-07-04T00:45:00.918Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"event_name\": \"Updated event\",\n  \"event_description\": \"The best update to an event to have ever taken place\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "bdbc1010-9fed-4cf7-a340-5ae281602b04",
+            "colId": "e9a5aea8-8bd2-4259-9c9f-4cedad8c920f",
+            "containerId": "",
+            "name": "DELETE existing event",
+            "url": "http://localhost:3000/api/experiences/{{experienceToDeleteID}}",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2023-07-03T20:40:48.889Z",
+            "modified": "2023-07-03T22:01:24.729Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e7137d24-2f85-48d7-9504-b7f59f3ee472",
+            "colId": "e9a5aea8-8bd2-4259-9c9f-4cedad8c920f",
+            "containerId": "",
+            "name": "GET all events",
+            "url": "http://localhost:3000/api/experiences",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-07-04T00:45:50.064Z",
+            "modified": "2023-07-04T00:45:58.647Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

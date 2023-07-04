@@ -1,0 +1,16 @@
+{
+    "client": "Thunder Client",
+    "environmentName": "TestEnv",
+    "dateExported": "2023-07-04T00:47:15.154Z",
+    "version": "1.0",
+    "variables": [
+        {
+            "name": "experienceID",
+            "value": "78937169-476c-492d-8384-7c47bc405e61"
+        },
+        {
+            "name": "experienceToDeleteID",
+            "value": "29b6aa61-d156-4f2e-a807-8baf6dbdfbb6"
+        }
+    ]
+}
