@@ -66,7 +66,7 @@ export async function GET(request: Request,
 }
 
 /**
- * @api {post} /events:id Update an event
+ * @api {put} /events:id Update an event
  *
  * @apiName UpdateEvent
  * @apiGroup Events
@@ -118,7 +118,7 @@ export async function GET(request: Request,
  * }
  *
  */
-export async function POST(request: Request,
+export async function PUT(request: Request,
                            { params }: { params: { id: string } }) {
     const id = params.id;
     const res = await prisma.experiences.findUnique({
