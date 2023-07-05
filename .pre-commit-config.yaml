@@ -10,3 +10,9 @@ repos:
     -   id: check-json
     -   id: check-added-large-files
         args: ['--maxkb=1024']
+-   repo: local
+    hooks:
+    -   id: regenerate-api-docs
+        name: regenerate-api-docs
+        entry: pre-commit-scripts/regenerate-api-docs.sh
+        language: script

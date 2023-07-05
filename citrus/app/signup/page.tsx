@@ -43,7 +43,6 @@ const App = (): JSX.Element => {
     setPassword(event.target.value);
   };
 
-
 const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
@@ -52,7 +51,6 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       method: 'POST',
       body: JSON.stringify({"username" : username, "password": password, email: email }),
   });
-  console.log(res);
 };
 
 

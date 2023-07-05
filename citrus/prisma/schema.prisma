@@ -11,13 +11,13 @@ datasource db {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model experiences {
-  event_id              String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  event_name            String                  @db.VarChar(255)
+  id                    String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                  String                  @db.VarChar(255)
   capacity              BigInt?
-  event_location        String?
-  event_start           DateTime?               @db.Timestamptz(6)
-  event_end             DateTime?               @db.Timestamptz(6)
-  event_description     String?
+  location              String?
+  start                 DateTime?               @db.Timestamptz(6)
+  end                   DateTime?               @db.Timestamptz(6)
+  description           String?
   category              String?
   tags                  String[]
   attendees             String[]
@@ -27,7 +27,7 @@ model experiences {
   users                 users?                  @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
   user_attending_status user_attending_status[]
 
-  @@unique([event_name, org_id, user_id], map: "event_unique")
+  @@unique([name, org_id, user_id], map: "event_unique")
   @@schema("experiences")
 }
 
@@ -49,7 +49,7 @@ model user_attending_status {
   username    String                 @id @db.VarChar(32)
   event_id    String?                @db.Uuid
   attending   attending_status_type?
-  experiences experiences?           @relation(fields: [event_id], references: [event_id], onDelete: NoAction, onUpdate: NoAction)
+  experiences experiences?           @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users       users                  @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
 
   @@schema("users")
@@ -64,6 +64,8 @@ model users {
   premium               Boolean?               @default(false)
   experiences           experiences[]
   user_attending_status user_attending_status?
+  accounts              Account[]
+  sessions              Session[]
 
   @@schema("users")
 }
@@ -73,5 +75,35 @@ enum attending_status_type {
   attended
   interested
 
+  @@schema("users")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         users    @relation(fields: [userId], references: [username], onDelete: Cascade)
+
+  @@schema("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user users @relation(fields: [userId], references: [username], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
   @@schema("users")
 }
