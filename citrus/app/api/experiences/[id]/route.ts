@@ -56,7 +56,7 @@ export async function GET(request: Request,
     const id = params.id;
     const res = await prisma.experiences.findUnique({
         where: {
-            event_id: id
+            id: id
         }
     });
     const event = res;
@@ -128,7 +128,7 @@ export async function PUT(request: Request,
     const id = params.id;
     const res = await prisma.experiences.findUnique({
         where: {
-            event_id: id
+            id: id
         }
     });
     const event = res;
@@ -140,7 +140,7 @@ export async function PUT(request: Request,
     const body = await request.json();
     const updatedEvent = await prisma.experiences.update({
         where: {
-            event_id: id
+            id: id
         },
         data: body
     });
@@ -197,7 +197,7 @@ export async function DELETE(request: Request,
     const id = params.id;
     const res = await prisma.experiences.findUnique({
         where: {
-            event_id: id
+            id: id
         }
     });
     const event = res;
@@ -208,7 +208,7 @@ export async function DELETE(request: Request,
     }
     const deletedEvent = await prisma.experiences.delete({
         where: {
-            event_id: id
+            id: id
         }
     });
     return NextResponse.json(deletedEvent);

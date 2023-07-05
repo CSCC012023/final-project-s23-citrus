@@ -134,7 +134,7 @@ export async function GET(request: Request) {
         where: where_clause,
         take: limit,
         orderBy: {
-            event_id: 'desc'
+            id: 'desc'
         },
     });
 
@@ -142,8 +142,8 @@ export async function GET(request: Request) {
     var prev_cursor = null;
 
     if (experiences.length > 0) {
-        next_cursor = experiences[experiences.length - 1].event_id;
-        prev_cursor = experiences[0].event_id;
+        next_cursor = experiences[experiences.length - 1].id;
+        prev_cursor = experiences[0].id;
     }
 
     return NextResponse.json({
@@ -206,12 +206,12 @@ export async function POST(request: Request) {
     try {
         const event = await prisma.experiences.create({
             data: {
-                event_name: body.name,
+                name: body.name,
                 capacity: body.capacity,
-                event_location: body.location,
-                event_start: start_time,
-                event_end: end_time,
-                event_description: body.description,
+                location: body.location,
+                start: start_time,
+                end: end_time,
+                description: body.description,
                 category: body.category,
                 tags: {
                     set: body.tags
