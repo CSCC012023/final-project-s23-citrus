@@ -30,7 +30,6 @@ const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
     const body = await request.json();
-    console.log(body)
     console.log("AUTHENTICATING USER...")
 
     const username = body.username;
@@ -51,7 +50,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({
-        username: user.username,
+        name: user.username,
         email: user.email,
 
     });

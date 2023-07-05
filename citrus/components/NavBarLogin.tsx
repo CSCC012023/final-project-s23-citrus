@@ -7,13 +7,13 @@ export default function NavBarLogin() {
     if (!session) {
         return (
             <li>
-                <button onClick={() => signIn(undefined, {callbackUrl: "http://localhost:3000/"})}>Not Swag</button>
+                <button onClick={() => signIn(undefined, {callbackUrl: "http://localhost:3000/"})}>Log in</button>
             </li>
         )
     } else {
         return (
             <li>
-                <button onClick={() => signOut()} >Swag</button>
+                <button onClick={() => signOut()} >Hi, {session.user?.name}</button>
             </li>
         )
     }
