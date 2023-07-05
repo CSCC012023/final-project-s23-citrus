@@ -2,6 +2,10 @@ import './globals.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { Inter } from 'next/font/google'
 import Image from 'next/image'
+import { getServerSession } from 'next-auth/next';
+import NavBarLogin from '../components/NavBarLogin'
+import SessionProviderWrapper from '@/components/SessionProvider'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -9,14 +13,17 @@ export const metadata = {
   description: 'A next-generation experience sharing platform.',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getServerSession();
+
   return (
     <html lang="en">
       <body className={'bg-black h-screen flex flex-col'}>
+        <SessionProviderWrapper session={session}>
         <header className='flex h-min'>
           <Image
             src='/eventual_logo.svg'
@@ -35,6 +42,7 @@ export default function RootLayout({
               <li className='flex-1'>
                 <a href="/about">About</a>
               </li>
+              <NavBarLogin />
             </ul>
           </nav>
         </header>
@@ -45,6 +53,7 @@ export default function RootLayout({
           text-xl'>
           <p>Test</p>
         </footer>
+        </SessionProviderWrapper>
       </body>
     </html>
   )

@@ -42,9 +42,6 @@ const App = (): JSX.Element => {
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-import styles from '../styles/Signup.module.css';
-
-
 
 const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
