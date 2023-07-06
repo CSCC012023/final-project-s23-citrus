@@ -18,7 +18,7 @@ schema
 
 
 /**
- * @api {get} /users Get all organizers
+ * @api {get} /organizers Get all organizers
  * @apiName GetOrganizers
  * @apiGroup Organizers
  *
@@ -52,16 +52,16 @@ schema
  *                "email": "sampleEmail@mail.com",
  *                "phone_number": "16471234567",
  *                "socials": [
- *                    "https://www.instagram.com/sampleUsername/", 
+ *                    "https://www.instagram.com/sampleUsername/",
  *                    "https://www.facebook.com/sampleUsername/"
  *                ],
  *                "premium": true
  *            }
  *        ]
  *    }
- * 
+ *
  * @apiError {String} error The error message
- * 
+ *
  * @apiErrorExample Error-Response:
  *  HTTP/1.1 400 Bad Request
  *  {
@@ -108,44 +108,44 @@ schema
 
     const organizers = res;
     // Set up the new cursors to return
-    const next_cursor = organizers[organizers.length - 1].org_id;
-    const prev_cursor = organizers[0].org_id;
+    const next_cursor = organizers.length != 0 ? organizers[organizers.length - 1].org_id : null;
+    const prev_cursor = organizers.length != 0 ? organizers[0].org_id : null;
 
     return NextResponse.json({
-        "next_cursor": next_cursor || null,
-        "prev_cursor": prev_cursor || null,
+        "next_cursor": next_cursor,
+        "prev_cursor": prev_cursor,
         "limit": limit,
         organizers
     });
 }
 
 /**
- * @api {post} /users Create an organizers
+ * @api {post} /organizers Create an organizers
  * @apiName CreateOrganizers
  * @apiGroup Organizers
- * 
+ *
  * @apiParam {String} username The username of the organizers
  * @apiParam {String} password The password of the organizers
  * @apiParam {String} email The email of the organizers
- * 
+ *
  * @apiSuccess {String} username The username of the organizers
  * @apiSuccess {String} message The message indicating the success of the request
- * 
+ *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 201 Created
  *     {
  *         "username": "sampleUsername",
  *         "message": "SUCCESS"
  *     }
- * 
+ *
  * @apiError {String} error The error message
- * 
+ *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 400 Bad Request
  *     {
  *         "error": "Password is invalid."
  *     }
- * 
+ *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 400 Bad Request
  *     {
@@ -160,31 +160,26 @@ schema
         return NextResponse.json({ error: "Password is invalid." }, { status: 400 });
     }
 
-    // TODO! fix incorrect response return caused by bcrypt running callback 
-    // function which does not return in the main function. 
-    bcrypt.hash(password, 10, async function (err: Error, hash: string) {
-        if (err) {
-            return NextResponse.json({ error: err }, { status: 500 });
-        }
-        try {
-            await prisma.organizers.create({ data: { org_id: org_id, pass: hash, email: email } });
-        } catch (e) {
-            if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                if (e.code === 'P2002') {
-                    return NextResponse.json({ error: "Organizer already exists" }, { status: 400 });
-                }
+    const hash = await bcrypt.hash(password, 10);
+
+    try {
+        await prisma.organizers.create({ data: { org_id: org_id, pass: hash, email: email } });
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e.code === 'P2002') {
+                return NextResponse.json({ error: "Organizer already exists" }, { status: 400 });
             }
         }
-    });
+    }
 
     return NextResponse.json({ org_id: org_id, message: "SUCCESS" });
 }
 
 /**
- * @api {put} /users Update an organizer
+ * @api {put} /organizers Update an organizer
  * @apiName UpdateOrganizer
  * @apiGroup Organizer
- * 
+ *
  * @apiParam {String} org_id Organizer's ID
  * @apiParam {String} display_name The display name of the organizer
  * @apiParam {String} organizer_description The description for the organizer
@@ -193,25 +188,25 @@ schema
  * @apiParam {Boolean} premium Whether the organizer is a premium organizer
  * @apiParam {String} phone_number The phone number of the organizer
  * @apiParam {String[]} socials The social media links of the organizer
- * 
+ *
  * @apiSuccess {String} username The username of the user
  * @apiSuccess {String} message The message indicating the success of the request
- * 
+ *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *         "org_id": "sampleUsername",
  *         "message": "SUCCESS"
  *     }
- * 
+ *
  * @apiError {String} error The error message
- * 
+ *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 404 Not Found
  *     {
  *         "error": "User not found."
  *     }
- */ 
+ */
 // TODO! implement password hashing on update
 export async function PUT(request: Request) {
     const body = await request.json();
@@ -242,7 +237,7 @@ export async function PUT(request: Request) {
         });
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2001') {
+            if (e.code === 'P2025') {
                 return NextResponse.json({ error: "User not found." }, { status: 404 });
             }
         }
