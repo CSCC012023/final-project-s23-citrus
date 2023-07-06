@@ -4,6 +4,7 @@ import { use } from "react";
 import InterestButton from '@/components/InterestButton'
 
 
+
 async function eventInfo(eventID: string) {
     const res = await fetch(process.env.BASE_API_URL + `api/experiences/${eventID}`);
     const data = await res.json();
