@@ -73,7 +73,7 @@ const App = (): JSX.Element => {
         /> */}
         {/* <Heading color="teal.400" fontSize="4xl"> */}
         <Heading className={styles["custom-heading"]} textAlign="center">
-          Business Sign Up
+          Organizer Sign Up
         </Heading>
 
         <Box minW={{ base: "90%", md: "468px" }}>
@@ -125,7 +125,7 @@ const App = (): JSX.Element => {
               </FormControl>
 
               <Button type="submit" className={styles["custom-acc-button"]}>
-                Create Business Account
+                Create Account
               </Button>
             </Stack>
           </form>
