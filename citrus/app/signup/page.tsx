@@ -47,7 +47,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
   // Handle form submission here
-  const res = await fetch('/api/users', {
+  const res = await fetch(process.env.BASE_API_URL + '/api/users', {
       method: 'POST',
       body: JSON.stringify({"username" : username, "password": password, email: email }),
   });

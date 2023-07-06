@@ -1,8 +1,7 @@
-import * as db from '../../../../lib/db'
+import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'
 
-const prisma = new PrismaClient()
+const prisma = db.getClient();
 
 /**
  * @api {get} /users/:id Get user named ID
@@ -78,11 +77,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
             where: { username: username }
         });
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2001') {
-                return NextResponse.json({ error: "record not found" }, { status: 404 });
-            }
-        }
+        return db.handleError(e);
     }
     return NextResponse.json({ username: username, message: "SUCCESS" });
 }

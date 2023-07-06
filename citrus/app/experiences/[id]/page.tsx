@@ -2,18 +2,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 
 async function getEventData(id: string) {
-    const res = await fetch(`http://localhost:3000/api/experiences/${id}`, { next: {revalidate: 60}});
+    console.log(process.env.BASE_API_URL + `api/experiences/${id}`)
+    const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 60}});
     const data = await res.json();
     return data;
 }
 
 async function getOrganizerData(id: string, isUser: boolean) {;
     if (isUser) {
-        const res = await fetch(`http://localhost:3000/api/users/${id}`);
+        const res = await fetch(process.env.BASE_API_URL + `api/users/${id}`);
         const data = await res.json();
         return data;
     } else {
-        const res = await fetch(`http://localhost:3000/api/organizations/${id}`);
+        const res = await fetch(process.env.BASE_API_URL + `api/organizations/${id}`);
         const data = await res.json();
         return data;
     }
@@ -37,14 +38,14 @@ function OrganizerCard( {organizer, isUser}: {organizer: any, isUser: boolean} )
 }
 export default async function Page({ params }: { params: { id: string } }) {
     const data = await getEventData(params.id);
-    const start_time = new Date(data.event_start);
-    const end_time = new Date(data.event_end);
+    const start_time = new Date(data.start);
+    const end_time = new Date(data.end);
     const map_url = `https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=${data.event_location}`;
     const organizer = await getOrganizerData(data.user_id || data.organizer_id, data.user_id != null);
 
     return (
         <div className="w-9/12 m-auto">
-            <h1 className="text-5xl text-bold">{data.event_name}</h1>
+            <h1 className="text-5xl text-bold">{data.name}</h1>
             <div id="tags" className="flex my-5">
                 <p className="flex-none bg-blue-600 rounded-lg border-blue-200 border-2 px-4 mr-2 text-center">{data.category}</p>
                 {data.tags.map((tag: string) => (
@@ -69,7 +70,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 </div>
                 <div>
                     <p className='font-bold text-2xl'><FontAwesomeIcon icon={faLocationDot} className='text-3xl text-blue-600' /> Where </p>
-                    <p className=''>{data.event_location}</p>
+                    <p className=''>{data.location}</p>
                 </div>
                 <div>
                     <p className='font-bold text-2xl'><FontAwesomeIcon icon={faUser} className='text-3xl text-blue-600' /> Spots left </p>
@@ -80,7 +81,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <div>
                 <h2 className="text-3xl text-bold">Description</h2>
-                <p className="indent-8">{data.event_description}</p>
+                <p className="indent-8">{data.description}</p>
             </div>
         </div>
     );

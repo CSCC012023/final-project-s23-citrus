@@ -1,9 +1,8 @@
-import * as db from '../../../lib/db'
+import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'
-import '../../../lib/patch'
+import '@/lib/patch'
 
-const prisma = new PrismaClient()
+const prisma = db.getClient();
 
 const bcrypt = require('bcrypt');
 const passwordValidator = require('password-validator');
@@ -153,22 +152,13 @@ schema
         return NextResponse.json({ error: "Password is invalid." }, { status: 400 });
     }
 
-    // TODO! fix incorrect response return caused by bcrypt running callback
-    // function which does not return in the main function.
-    bcrypt.hash(password, 10, async function (err: Error, hash: string) {
-        if (err) {
-            return NextResponse.json({ error: err }, { status: 500 });
-        }
-        try {
-            await prisma.users.create({ data: { username: username, pass: hash, email: email } });
-        } catch (e) {
-            if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                if (e.code === 'P2002') {
-                    return NextResponse.json({ error: "Username already exists" }, { status: 400 });
-                }
-            }
-        }
-    });
+    const hash = await bcrypt.hash(password, 10);
+
+    try {
+        await prisma.users.create({ data: { username: username, pass: hash, email: email } });
+    } catch (e) {
+        return db.handleError(e);
+    }
 
     return NextResponse.json({ username: username, message: "SUCCESS" });
 }
@@ -227,11 +217,7 @@ export async function PUT(request: Request) {
             data: update
         });
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2001') {
-                return NextResponse.json({ error: "User not found." }, { status: 404 });
-            }
-        }
+        return db.handleError(e);
     }
 
     return NextResponse.json({ username: username, message: "SUCCESS" });
