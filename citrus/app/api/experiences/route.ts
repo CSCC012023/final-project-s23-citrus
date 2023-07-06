@@ -1,6 +1,6 @@
 import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
-import '../../../lib/patch'
+import '@/lib/patch'
 
 const prisma = db.getClient();
 
