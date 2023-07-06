@@ -51,8 +51,8 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       method: 'POST',
       body: JSON.stringify({"username" : username, "password": password, email: email }),
   });
+  
 };
-
 
   return (
     <Flex
