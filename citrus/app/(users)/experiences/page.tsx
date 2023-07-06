@@ -30,18 +30,20 @@ function EventCardHolder() {
     console.log(events);
 
     return (
-        <div className="w-9/12 m-auto">
-            <h1 className="text-5xl text-bold">Events</h1>
-            <div id="events" className="flex my-5">
-                {events.map((event: any) => (
-                    <div key={event.event_id} className="flex-none bg-blue-600 rounded-lg border-blue-200 border-2 px-4 mr-2 text-center">
-                        <h1>{event.event_name}</h1>
-                        <p>{event.event_description}</p>
-                        <p>{event.event_location}</p>
-                    </div>
-                ))};
-            </div>
-        </div>
+      <div className="w-9/12 m-auto">
+  <h1 className="text-5xl text-bold">Events</h1>
+  <div id="events" className="flex-col my-5">
+    {events.map((event: any) => (
+      <div key={"Event ID: " + event.id} className="flex-none bg-blue-600 rounded-lg border-blue-200 border-2 px-4 mb-2 text-center">
+        <h1 className="text-left">{"Name: " + event.name}</h1>
+        <p className="text-left">{"Description: " + event.description}</p>
+        <p className="text-left">{"Location: " + event.location}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
+    
     )
 }
 
