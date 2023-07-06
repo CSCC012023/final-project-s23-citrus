@@ -1,11 +1,10 @@
-import * as db from '../../../../lib/db'
+import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'
-import '../../../../lib/patch'
+import '@/lib/patch'
 
 const bcrypt = require('bcrypt');
 
-const prisma = new PrismaClient();
+const prisma = db.getClient();
 
 /**
  * @api {post} /api/auth/organization Login a user

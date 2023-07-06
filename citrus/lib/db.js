@@ -1,6 +1,8 @@
 const { Pool } = require("pg");
-import { Prisma } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+
+var client = null;
 
 const errorToStatus = {
     'P2000': '400',
@@ -44,27 +46,40 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
 
-export const query = (text, params, callback) => {
-    return pool.query(text, params, callback)
+export const getClient = () => {
+    // Use a singleton pattern to avoid creating a new client
+    // on every request
+    if (!client) {
+        client = new PrismaClient();
+    }
+    return client;
 }
 
-export const getClient = () => {
-    return pool.connect()
+export const query = (text, params, callback) => {
+    return pool.query(text, params, callback)
 }
 
 export const handleError = (err) => {
     if (err instanceof Prisma.PrismaClientKnownRequestError
         && err.code in errorToStatus ) {
+        // We can throw a custom error for known database validation
+        // errors that fall in the range P2000 - P2999
         return NextResponse.json(
             { error: err.message, code: err.code, meta: err.meta},
             { status: errorToStatus[err.code] }
         )
     } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        // Error codes between P1000 and P1999 refer to issues in the
+        // database itself and not to validation errors or errors in
+        // the Prisma Client API. These errors should be handled as
+        // internal server errors.
         return NextResponse.json(
             { error: err.message, code: err.code, meta: err.meta},
             { status: 500 }
         )
     } else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
+        // Unknown request errors should be handled as internal
+        // server errors
         return NextResponse.json(
             { error: err.message },
             { status: 500 }

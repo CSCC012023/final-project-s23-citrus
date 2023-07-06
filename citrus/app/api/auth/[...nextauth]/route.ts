@@ -1,9 +1,9 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
+import * as db from '@/lib/db';
 
-const prisma = new PrismaClient()
+const prisma = db.getClient();
 
 const handler = NextAuth({
     adapter: PrismaAdapter(prisma),
@@ -15,7 +15,7 @@ const handler = NextAuth({
                 password: {  label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                const res = await fetch("http://localhost:3000/api/auth/user", {
+                const res = await fetch(process.env.BASE_API_URL + "/api/auth/user", {
                     method: "POST",
                     body: JSON.stringify(credentials),
                     headers: { "Content-Type": "application/json" }

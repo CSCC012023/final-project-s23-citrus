@@ -1,9 +1,8 @@
-import * as db from '../../../lib/db'
+import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'
 import '../../../lib/patch'
 
-const prisma = new PrismaClient();
+const prisma = db.getClient();
 
 /**
  * @api {get} /events Get all events
@@ -24,13 +23,13 @@ const prisma = new PrismaClient();
  * @apiSuccess {String} prev_cursor The cursor to use to get the previous page of results
  * @apiSuccess {Number} limit The maximum number of results to return
  * @apiSuccess {Object[]} experiences The events that match the query
- * @apiSuccess {String} experiences.event_id The id of the event
- * @apiSuccess {String} experiences.event_name The name of the event
+ * @apiSuccess {String} experiences.id The id of the event
+ * @apiSuccess {String} experiences.name The name of the event
  * @apiSuccess {Number} experiences.capacity The capacity of the event
- * @apiSuccess {String} experiences.event_location The location of the event
- * @apiSuccess {String} experiences.event_start The start timestamp of the event
- * @apiSuccess {String} experiences.event_end The end timestamp of the event
- * @apiSuccess {String} experiences.event_description The description of the event
+ * @apiSuccess {String} experiences.location The location of the event
+ * @apiSuccess {String} experiences.start The start timestamp of the event
+ * @apiSuccess {String} experiences.end The end timestamp of the event
+ * @apiSuccess {String} experiences.description The description of the event
  * @apiSuccess {String} experiences.category The category of the event
  * @apiSuccess {String[]} experiences.tags The tags of the event
  * @apiSuccess {String[]} experiences.attendees The attendees of the event
@@ -73,26 +72,26 @@ export async function GET(request: Request) {
 
     let where_clause: any = {
         AND: [{
-            event_id: {
+            id: {
                 gt: next_id != null ? next_id : undefined,
                 lt: prev_id != null ? prev_id : undefined
             }
         },
         {
-            event_location: {
+            location: {
                 search: location != null ? location : undefined
             },
         },
         {
-            event_category: category != null ? category : undefined,
+            category: category != null ? category : undefined,
         },
         {
-            event_start: {
+            start: {
                 gte: start_time != null ? new Date(start_time) : undefined
             },
         },
         {
-            event_end: {
+            end: {
                 lte: end_time != null ? new Date(end_time) : undefined
             }
         }

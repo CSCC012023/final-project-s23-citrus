@@ -1,9 +1,8 @@
-import * as db from '../../../../lib/db';
+import * as db from '@/lib/db';
 import { NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'
-import '../../../../lib/patch'
+import '@/lib/patch'
 
-const prisma = new PrismaClient()
+const prisma = db.getClient();
 
 /**
  * @api {get} /events:id Get an event
@@ -12,13 +11,13 @@ const prisma = new PrismaClient()
  *
  * @apiParam {String} id The id of the event to get
  *
- * @apiSuccess {String} event_id The id of the event
- * @apiSuccess {String} event_name The name of the event
+ * @apiSuccess {String} id The id of the event
+ * @apiSuccess {String} name The name of the event
  * @apiSuccess {Number} capacity The capacity of the event
- * @apiSuccess {String} event_location The location of the event
- * @apiSuccess {String} event_start The start timestamp of the event
- * @apiSuccess {String} event_end The end timestamp of the event
- * @apiSuccess {String} event_description The description of the event
+ * @apiSuccess {String} location The location of the event
+ * @apiSuccess {String} start The start timestamp of the event
+ * @apiSuccess {String} end The end timestamp of the event
+ * @apiSuccess {String} description The description of the event
  * @apiSuccess {String} category The category of the event
  * @apiSuccess {String[]} tags The tags of the event
  * @apiSuccess {String[]} attendees The attendees of the event
@@ -58,7 +57,7 @@ export async function GET(request: Request,
     try {
         const res = await prisma.experiences.findUnique({
             where: {
-                event_id: id
+                id: id
             }
         });
         return NextResponse.json(res);
@@ -77,20 +76,20 @@ export async function GET(request: Request,
  * @apiParam {String} [name] The name of the event
  * @apiParam {String} [description] The description of the event
  * @apiParam {String} [location] The location of the event
- * @apiParam {String} [start_date] The start date of the event
- * @apiParam {String} [end_date] The end date of the event
+ * @apiParam {String} [start] The start date of the event
+ * @apiParam {String] The end date of the event
  * @apiParam {String} [category] The category of the event
  * @apiParam {String[]} [tags] The tags of the event
  * @apiParam {String[]} [attendees] The attendees of the event
  * @apiParam {String} [org_id] The id of the organization that created the event
  *
- * @apiSuccess {String} event_id The id of the event
- * @apiSuccess {String} event_name The name of the event
+ * @apiSuccess {String} id The id of the event
+ * @apiSuccess {String} name The name of the event
  * @apiSuccess {Number} capacity The capacity of the event
- * @apiSuccess {String} event_location The location of the event
- * @apiSuccess {String} event_start The start timestamp of the event
- * @apiSuccess {String} event_end The end timestamp of the event
- * @apiSuccess {String} event_description The description of the event
+ * @apiSuccess {String} location The location of the event
+ * @apiSuccess {String} start The start timestamp of the event
+ * @apiSuccess {String} end The end timestamp of the event
+ * @apiSuccess {String} description The description of the event
  * @apiSuccess {String} category The category of the event
  * @apiSuccess {String[]} tags The tags of the event
  * @apiSuccess {String[]} attendees The attendees of the event
@@ -100,12 +99,12 @@ export async function GET(request: Request,
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *  {
- *    "event_id": "1",
- *    "event_name": "Event 1",
- *    "event_description": "This is the first event",
- *    "event_location": "New York",
- *    "event_start": "2021-01-01T00:00:00.000Z",
- *    "event_end": "2021-01-02T00:00:00.000Z",
+ *    "id": "1",
+ *    "name": "Event 1",
+ *    "description": "This is the first event",
+ *    "location": "New York",
+ *    "start": "2021-01-01T00:00:00.000Z",
+ *    "end": "2021-01-02T00:00:00.000Z",
  *    "category": "Sports",
  *    "tags": ["tag1", "tag2"],
  *    "attendees": [],
@@ -129,7 +128,7 @@ export async function PUT(request: Request,
     try {
         const updatedEvent = await prisma.experiences.update({
             where: {
-                event_id: id
+                id: id
             },
             data: body
         });
@@ -146,13 +145,13 @@ export async function PUT(request: Request,
  *
  * @apiParam {String} id The id of the event to delete
  *
- * @apiSuccess {String} event_id The id of the event
- * @apiSuccess {String} event_name The name of the event
+ * @apiSuccess {String} id The id of the event
+ * @apiSuccess {String} name The name of the event
  * @apiSuccess {Number} capacity The capacity of the event
- * @apiSuccess {String} event_location The location of the event
- * @apiSuccess {String} event_start The start timestamp of the event
- * @apiSuccess {String} event_end The end timestamp of the event
- * @apiSuccess {String} event_description The description of the event
+ * @apiSuccess {String} location The location of the event
+ * @apiSuccess {String} start The start timestamp of the event
+ * @apiSuccess {String} end The end timestamp of the event
+ * @apiSuccess {String} description The description of the event
  * @apiSuccess {String} category The category of the event
  * @apiSuccess {String[]} tags The tags of the event
  * @apiSuccess {String[]} attendees The attendees of the event
@@ -162,12 +161,12 @@ export async function PUT(request: Request,
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *  {
- *    "event_id": "1",
- *    "event_name": "Event 1",
- *    "event_description": "This is the first event",
- *    "event_location": "New York",
- *    "event_start": "2021-01-01T00:00:00.000Z",
- *    "event_end": "2021-01-02T00:00:00.000Z",
+ *    "id": "1",
+ *    "name": "Event 1",
+ *    "description": "This is the first event",
+ *    "location": "New York",
+ *    "start": "2021-01-01T00:00:00.000Z",
+ *    "end": "2021-01-02T00:00:00.000Z",
  *    "category": "Sports",
  *    "tags": ["tag1", "tag2"],
  *    "attendees": [],
@@ -190,7 +189,7 @@ export async function DELETE(request: Request,
     try {
         const deletedEvent = await prisma.experiences.delete({
             where: {
-                event_id: id
+                id: id
             }
         });
         return NextResponse.json(deletedEvent);
