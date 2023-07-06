@@ -84,11 +84,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
             where: { org_id: org_id }
         });
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2025') {
-                return NextResponse.json({ error: "Organizer not found." }, { status: 404 });
-            }
-        }
+        return db.handleError(e);
     }
     return NextResponse.json({ org_id: org_id, message: "SUCCESS" });
 }

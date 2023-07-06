@@ -1,9 +1,8 @@
-import * as db from '../../../lib/db'
+import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'
-import '../../../lib/patch'
+import '@/lib/patch'
 
-const prisma = new PrismaClient()
+const prisma = db.getClient();
 
 const bcrypt = require('bcrypt');
 const passwordValidator = require('password-validator');
@@ -15,7 +14,6 @@ schema
     .has().lowercase()
     .has().digits()
     .has().not().spaces();
-
 
 /**
  * @api {get} /organizers Get all organizers
@@ -67,7 +65,8 @@ schema
  *  {
  *   "error": "You must provide either a next_cursor or a prev_cursor, but not both"
  *  }
- */export async function GET(request: Request) {
+ */
+export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const next_id = searchParams.get('next_cursor');
     const prev_id = searchParams.get('prev_cursor');
@@ -151,7 +150,8 @@ schema
  *     {
  *         "error": "Username already exists"
  *     }
- */export async function POST(request: Request) {
+ */
+export async function POST(request: Request) {
     const body = await request.json();
     const org_id:string = body.org_id;
     const password = body.password;
@@ -165,11 +165,7 @@ schema
     try {
         await prisma.organizers.create({ data: { org_id: org_id, pass: hash, email: email } });
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2002') {
-                return NextResponse.json({ error: "Organizer already exists" }, { status: 400 });
-            }
-        }
+        return db.handleError(e);
     }
 
     return NextResponse.json({ org_id: org_id, message: "SUCCESS" });
@@ -207,17 +203,25 @@ schema
  *         "error": "User not found."
  *     }
  */
-// TODO! implement password hashing on update
 export async function PUT(request: Request) {
     const body = await request.json();
     const org_id = body.org_id;
     const display_name = body.display_name;
     const organizer_description = body.organizer_description;
-    const password = body.password;
+    var password = body.password;
     const email = body.email;
     const premium = body.premium;
     const phone_number = body.phone_number;
     const socials = body.socials;
+
+    if (password !== undefined) {
+        if (!schema.validate(password)) {
+            return NextResponse.json({ error: "Password is invalid." }, { status: 400 });
+        } else {
+            const hash = await bcrypt.hash(password, 10);
+            password = hash;
+        }
+    }
 
     let update = {
         org_id: org_id,
@@ -236,11 +240,7 @@ export async function PUT(request: Request) {
             data: update
         });
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            if (e.code === 'P2025') {
-                return NextResponse.json({ error: "User not found." }, { status: 404 });
-            }
-        }
+        return db.handleError(e);
     }
 
     return NextResponse.json({ org_id: org_id, message: "SUCCESS" });
