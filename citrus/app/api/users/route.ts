@@ -193,15 +193,23 @@ schema
  *         "error": "User not found."
  *     }
  */
-// TODO! implement password hashing on update
 export async function PUT(request: Request) {
     const body = await request.json();
     const username = body.username;
-    const password = body.password;
+    var password = body.password;
     const email = body.email;
     const premium = body.premium;
     const phone_number = body.phone_number;
     const socials = body.socials;
+
+    if (password !== undefined) {
+        if (!schema.validate(password)) {
+            return NextResponse.json({ error: "Password is invalid." }, { status: 400 });
+        } else {
+            const hash = await bcrypt.hash(password, 10);
+            password = hash;
+        }
+    }
 
     let update = {
         pass: password,
