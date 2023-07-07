@@ -41,6 +41,8 @@ model organizers {
   socials               String[]
   premium               Boolean?      @default(false)
   experiences           experiences[]
+  accounts              Account[]
+  sessions              Session[]
 
   @@schema("organizers")
 }
@@ -80,11 +82,13 @@ enum attending_status_type {
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         users    @relation(fields: [userId], references: [username], onDelete: Cascade)
+  id               String      @id @default(cuid())
+  sessionToken     String      @unique
+  userId           String
+  expires          DateTime
+  user             users       @relation(fields: [userId], references: [username], onDelete: Cascade)
+  organizers       organizers? @relation(fields: [organizersOrg_id], references: [org_id])
+  organizersOrg_id String?     @db.VarChar(32)
 
   @@schema("users")
 }
@@ -103,7 +107,9 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user users @relation(fields: [userId], references: [username], onDelete: Cascade)
+  user             users       @relation(fields: [userId], references: [username], onDelete: Cascade)
+  organizers       organizers? @relation(fields: [organizersOrg_id], references: [org_id])
+  organizersOrg_id String?     @db.VarChar(32)
 
   @@unique([provider, providerAccountId])
   @@schema("users")
