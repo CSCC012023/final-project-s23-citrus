@@ -133,7 +133,7 @@ const App = (): JSX.Element => {
       </Stack>
       <Box>
         Already have an account?{" "}
-        <Link color="teal.500" href="#">
+        <Link color="teal.500" href="/organizers/login">
           Log In
         </Link>
       </Box>
