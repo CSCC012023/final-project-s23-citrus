@@ -34,7 +34,6 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   const correctUserType = (!session) || (session.user && session.user.userType != 'organizer');
-  console.log(correctUserType);
 
   return (
     <html lang="en">
