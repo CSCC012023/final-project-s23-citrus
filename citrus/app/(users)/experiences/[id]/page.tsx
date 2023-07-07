@@ -3,7 +3,6 @@ import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/fr
 import EventButton from '@/components/EventButton';
 
 async function getEventData(id: string) {
-    console.log(process.env.BASE_API_URL + `api/experiences/${id}`)
     const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 60}});
     const data = await res.json();
     return data;
