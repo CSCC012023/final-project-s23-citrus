@@ -62,6 +62,7 @@ model users {
   phone_number          String?                @unique @db.VarChar(15)
   socials               String[]
   premium               Boolean?               @default(false)
+  interests             String[]
   experiences           experiences[]
   user_attending_status user_attending_status?
   accounts              Account[]
