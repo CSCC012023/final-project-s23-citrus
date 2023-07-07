@@ -20,7 +20,6 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession();
   const correctUserType = (!session) || (session.user && session.user.userType != 'user');
-  const correctUserType = (!session) || (session.user && session.user.userType != 'user');
 
   return (
     <html lang="en">
