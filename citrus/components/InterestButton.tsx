@@ -8,7 +8,7 @@ async function onInterestHandler(username: string | null | undefined, eventID: s
     });
     // Figure out how to make the page reload, or make this component reload
     const router = useRouter();
-    router.replace(router.asPath); 
+    router.reload(); 
 }
 
 export default function InterestButton({username, eventID}: {username: string | null | undefined, eventID: string}){
