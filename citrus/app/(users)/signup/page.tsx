@@ -136,7 +136,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       </Stack>
       <Box>
         Already have an account?{" "}
-        <Link color="teal.500" href="#">
+        <Link color="teal.500" href="/login">
           Log In
         </Link>
       </Box>

@@ -1,8 +1,8 @@
-import * as db from '../../../../lib/db'
+import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
 import { PrismaClient, Prisma } from '@prisma/client'
 
-const prisma = new PrismaClient()
+const prisma = db.getClient();
 
 /**
  * @api {get} /users/:id Get organizer named ID
