@@ -19,6 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession();
+  const correctUserType = (!session) || (session.user && session.user.userType != 'user');
 
   return (
     <html lang="en">
@@ -34,20 +35,17 @@ export default async function RootLayout({
           <nav className='ml-auto my-auto mr-10'>
             <ul className='flex text-xl space-x-10'>
               <li className='flex-1'>
-                <a href="/">Home</a>
+                <a href="/organizer">Home</a>
               </li>
               <li className='flex-1'>
-                <a href="/experiences">Experiences</a>
-              </li>
-              <li className='flex-1'>
-                <a href="/about">Does this shit even work?</a>
+                <a href="/dashboard">Dashboard</a>
               </li>
               <NavBarLogin />
             </ul>
           </nav>
         </header>
         <div className='flex-1'>
-          {children}
+          {correctUserType ? children : <h1>You are not logged in as the correct type of user.</h1>}
         </div>
         <footer className='flex justify-center space-x-4 bg-blue-600
           text-xl'>

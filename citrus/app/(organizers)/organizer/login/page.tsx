@@ -42,7 +42,7 @@ const App = (): JSX.Element => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission here
-    signIn('organization-credentials', {email: email, password: password, callbackUrl: '/organizer/login'})
+    signIn('organization-credentials', {email: email, password: password, callbackUrl: '/organizer'})
   };
 
   return (
@@ -66,7 +66,7 @@ const App = (): JSX.Element => {
         /> */}
         {/* <Heading color="teal.400" fontSize="4xl"> */}
         <Heading className={styles["custom-heading"]} textAlign="center">
-          Organizer Sign Up
+          Organizer Log-in
         </Heading>
 
         <Box minW={{ base: "90%", md: "468px" }}>
@@ -108,16 +108,16 @@ const App = (): JSX.Element => {
               </FormControl>
 
               <Button type="submit" className={styles["custom-acc-button"]}>
-                Create Account
+                Log in
               </Button>
             </Stack>
           </form>
         </Box>
       </Stack>
       <Box>
-        Already have an account?{" "}
-        <Link color="teal.500" href="#">
-          Log In
+        Don't have an account?{" "}
+        <Link color="teal.500" href="/organizers/signup">
+          Sign up
         </Link>
       </Box>
     </Flex>

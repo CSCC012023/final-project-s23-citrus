@@ -39,13 +39,19 @@ export async function POST(request: Request) {
     });
 
     if (!organization) {
-        return NextResponse.next();
+        return NextResponse.json(
+             {error: "Organization does not exist."},
+             { status: 400}
+        )
     }
 
     const match = await bcrypt.compare(password, organization.pass);
 
     if (!match) {
-        return NextResponse.next();
+        return NextResponse.json(
+            {error: "Password is incorrect."},
+            { status: 400}
+        )
     }
 
     return NextResponse.json({
