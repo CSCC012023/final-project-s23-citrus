@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { getServerSession } from 'next-auth/next';
 import NavBarLogin from '@/components/NavBarLogin'
 import SessionProviderWrapper from '@/components/SessionProvider'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +19,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const correctUserType = (!session) || (session.user && session.user.userType != 'user');
 
   return (
