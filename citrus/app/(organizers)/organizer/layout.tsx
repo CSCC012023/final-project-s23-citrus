@@ -20,6 +20,7 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession();
   const correctUserType = (!session) || (session.user && session.user.userType != 'user');
+  const correctUserType = (!session) || (session.user && session.user.userType != 'user');
 
   return (
     <html lang="en">
@@ -36,6 +37,7 @@ export default async function RootLayout({
             <ul className='flex text-xl space-x-10'>
               <li className='flex-1'>
                 <a href="/organizer">Home</a>
+                <a href="/organizer">Home</a>
               </li>
               <li className='flex-1'>
                 <a href="/dashboard">Dashboard</a>
@@ -48,7 +50,7 @@ export default async function RootLayout({
           </nav>
         </header>
         <div className='flex-1'>
-          {correctUserType ? children : <h1>You are not logged in as the correct type of user.</h1>}
+          {correctUserType ? correctUserType ? children : <h1>You are not logged in as the correct type of user.</h1> : <h1>You are not logged in as the correct type of user.</h1>}
         </div>
         <footer className='flex justify-center space-x-4 bg-blue-600
           text-xl'>
