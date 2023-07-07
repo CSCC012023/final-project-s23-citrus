@@ -7,7 +7,7 @@ export default function NavBarLogin() {
     if (!session) {
         return (
             <li>
-                <button onClick={() => signIn(undefined, {callbackUrl: "/"})}>Log in</button>
+                <button onClick={() => signIn(undefined, {callbackUrl: "/experiences"})}>Log in</button>
             </li>
         )
     } else {
