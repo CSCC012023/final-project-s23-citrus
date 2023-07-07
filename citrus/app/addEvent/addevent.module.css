@@ -1,0 +1,49 @@
+.custom-heading {
+    font-size: 50px;
+  }
+  
+  .custom-background {
+    background-color: rgb(1, 1, 32);
+  }
+  
+  .custom-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .custom-input {
+    border: 1px solid #ccc;
+    padding: 0.2rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    color: black;
+  }
+  
+  .custom-box {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    /* height: calc(100% - 1rem); */
+  }
+  
+  .custom-acc-button {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .custom-box-content {
+    flex-grow: 1;
+  }
+  
+  .custom-box-footer {
+    margin-top: auto;
+  }
+  
+  .custom-avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

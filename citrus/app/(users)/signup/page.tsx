@@ -86,7 +86,6 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               alignItems="center"
             >
 
-
               <FormControl>
                 <Input
                   type="email"
