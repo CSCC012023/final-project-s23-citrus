@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import EventButton from '@/components/EventButton';
 
 async function getEventData(id: string) {
     console.log(process.env.BASE_API_URL + `api/experiences/${id}`)
@@ -36,6 +37,7 @@ function OrganizerCard( {organizer, isUser}: {organizer: any, isUser: boolean} )
         </div>
     )
 }
+
 export default async function Page({ params }: { params: { id: string } }) {
     const data = await getEventData(params.id);
     const start_time = new Date(data.start);
@@ -82,6 +84,10 @@ export default async function Page({ params }: { params: { id: string } }) {
             <div>
                 <h2 className="text-3xl text-bold">Description</h2>
                 <p className="indent-8">{data.description}</p>
+            </div>
+            <div>
+                {/* @ts-expect-error Server Component */}
+                <EventButton eventID={params.id} />;
             </div>
         </div>
     );
