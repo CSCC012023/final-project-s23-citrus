@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 
 async function getEventData(id: string) {
-    console.log(process.env.BASE_API_URL + `api/experiences/${id}`)
     const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 60}});
     const data = await res.json();
     return data;
