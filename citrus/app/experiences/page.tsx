@@ -23,7 +23,7 @@ function EventCardHolder() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:3000/api/experiences")
+    fetch("/api/experiences")
       .then(res => res.json())
       .then(data => {
         console.log(data.experiences);
