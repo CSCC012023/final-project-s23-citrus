@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
   schemas  = ["experiences", "organizers", "users"]
 }
@@ -12,7 +12,7 @@ datasource db {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model experiences {
   id                    String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                  String                  @db.VarChar(255)
+  name                  String                  @db.String(255)
   capacity              BigInt?
   location              String?
   start                 DateTime?               @db.Timestamptz(6)
@@ -21,23 +21,24 @@ model experiences {
   category              String?
   tags                  String[]
   attendees             String[]
-  org_id                String?                 @db.VarChar(32)
-  user_id               String?                 @db.VarChar(32)
+  org_id                String?                 @db.String(32)
+  user_id               String?                 @db.String(32)
   organizers            organizers?             @relation(fields: [org_id], references: [org_id], onDelete: NoAction, onUpdate: NoAction)
   users                 users?                  @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
   user_attending_status user_attending_status[]
 
-  @@unique([name, org_id, user_id], map: "event_unique")
+  @@unique([name, org_id], map: "event_unique_event")
+  @@unique([name, user_id], map: "event_unique_user")
   @@schema("experiences")
 }
 
 model organizers {
-  org_id                String        @id @db.VarChar(32)
-  display_name          String?       @db.VarChar(64)
+  org_id                String        @id @db.String(32)
+  display_name          String?       @db.String(64)
   organizer_description String?
-  pass                  String        @db.VarChar(60)
-  email                 String?       @unique @db.VarChar(255)
-  phone_number          String?       @unique @db.VarChar(13)
+  pass                  String        @db.String(60)
+  email                 String?       @unique @db.String(255)
+  phone_number          String?       @unique @db.String(13)
   socials               String[]
   premium               Boolean?      @default(false)
   experiences           experiences[]
@@ -48,7 +49,7 @@ model organizers {
 }
 
 model user_attending_status {
-  username    String                 @id @db.VarChar(32)
+  username    String                 @id @db.String(32)
   event_id    String?                @db.Uuid
   attending   attending_status_type?
   experiences experiences?           @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -58,10 +59,10 @@ model user_attending_status {
 }
 
 model users {
-  username              String                 @id @db.VarChar(32)
-  pass                  String                 @db.VarChar(60)
-  email                 String                 @unique @db.VarChar(255)
-  phone_number          String?                @unique @db.VarChar(15)
+  username              String                 @id @db.String(32)
+  pass                  String                 @db.String(60)
+  email                 String                 @unique @db.String(255)
+  phone_number          String?                @unique @db.String(15)
   socials               String[]
   premium               Boolean?               @default(false)
   interests             String[]
@@ -88,7 +89,7 @@ model Session {
   expires          DateTime
   user             users       @relation(fields: [userId], references: [username], onDelete: Cascade)
   organizers       organizers? @relation(fields: [organizersOrg_id], references: [org_id])
-  organizersOrg_id String?     @db.VarChar(32)
+  organizersOrg_id String?     @db.String(32)
 
   @@schema("users")
 }
@@ -99,17 +100,17 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String? @db.String
+  access_token      String? @db.String
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String? @db.String
   session_state     String?
 
   user             users       @relation(fields: [userId], references: [username], onDelete: Cascade)
   organizers       organizers? @relation(fields: [organizersOrg_id], references: [org_id])
-  organizersOrg_id String?     @db.VarChar(32)
+  organizersOrg_id String?     @db.String(32)
 
   @@unique([provider, providerAccountId])
   @@schema("users")
