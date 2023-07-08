@@ -1,10 +1,6 @@
 # EVENTUAL
 
- > _Note:_ This document is meant to be written during (or shortly after) your initial planning meeting.     
- > It does not really make sense for you to edit this document much (if at all) while working on the project - Instead, at the end of the planning phase, you can refer back to this document and decide which parts of your plan you are happy with and which parts you would like to change.
-
-
-## Iteration 01
+## Iteration 02
 
  * Start date: June 26, 2023
  * End date: July 7, 2023
@@ -21,27 +17,17 @@ Our biggest change to process is that for this sprint, each of our team members 
 
 Another change is that we want all group members to be further aware of the tasks that other team member are working on. A success metric for this is that at the end of our sprint, all 7 team members will have a clear gauge of what has been accomplished by fellow team members and would be able to provide explanations during the demo. 
 
-A success metric we can
-
- * At most 3 items
- * Start with the most significant change
- * For each change, explain why you are making it and what you are hoping to achieve from it
- * Ideally, for each change, you will define a clear success metric (i.e. something you can measure at the end of the iteration to determine whether the change you made was successful)
-
- > *Note:* If you are not making any changes to your process, it means that you are happy with all of the decisions you made in the previous iterations.
- > In this case, list what you consider to be the most significant process decisions your team made. For each decision, explain why you consider it successful, and what success metric you are using (or could use) to assert that the decision is successful.
-
 
 ### Roles & responsibilities
 
 Describe the different roles on the team and the responsibilities associated with each role.
 
-All team members will be working full stack developers for this sprint.
-Aaliyah - 
+All team members will be working full stack developers for this sprint and as such there are no unique roles and responsibilities for development work. However, to list what our
+full-stack developers will be responsible for:
 
-
-
-
+* Developing user-friendly interfaces using our front-end tooling, such as TailwindCSS and Next.js 
+* Managing databases directly through the use of Prisma
+* Creating and modifying API endpoints to support front-end functionality through Next.js API routes. 
 
 ### Events
 
@@ -107,13 +93,4 @@ List/describe the artifacts you will produce in order to present your project id
 * Create a user profile page so users can view and edit their profile, including hobbies, phone number, and interests, allowing them to better interact with like-minded individuals 
 
 * Create a page for users to look at the existing events they have signed up for/are interested in so they can keep track of their upcoming events 
-
-
-
-
- * Artifacts can be text, code, images, videos, interactive mock-ups and/or any other useful artifact you can think of.
- * Make sure to explain the purpose of each artifact (i.e. Why is it on your to-do list? Why is it useful for your team?)
- * Be concise, yet precise.         
-   For example: "Build the website" is not precise at all, but "Build a static home page and upload it somewhere, so that it is publicly accessible" is much clearer.
-
 
