@@ -78,7 +78,8 @@ schema
         username: true,
         email: true,
         premium: true,
-        socials: true,
+        instagram: true,
+        facebook: true,
         experiences: true
     };
 

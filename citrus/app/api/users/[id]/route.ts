@@ -33,7 +33,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
     let select = {
         username: true,
         email: true,
-        socials: true,
+        instagram: true,
+        facebook: true,
         premium: true,
         experiences: true
     };
