@@ -20,7 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions);
-  const correctUserType = (!session) || (session.user && session.user.userType != 'user');
+  const correctUserType = (!session) || (session.user && session.user.userType !== 'user');
 
   return (
     <html lang="en">
@@ -40,6 +40,7 @@ export default async function RootLayout({
               </li>
               <li className='flex-1'>
                 <a href="/organizer/create">Create</a>
+              </li>
               <li>
                 <a href="organizer/dashboard">Dashboard</a>
               </li>
