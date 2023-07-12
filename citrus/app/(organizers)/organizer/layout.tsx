@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import Image from 'next/image'
 import { getServerSession } from 'next-auth/next';
 import NavBarLogin from '@/components/NavBarLogin'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import SessionProviderWrapper from '@/components/SessionProvider'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,7 +19,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const correctUserType = (!session) || (session.user && session.user.userType != 'user');
 
   return (
@@ -35,7 +36,6 @@ export default async function RootLayout({
           <nav className='ml-auto my-auto mr-10'>
             <ul className='flex text-xl space-x-10'>
               <li className='flex-1'>
-                <a href="/organizer">Home</a>
                 <a href="/organizer">Home</a>
               </li>
               <li className='flex-1'>
