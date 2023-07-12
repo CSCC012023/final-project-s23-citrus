@@ -99,7 +99,7 @@ const App = (): JSX.Element => {
               <FormControl>
                 <Input
                   type="org_id"
-                  placeholder="Oranizer Identifier"
+                  placeholder="Organizer Identifier"
                   value={org_id}
                   onChange={handleOrgIdChange}
                   className={styles["custom-input"]}
@@ -133,7 +133,7 @@ const App = (): JSX.Element => {
       </Stack>
       <Box>
         Already have an account?{" "}
-        <Link color="teal.500" href="/organizers/login">
+        <Link color="teal.500" href="/organizer/login">
           Log In
         </Link>
       </Box>

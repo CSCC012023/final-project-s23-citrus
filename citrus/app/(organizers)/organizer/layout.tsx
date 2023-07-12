@@ -39,7 +39,10 @@ export default async function RootLayout({
                 <a href="/organizer">Home</a>
               </li>
               <li className='flex-1'>
-                <a href="/dashboard">Dashboard</a>
+                <a href="organizer/dashboard">Dashboard</a>
+              </li>
+              <li>
+                <a href="/organizer/signup">Sign Up</a>
               </li>
               <NavBarLogin />
             </ul>

@@ -29,7 +29,6 @@ const prisma = db.getClient();
 
 export async function POST(request: Request) {
     const body = await request.json();
-    console.log("AUTHENTICATING USER...")
 
     const username = body.username;
     const password = body.password;
