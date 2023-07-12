@@ -63,7 +63,8 @@ model users {
   pass                  String                 @db.String(60)
   email                 String                 @unique @db.String(255)
   phone_number          String?                @unique @db.String(15)
-  socials               String[]
+  instagram             String?
+  facebook              String?
   premium               Boolean?               @default(false)
   interests             String[]
   experiences           experiences[]
