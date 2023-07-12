@@ -29,7 +29,6 @@ const prisma = db.getClient();
 
 export async function POST(request: Request) {
     const body = await request.json();
-    console.log("AUTHENTICATING USER...")
 
     const email = body.email;
     const password = body.password;
@@ -39,18 +38,24 @@ export async function POST(request: Request) {
     });
 
     if (!organization) {
-        return NextResponse.next();
+        return NextResponse.json(
+             {error: "Organization does not exist."},
+             { status: 400}
+        )
     }
 
     const match = await bcrypt.compare(password, organization.pass);
 
     if (!match) {
-        return NextResponse.next();
+        return NextResponse.json(
+            {error: "Password is incorrect."},
+            { status: 400}
+        )
     }
 
     return NextResponse.json({
-        name: organization.display_name,
+        userType: "organizer",
+        name: organization.org_id,
         email: organization.email,
-
     });
 }

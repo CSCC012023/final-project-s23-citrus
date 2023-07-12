@@ -29,7 +29,6 @@ const prisma = db.getClient();
 
 export async function POST(request: Request) {
     const body = await request.json();
-    console.log("AUTHENTICATING USER...")
 
     const username = body.username;
     const password = body.password;
@@ -40,18 +39,23 @@ export async function POST(request: Request) {
 
     if (!user) {
         return NextResponse.json(
-            {});
+            {error: "User does not exist."},
+            { status: 400}
+        )
     }
 
     const match = await bcrypt.compare(password, user.pass);
 
     if (!match) {
-        return NextResponse.next();
+        return NextResponse.json(
+            {error: "Password is incorrect."},
+            { status: 400}
+        )
     }
 
     return NextResponse.json({
+        userType: "user",
         name: user.username,
         email: user.email,
-
     });
 }

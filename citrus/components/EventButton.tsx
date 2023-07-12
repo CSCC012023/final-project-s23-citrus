@@ -1,6 +1,5 @@
 import { getServerSession } from 'next-auth/next'
-import type { Session } from 'next-auth';
-import { use } from "react";
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import InterestButton from '@/components/InterestButton'
 
 
@@ -12,7 +11,7 @@ async function eventInfo(eventID: string) {
 
 export default async function EventButton({eventID}: {eventID: string}){
     
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if(!session){
         return <p>You&apos;re not signed in.</p>
     }

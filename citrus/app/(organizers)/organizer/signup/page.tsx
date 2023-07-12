@@ -22,9 +22,9 @@ import {
 
 const App = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [org_id, setOrgId] = useState("");
   const [password, setPassword] = useState("");
 
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -35,24 +35,22 @@ const App = (): JSX.Element => {
     setEmail(event.target.value);
   };
 
-  const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const handleOrgIdChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setOrgId(event.target.value);
   };
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
-const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  // Handle form submission here
-  const res = await fetch('/api/users', {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Handle form submission here
+    const res = await fetch('/api/organizers', {
       method: 'POST',
-      body: JSON.stringify({"username" : username, "password": password, email: email }),
-  });
-};
-
+      body: JSON.stringify({org_id : org_id, password: password, email: email }),
+    });
+  };
 
   return (
     <Flex
@@ -64,19 +62,20 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       alignItems="center"
     >
       <Stack
-      spacing={4}
-      p="1rem"
-      backgroundColor="whiteAlpha.900"
-      boxShadow="md"
-      className={styles["custom-box"]}
+        spacing={4}
+        p="1rem"
+        backgroundColor="whiteAlpha.900"
+        boxShadow="md"
+        className={styles["custom-box"]}
       >
         {/* <Avatar
         className={`${styles["custom-box"]} ${styles["custom-avatar"]}`}
         /> */}
         {/* <Heading color="teal.400" fontSize="4xl"> */}
         <Heading className={styles["custom-heading"]} textAlign="center">
-          Sign Up
+          Organizer Sign Up
         </Heading>
+
         <Box minW={{ base: "90%", md: "468px" }}>
           <form onSubmit={handleSubmit}>
             <Stack
@@ -86,7 +85,6 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               justifyContent="center"
               alignItems="center"
             >
-
 
               <FormControl>
                 <Input
@@ -100,13 +98,14 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 
               <FormControl>
                 <Input
-                  type="username"
-                  placeholder="Username"
-                  value={username}
-                  onChange={handleUsernameChange}
+                  type="org_id"
+                  placeholder="Organizer Identifier"
+                  value={org_id}
+                  onChange={handleOrgIdChange}
                   className={styles["custom-input"]}
                 />
               </FormControl>
+
               <FormControl>
                 <InputGroup>
                   <Input
@@ -122,21 +121,19 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-             
+
               </FormControl>
 
-
-
               <Button type="submit" className={styles["custom-acc-button"]}>
-              Create Account
-            </Button>
+                Create Account
+              </Button>
             </Stack>
           </form>
         </Box>
       </Stack>
       <Box>
         Already have an account?{" "}
-        <Link color="teal.500" href="#">
+        <Link color="teal.500" href="/organizer/login">
           Log In
         </Link>
       </Box>
