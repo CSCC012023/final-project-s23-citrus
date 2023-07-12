@@ -115,7 +115,7 @@ const App = (): JSX.Element => {
         </Box>
       </Stack>
       <Box>
-        Don`&apos;`t have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link color="teal.500" href="/signup">
           Sign up
         </Link>

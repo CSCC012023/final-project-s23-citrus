@@ -109,7 +109,7 @@ export async function GET(request: Request,
  *    "tags": ["tag1", "tag2"],
  *    "attendees": [],
  *    "org_id": "1",
- *    "user_id": null
+ *    "user_id": null,
  * }
  *
  * @apiError EventNotFound The event with the given id was not found

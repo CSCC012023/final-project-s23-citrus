@@ -35,3 +35,6 @@ citrus/.vercel
 citrus/*.tsbuildinfo
 citrus/next-env.d.ts
 .vercel
+
+#data
+cockroach-data/

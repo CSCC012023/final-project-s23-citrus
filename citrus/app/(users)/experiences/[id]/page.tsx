@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import EventButton from '@/components/EventButton';
 
 async function getEventData(id: string) {
     const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 60}});
@@ -7,8 +8,7 @@ async function getEventData(id: string) {
     return data;
 }
 
-async function getOrganizerData(id: string, isUser: boolean) {
-    console.log(id)
+async function getOrganizerData(id: string, isUser: boolean) {;
     if (isUser) {
         const res = await fetch(process.env.BASE_API_URL + `api/users/${id}`);
         const data = await res.json();
@@ -82,6 +82,10 @@ export default async function Page({ params }: { params: { id: string } }) {
             <div>
                 <h2 className="text-3xl text-bold">Description</h2>
                 <p className="indent-8">{data.description}</p>
+            </div>
+            <div>
+                {/* @ts-expect-error Server Component */}
+                <EventButton eventID={params.id} />;
             </div>
         </div>
     );

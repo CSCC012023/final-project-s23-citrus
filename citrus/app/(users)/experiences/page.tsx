@@ -26,7 +26,6 @@ function EventCardHolder() {
     fetch("/api/experiences")
       .then(res => res.json())
       .then(data => {
-        console.log(data.experiences);
         setEvents(data.experiences);
         setLoading(false);
       });

@@ -4,8 +4,8 @@ import { Inter } from 'next/font/google'
 import Image from 'next/image'
 import { getServerSession } from 'next-auth/next';
 import NavBarLogin from '@/components/NavBarLogin'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import SessionProviderWrapper from '@/components/SessionProvider'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,17 +39,19 @@ export default async function RootLayout({
                 <a href="/organizer">Home</a>
               </li>
               <li className='flex-1'>
-                <a href="/dashboard">Dashboard</a>
-              </li>
-              <li className='flex-1'>
                 <a href="/organizer/create">Create</a>
+              <li>
+                <a href="organizer/dashboard">Dashboard</a>
+              </li>
+              <li>
+                <a href="/organizer/signup">Sign Up</a>
               </li>
               <NavBarLogin />
             </ul>
           </nav>
         </header>
         <div className='flex-1'>
-          {correctUserType ? correctUserType ? children : <h1>You are not logged in as the correct type of user.</h1> : <h1>You are not logged in as the correct type of user.</h1>}
+          {correctUserType ? children : <h1>You are not logged in as the correct type of user.</h1>}
         </div>
         <footer className='flex justify-center space-x-4 bg-blue-600
           text-xl'>

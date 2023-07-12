@@ -6,24 +6,12 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth/next';
 import NavBarLogin from '@/components/NavBarLogin'
 import SessionProviderWrapper from '@/components/SessionProvider'
-import type { Session } from 'next-auth'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Citrus',
   description: 'A next-generation experience sharing platform.',
-}
-
-export function PageContents(session: Session, children: React.ReactNode) {
-  if (session && session.user && session.user.userType) {
-    return (
-      <h1>You are not logged in as the correct type of user.</h1>
-    )
-  }
-  return (
-    { children }
-  )
 }
 
 export default async function RootLayout({
