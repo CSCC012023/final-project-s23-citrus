@@ -44,12 +44,12 @@ const prisma = db.getClient();
  *      "limit": 10,
  *      "events": [
  *          {
- *              "event_id": "1",
- *              "event_name": "Event 1",
- *              "event_description": "This is the first event",
- *              "event_location": "New York",
- *              "event_start": "2021-01-01T00:00:00.000Z",
- *              "event_end": "2021-01-02T00:00:00.000Z",
+ *              "id": "1",
+ *              "name": "Event 1",
+ *              "description": "This is the first event",
+ *              "location": "New York",
+ *              "start": "2021-01-01T00:00:00.000Z",
+ *              "end": "2021-01-02T00:00:00.000Z",
  *              "category": "Sports",
  *              "tags": ["tag1", "tag2"],
  *              "attendees": [],
@@ -71,15 +71,10 @@ export async function GET(request: Request) {
     const tags = searchParams.get('tags')?.split(',');
 
     let where_clause: any = {
-        AND: [{
-            id: {
-                gt: next_id != null ? next_id : undefined,
-                lt: prev_id != null ? prev_id : undefined
-            }
-        },
+        AND: [
         {
             location: {
-                search: location != null ? location : undefined
+                contains: location != null ? location : undefined
             },
         },
         {
@@ -103,12 +98,12 @@ export async function GET(request: Request) {
             ...where_clause,
             OR: [
                 {
-                    event_name: {
+                    name: {
                         contains: search
                     }
                 },
                 {
-                    event_description: {
+                    description: {
                         contains: search
                     }
                 }
@@ -129,11 +124,29 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: "You must provide either a next_cursor or a prev_cursor, but not both" }, { status: 400 });
     }
 
+    var cursor = undefined;
+    var take = limit;
+    var skip = 1;
+    if (next_id) {
+        cursor = {
+            id: next_id
+        }
+    } else if (prev_id) {
+        cursor = {
+            id: prev_id
+        }
+        take = -limit;
+    } else {
+        skip = 0;
+    }
+
     const experiences = await prisma.experiences.findMany({
         where: where_clause,
-        take: limit,
+        take: take,
+        cursor: cursor,
+        skip: skip,
         orderBy: {
-            id: 'desc'
+            id: 'asc'
         },
     });
 
@@ -183,12 +196,12 @@ export async function GET(request: Request) {
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *  {
- *     "event_id": "1",
- *     "event_name": "Event 1",
- *     "event_description": "This is the first event",
- *     "event_location": "New York",
- *     "event_start": "2021-01-01",
- *     "event_end": "2021-01-02",
+ *     "id": "1",
+ *     "name": "Event 1",
+ *     "description": "This is the first event",
+ *     "location": "New York",
+ *     "start": "2021-01-01",
+ *     "end": "2021-01-02",
  *     "category": "Sports",
  *     "tags": ["tag1", "tag2"],
  *     "attendees": [],
