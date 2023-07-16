@@ -18,6 +18,8 @@ const prisma = db.getClient();
  * @apiParam {String} [start_date] The date to use to filter results
  * @apiParam {String} [location] The location to use to filter results
  * @apiParam {String[]} [tags] The tags to use to filter results
+ * @apiParam {String} [org_id] The id of the organization to use to filter results
+ * @apiParam {String} [user_id] The id of the user to use to filter results
  *
  * @apiSuccess {String} next_cursor The cursor to use to get the next page of results
  * @apiSuccess {String} prev_cursor The cursor to use to get the previous page of results
@@ -88,6 +90,16 @@ export async function GET(request: Request) {
         {
             end: {
                 lte: end_time != null ? new Date(end_time) : undefined
+            }
+        },
+        {
+            org_id: {
+                equals: searchParams.get('org_id') != null ? searchParams.get('org_id') : undefined
+            }
+        },
+        {
+            user_id: {
+                equals: searchParams.get('user_id') != null ? searchParams.get('user_id') : undefined
             }
         }
         ]

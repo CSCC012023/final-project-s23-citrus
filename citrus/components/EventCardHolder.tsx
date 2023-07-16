@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReadonlyURLSearchParams, usePathname, useSearchParams } from 'next/navigation';
 import type { experiences } from '@prisma/client';
 import { useSession } from 'next-auth/react';
@@ -9,8 +9,11 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 function buildAPISearchParams(searchParams: ReadonlyURLSearchParams, basePathName: string) {
   var apiPathName = basePathName
   const params = new URLSearchParams(Array.from(searchParams.entries()));
-  if (params.size > 0)
+  if (params.size > 0 && !apiPathName.includes('?')) {
     apiPathName += '?' + params.toString();
+  } else if (params.size > 0) {
+    apiPathName += '&' + params.toString();
+  }
   return apiPathName;
 }
 
@@ -34,13 +37,14 @@ export default function EventCardHolder() {
   var basePathName = '';
   if (route.includes('organizer') && session?.user) {
     if (session?.user) {
-      basePathName = '/api/organizers/' + session.user.name + '?includeExperience=true';
+      basePathName = '/api/experiences?org_id=' + session.user.name;
     }
   } else {
     basePathName = '/api/experiences';
   }
 
   basePathName = buildAPISearchParams(searchParams, basePathName);
+
 
   const [apiPathName, setApiPathName] = useState(basePathName);
   const [events, setEvents] = useState<experiences[]>([]);
@@ -73,10 +77,11 @@ export default function EventCardHolder() {
     } else {
       setApiPathName(basePathName + '?next_cursor=' + nextCursor);
     }
+    console.log(basePathName)
   }
 
   return (
-    <div className="w-9/12 m-auto">
+    <div id="contents" className="w-9/12 mx-auto my-auto">
       <h1 className="text-5xl font-bold mb-4">Events</h1>
       <div className="my-5">
         <input
@@ -93,17 +98,17 @@ export default function EventCardHolder() {
           onChange={(e) => setNextSearchLocation(e.target.value)}
           className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
         />
-        <a href={'/experiences' + buildLinkSearchParams({search: nextSearchName, location: nextSearchLocation})}>
-        <button onClick={() => {
-        }}>SWAG BUTTON</button>
+        <a href={(route.includes('organizer') ? 'dashboard' : 'experiences') + buildLinkSearchParams({search: nextSearchName, location: nextSearchLocation})}>
+        <button className='mr-2 px-4 py-2 bg-blue-600'>Search</button>
         </a>
       </div>
-      <div id="events" className="flex-col my-5">
+      <div id="events" className="flex-col">
         <InfiniteScroll
           dataLength={events.length}
-          next={(route.includes('organizer') ? () => { } : fetchMoreEvents)}
-          hasMore={(route.includes('organizer') || nextCursor == null) ? false : true}
+          next={fetchMoreEvents}
+          hasMore={(nextCursor == null) ? false : true}
           loader={<h4>Loading...</h4>}
+          height={600}
           endMessage={
             <p style={{ textAlign: 'center' }}>
               <b>End of events</b>
