@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
                 password: {  label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                const res = await fetch(process.env.BASE_API_URL + "/api/auth/organization", {
+                const res = await fetch(process.env.BASE_API_URL + "api/auth/organization", {
                     method: "POST",
                     body: JSON.stringify(credentials),
                     headers: { "Content-Type": "application/json" }
