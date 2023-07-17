@@ -27,12 +27,12 @@ const prisma = db.getClient();
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *  {
- *    "event_id": "1",
- *    "event_name": "Event 1",
- *    "event_description": "This is the first event",
- *    "event_location": "New York",
- *    "event_start": "2021-01-01T00:00:00.000Z",
- *    "event_end": "2021-01-02T00:00:00.000Z",
+ *    "id": "1",
+ *    "name": "Event 1",
+ *    "description": "This is the first event",
+ *    "location": "New York",
+ *    "start": "2021-01-01T00:00:00.000Z",
+ *    "end": "2021-01-02T00:00:00.000Z",
  *    "category": "Sports",
  *    "tags": ["tag1", "tag2"],
  *    "attendees": [],
@@ -77,7 +77,7 @@ export async function GET(request: Request,
  * @apiParam {String} [description] The description of the event
  * @apiParam {String} [location] The location of the event
  * @apiParam {String} [start] The start date of the event
- * @apiParam {String] The end date of the event
+ * @apiParam {String} The end date of the event
  * @apiParam {String} [category] The category of the event
  * @apiParam {String[]} [tags] The tags of the event
  * @apiParam {String[]} [attendees] The attendees of the event

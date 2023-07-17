@@ -1,6 +1,6 @@
 import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'
+import '@/lib/patch'
 
 const prisma = db.getClient();
 
@@ -35,6 +35,8 @@ const prisma = db.getClient();
  */
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     const org_id = params.id;
+    const { searchParams } = new URL(request.url);
+    const includeExperience = searchParams.get('includeExperience') === 'true';
 
     let select = {
         org_id: true,
@@ -43,6 +45,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
         email: true,
         socials: true,
         premium: true,
+        experiences: includeExperience
     };
 
     var organizer = await prisma.organizers.findUnique({

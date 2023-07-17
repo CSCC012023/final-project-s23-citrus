@@ -6,6 +6,7 @@ import { getServerSession } from 'next-auth/next';
 import NavBarLogin from '@/components/NavBarLogin'
 import SessionProviderWrapper from '@/components/SessionProvider'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,16 +37,16 @@ export default async function RootLayout({
           <nav className='ml-auto my-auto mr-10'>
             <ul className='flex text-xl space-x-10'>
               <li className='flex-1'>
-                <a href="/organizer">Home</a>
+                <Link href="/organizer">Home</Link>
               </li>
               <li className='flex-1'>
-                <a href="/organizer/create">Create</a>
+                <Link href="/organizer/dashboard">Dashboard</Link>
               </li>
               <li>
-                <a href="organizer/dashboard">Dashboard</a>
+                 <Link href="/organizer/create">Create</Link>
               </li>
               <li>
-                <a href="/organizer/signup">Sign Up</a>
+                <Link href="/organizer/signup">Sign Up</Link>
               </li>
               <NavBarLogin />
             </ul>

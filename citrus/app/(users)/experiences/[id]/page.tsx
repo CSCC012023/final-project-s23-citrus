@@ -40,7 +40,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const data = await getEventData(params.id);
     const start_time = new Date(data.start);
     const end_time = new Date(data.end);
-    const map_url = `https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=${data.event_location}`;
+    const map_url = `https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=${data.location}`;
     const organizer = await getOrganizerData(data.user_id || data.org_id, data.user_id != null);
 
     return (
