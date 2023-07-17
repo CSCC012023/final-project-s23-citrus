@@ -64,11 +64,9 @@ export default function AddEvent() {
     // Handle form submission here
     const res = await fetch('/api/experiences', {
         method: 'POST',
-        body: JSON.stringify({"name" : name, "description": description, "capacity": parseInt(capacity), "location": location, 
+        body: JSON.stringify({"name" : name, "description": description, "capacity": parseInt(capacity), "location": location,
           "start_time": start, "end_time": end, "category": category, "tags": tags.split(","), "org_id": session?.user?.name }),
     });
-
-    console.log(res);
   };
 
   if (!session || session.user?.userType != "organizer") {
@@ -96,10 +94,6 @@ export default function AddEvent() {
         boxShadow="md"
         className={styles["custom-box"]}
         >
-          {/* <Avatar
-          className={`${styles["custom-box"]} ${styles["custom-avatar"]}`}
-          /> */}
-          {/* <Heading color="teal.400" fontSize="4xl"> */}
           <Heading className={styles["custom-heading"]} textAlign="center">
             Create Event
           </Heading>
