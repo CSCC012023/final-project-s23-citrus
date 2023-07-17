@@ -36,7 +36,6 @@ function OrganizerCard( {organizer, isUser}: {organizer: any, isUser: boolean} )
         </div>
     )
 }
-
 export default async function Page({ params }: { params: { id: string } }) {
     const data = await getEventData(params.id);
     const start_time = new Date(data.start);

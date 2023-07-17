@@ -48,7 +48,7 @@ const App = (): JSX.Element => {
     // Handle form submission here
     const res = await fetch('/api/organizers', {
       method: 'POST',
-      body: JSON.stringify({org_id : org_id, password: password, email: email }),
+      body: JSON.stringify({org_id : org_id, display_name: org_id, password: password, email: email }),
     });
   };
 
