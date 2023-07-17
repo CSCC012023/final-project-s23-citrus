@@ -77,7 +77,6 @@ export default function EventCardHolder() {
     } else {
       setApiPathName(basePathName + '?next_cursor=' + nextCursor);
     }
-    console.log(basePathName)
   }
 
   return (
