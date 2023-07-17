@@ -3,10 +3,11 @@ import { usePathname } from "next/navigation";
 
 function deleteOnClick(eventID: string) {
   if (window.confirm("Are you sure you want to delete this event?")) {
-    fetch("api/experiences/" + eventID, {
+    fetch("/api/experiences/" + eventID, {
       method: "DELETE"
+    }).then((res) => {
+      window.location.reload();
     });
-    window.location.reload();
   } else {
     return;
   }
