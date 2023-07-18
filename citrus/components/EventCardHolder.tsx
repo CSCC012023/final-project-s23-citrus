@@ -5,6 +5,10 @@ import type { experiences } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import EventCard from '@/components/EventCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker-cssmodules.css";
+
 
 function buildAPISearchParams(searchParams: ReadonlyURLSearchParams, basePathName: string) {
   var apiPathName = basePathName
@@ -17,7 +21,7 @@ function buildAPISearchParams(searchParams: ReadonlyURLSearchParams, basePathNam
   return apiPathName;
 }
 
-function buildLinkSearchParams(params: {search: string, location: string}) {
+function buildLinkSearchParams(params: {search: string, location: string, start_time: string}) {
   var linkSearchParams = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
     if (value !== '')
@@ -29,10 +33,35 @@ function buildLinkSearchParams(params: {search: string, location: string}) {
   return linkSearchParams;
 }
 
+// export const formatUTC = (dateInt: string, addOffset = false) => {
+//   let date = (!dateInt || dateInt.length < 1) ? new Date : new Date(dateInt);
+//   if (typeof dateInt === "string") {
+//       return date;
+//   } else {
+//       const offset = addOffset ? date.getTimezoneOffset() : -(date.getTimezoneOffset());
+//       const offsetDate = new Date();
+//       offsetDate.setTime(date.getTime() + offset * 60000)
+//       return offsetDate;
+//   }
+// }
+
+
+
+function convertDateToISO(date: Date) {
+  return date.toISOString().split('T')[0];
+}
+
+
 export default function EventCardHolder() {
   const { data: session } = useSession();
+  const [startDate, setStartDate] = useState(new Date());
   const route = usePathname();
   const searchParams = useSearchParams();
+
+  //////////////////////////
+  function correctToUtcThenSet(val: Date) {
+    setStartDate(new Date(val.getTime() - val.getTimezoneOffset() * 60000))
+  }
 
   var basePathName = '';
   if (route.includes('organizer') && session?.user) {
@@ -44,6 +73,8 @@ export default function EventCardHolder() {
   }
 
   basePathName = buildAPISearchParams(searchParams, basePathName);
+
+  const convertedDate = convertDateToISO(startDate);
 
 
   const [apiPathName, setApiPathName] = useState(basePathName);
@@ -97,7 +128,13 @@ export default function EventCardHolder() {
           onChange={(e) => setNextSearchLocation(e.target.value)}
           className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
         />
-        <a href={(route.includes('organizer') ? 'dashboard' : 'experiences') + buildLinkSearchParams({search: nextSearchName, location: nextSearchLocation})}>
+        <DatePicker
+          // selected={startDate}
+          // onChange={(date) => date && setStartDate(date)}
+          onChange={correctToUtcThenSet}
+          selected={startDate}
+          />
+        <a href={(route.includes('organizer') ? 'dashboard' : 'experiences') + buildLinkSearchParams({search: nextSearchName, location: nextSearchLocation, start_time: convertedDate})}>
         <button className='mr-2 px-4 py-2 bg-blue-600'>Search</button>
         </a>
       </div>
