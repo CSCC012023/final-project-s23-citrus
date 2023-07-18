@@ -34,7 +34,9 @@ schema
  * @apiSuccess {String} users.username The username of the user
  * @apiSuccess {String} users.email The email of the user
  * @apiSuccess {String} users.phone_number The phone number of the user
- * @apiSuccess {String[]} users.socials The social media links of the user
+ * @apiSuccess {String} users.instagram The instagram link of the user
+ * @apiSuccess {String} users.facebook The facebook link of the user
+
  * @apiSuccess {Boolean} users.premium Whether the user is a premium user
  *
  * @apiSuccessExample Success-Response:
@@ -48,10 +50,8 @@ schema
  *                "username": "sampleUsername",
  *                "email": "sampleEmail@mail.com",
  *                "phone_number": "16471234567",
- *                "socials": [
- *                    "https://www.instagram.com/sampleUsername/",
- *                    "https://www.facebook.com/sampleUsername/"
- *                ],
+ *                "instagram": "https://www.instagram.com/sampleUsername/",
+ *                "facebook": "https://www.facebook.com/sampleUsername/"
  *                "premium": true
  *            }
  *        ]
@@ -208,7 +208,9 @@ schema
  * @apiParam {String} email The email of the user
  * @apiParam {Boolean} premium Whether the user is a premium user
  * @apiParam {String} phone_number The phone number of the user
- * @apiParam {String[]} socials The social media links of the user
+ * @apiParam {String} instagram The instagram link of the user
+ * @apiParam {String} facebook The facebook link of the user
+
  *
  * @apiSuccess {String} username The username of the user
  * @apiSuccess {String} message The message indicating the success of the request
@@ -235,7 +237,8 @@ export async function PUT(request: Request) {
     const email = body.email;
     const premium = body.premium;
     const phone_number = body.phone_number;
-    //const socials = body.socials;
+    const instagram = body.instagram;
+    const facebook = body.facebook;
 
     if (password !== undefined) {
         if (!schema.validate(password)) {
@@ -251,7 +254,8 @@ export async function PUT(request: Request) {
         email: email,
         premium: premium,
         phone_number: phone_number,
-        //socials: socials
+        instagram: instagram,
+        facebook: facebook
     }
 
     try {

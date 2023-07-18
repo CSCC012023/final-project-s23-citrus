@@ -19,10 +19,8 @@ const prisma = db.getClient();
  *         "username": "sampleUsername",
  *         "email": "sampleEmail@mail.com",
  *         "phone_number": "16471234567",
- *         "socials": [
- *             "https://www.instagram.com/sampleUsername/", 
- *             "https://www.facebook.com/sampleUsername/"
- *         ],
+ *         "instagram": "https://www.instagram.com/sampleUsername/",
+ *         "facebook": "https://www.facebook.com/sampleUsername/"
  *         "premium": true,
  *         "experiences": []
  *     }
