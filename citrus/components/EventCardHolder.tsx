@@ -41,18 +41,14 @@ function convertDateToISO(date: Date) {
 
 export default function EventCardHolder() {
   const { data: session } = useSession();
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
   const route = usePathname();
   const searchParams = useSearchParams();
 
-  //////////////////////////
+  const [startDate, setStartDate] = useState(new Date(searchParams.get('start_time') || Date.now()));
+  const [endDate, setEndDate] = useState(new Date(searchParams.get('end_time') || Date.now()));
+
   function correctToUtcThenSetStart(val: Date) {
     setStartDate(new Date(val.getTime() - val.getTimezoneOffset() * 60000))
-  }
-
-  function correctToUtcThenSetEnd(val: Date) {
-    setEndDate(new Date(val.getTime() - val.getTimezoneOffset() * 60000))
   }
 
   var basePathName = '';
@@ -75,6 +71,12 @@ export default function EventCardHolder() {
   const [nextSearchName, setNextSearchName] = useState(searchParams.get('search') || '');
   const [nextSearchLocation, setNextSearchLocation] = useState(searchParams.get('location') || '');
   const [nextCursor, setNextCursor] = useState<string | null>(null);
+  
+  // const userTimezoneOffsetStart = startDate.getTimezoneOffset() * 60000;
+  // const userTimezoneOffsetEnd = endDate.getTimezoneOffset() * 60000;
+  
+
+  
 
   useEffect(() => {
     if ((session?.user && route.includes('organizer')) || route.includes('experiences')) {
