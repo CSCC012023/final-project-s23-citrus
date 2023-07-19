@@ -21,7 +21,7 @@ function buildAPISearchParams(searchParams: ReadonlyURLSearchParams, basePathNam
   return apiPathName;
 }
 
-function buildLinkSearchParams(params: {search: string, location: string, start_time: string}) {
+function buildLinkSearchParams(params: {search: string, location: string, start_time: string, end_time: string}) {
   var linkSearchParams = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
     if (value !== '')
@@ -33,19 +33,6 @@ function buildLinkSearchParams(params: {search: string, location: string, start_
   return linkSearchParams;
 }
 
-// export const formatUTC = (dateInt: string, addOffset = false) => {
-//   let date = (!dateInt || dateInt.length < 1) ? new Date : new Date(dateInt);
-//   if (typeof dateInt === "string") {
-//       return date;
-//   } else {
-//       const offset = addOffset ? date.getTimezoneOffset() : -(date.getTimezoneOffset());
-//       const offsetDate = new Date();
-//       offsetDate.setTime(date.getTime() + offset * 60000)
-//       return offsetDate;
-//   }
-// }
-
-
 
 function convertDateToISO(date: Date) {
   return date.toISOString().split('T')[0];
@@ -55,12 +42,17 @@ function convertDateToISO(date: Date) {
 export default function EventCardHolder() {
   const { data: session } = useSession();
   const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const route = usePathname();
   const searchParams = useSearchParams();
 
   //////////////////////////
-  function correctToUtcThenSet(val: Date) {
+  function correctToUtcThenSetStart(val: Date) {
     setStartDate(new Date(val.getTime() - val.getTimezoneOffset() * 60000))
+  }
+
+  function correctToUtcThenSetEnd(val: Date) {
+    setEndDate(new Date(val.getTime() - val.getTimezoneOffset() * 60000))
   }
 
   var basePathName = '';
@@ -74,7 +66,8 @@ export default function EventCardHolder() {
 
   basePathName = buildAPISearchParams(searchParams, basePathName);
 
-  const convertedDate = convertDateToISO(startDate);
+  const convertedStartDate = convertDateToISO(startDate);
+  const convertedEndDate = convertDateToISO(endDate);
 
 
   const [apiPathName, setApiPathName] = useState(basePathName);
@@ -113,7 +106,7 @@ export default function EventCardHolder() {
   return (
     <div id="contents" className="w-9/12 mx-auto my-auto">
       <h1 className="text-5xl font-bold mb-4">Events</h1>
-      <div className="my-5">
+      <div className="text-black">
         <input
           type="text"
           placeholder="Search by event name"
@@ -121,20 +114,26 @@ export default function EventCardHolder() {
           onChange={(e) => setNextSearchName(e.target.value)}
           className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
         />
-        <input
+        <input 
           type="text"
           placeholder="Search by event location"
           value={nextSearchLocation}
           onChange={(e) => setNextSearchLocation(e.target.value)}
           className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
         />
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <DatePicker
-          // selected={startDate}
-          // onChange={(date) => date && setStartDate(date)}
-          onChange={correctToUtcThenSet}
+          onChange={correctToUtcThenSetStart}
           selected={startDate}
           />
-        <a href={(route.includes('organizer') ? 'dashboard' : 'experiences') + buildLinkSearchParams({search: nextSearchName, location: nextSearchLocation, start_time: convertedDate})}>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <DatePicker
+          onChange={(date) => date && setEndDate(date)}
+          selected={endDate}
+          />
+        
+        <a href={(route.includes('organizer') ? 'dashboard' : 'experiences') + buildLinkSearchParams({search: nextSearchName, location: nextSearchLocation, start_time: convertedStartDate, end_time: convertedEndDate})}>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button className='mr-2 px-4 py-2 bg-blue-600'>Search</button>
         </a>
       </div>
