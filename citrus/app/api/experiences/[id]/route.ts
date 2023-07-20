@@ -2,6 +2,9 @@ import * as db from '@/lib/db';
 import { NextResponse } from 'next/server';
 import '@/lib/patch'
 import { attending_status_type } from '@prisma/client';
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 const prisma = db.getClient();
 
@@ -126,34 +129,53 @@ export async function PUT(request: Request,
     { params }: { params: { id: string } }) {
     const id = params.id;
     const { searchParams } = new URL(request.url);
-    const addUser: string | null = searchParams.get('addUser');
+    const addUser: string | null = searchParams.get("addUser")
 
-    const body = await request.json();
+    const session = await getServerSession(authOptions);
+    const body = await request.json() || undefined;
+
+    if (session === null && addUser != null) {
+        redirect('/login')
+    }
+
+    console.log("Entered API route")
+
     try {
-
-
+        // Update the fields of the event
         const updatedEvent = await prisma.experiences.update({
             where: {
                 id: id
             },
-            data: {
-                attendees: {
-                    push: addUser ? addUser : undefined,
-                }
-            }
+            data: body
         });
-        if(addUser !== undefined){
+
+        if (addUser !== undefined) {
+            if (!session?.user) {
+                return NextResponse.json({ status: 400, "error": "User not logged in"});
+            }
+            // Add the user to the event
+            const userAddedEvent = await prisma.experiences.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    attendees: [...updatedEvent.attendees, session?.user.name]
+                }
+            })
+            // Create the corresponding row in the user_attending_status table
             const createdStatus = await prisma.user_attending_status.create({
                 data: {
-                    username: addUser,
+                    username: session?.user.name,
                     event_id: id,
-                    attending_status_type: "interested"
-                },
+                    attending: "interested",
+                }
             })
-            return NextResponse.json({updatedEvent: updatedEvent, createdStatus: createdStatus});
+            console.log("Created status")
+            // Return the updated event and the created status
+            return NextResponse.json({ updatedEvent: updatedEvent, createdStatus: createdStatus });
         }
-        else{
-            return NextResponse.json({updatedEvent: updatedEvent});
+        else {
+            return NextResponse.json({ updatedEvent: updatedEvent });
         }
     } catch (e) {
         return db.handleError(e);
