@@ -84,8 +84,12 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <p className="indent-8">{data.description}</p>
             </div>
             <div>
+                <h2 className="text-3xl text-bold">Users Attending</h2>
+                <p className="indent-8">{data.attendees}</p>
+            </div>
+            <div>
                 {/* @ts-expect-error Server Component */}
-                <EventButton eventID={params.id} />;
+                <EventButton eventID={params.id} />
             </div>
         </div>
     );
