@@ -51,6 +51,17 @@ export default function EventCardHolder() {
     setStartDate(new Date(val.getTime() - val.getTimezoneOffset() * 60000))
   }
 
+
+  function removeTimezoneOffset(date: Date, param: string) {
+
+    if (searchParams.get(param) != null) {
+      const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+      date = new Date(date.getTime() + userTimezoneOffset * Math.sign(userTimezoneOffset));
+      param === 'start_time' ? setStartDate(date) : setEndDate(date);
+    }
+  }
+  
+
   var basePathName = '';
   if (route.includes('organizer') && session?.user) {
     if (session?.user) {
@@ -72,8 +83,6 @@ export default function EventCardHolder() {
   const [nextSearchLocation, setNextSearchLocation] = useState(searchParams.get('location') || '');
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   
-  // const userTimezoneOffsetStart = startDate.getTimezoneOffset() * 60000;
-  // const userTimezoneOffsetEnd = endDate.getTimezoneOffset() * 60000;
   
 
   
@@ -88,6 +97,11 @@ export default function EventCardHolder() {
         })
     };
   }, [apiPathName]);
+
+  useEffect(() => {
+    removeTimezoneOffset(startDate, 'start_time');
+    removeTimezoneOffset(endDate, 'end_time');
+  }, []);
 
   if (!session?.user && route.includes('organizer')) {
     return (
