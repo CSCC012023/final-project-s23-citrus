@@ -33,14 +33,24 @@ export default function EventCardHolder() {
   const { data: session } = useSession();
   const route = usePathname();
   const searchParams = useSearchParams();
-
   var basePathName = '';
+  var link = '';
   if (route.includes('organizer') && session?.user) {
     if (session?.user) {
       basePathName = '/api/experiences?org_id=' + session.user.name;
+      link = 'dashboard';
     }
-  } else {
+  }
+  else if(session?.user && route.includes('user')){
+    if (session?.user) {
+      //basePathName = '/api/experiences?current_user_id=' + session.user.name;
+      basePathName = '/api/statuses';
+      link = 'user';
+    }
+  } 
+  else {
     basePathName = '/api/experiences';
+    link = 'experiences';
   }
 
   basePathName = buildAPISearchParams(searchParams, basePathName);
@@ -53,7 +63,7 @@ export default function EventCardHolder() {
   const [nextCursor, setNextCursor] = useState<string | null>(null);
 
   useEffect(() => {
-    if ((session?.user && route.includes('organizer')) || route.includes('experiences')) {
+    if ((session?.user && (route.includes('organizer')) || route.includes('experiences') || route.includes('user'))) {
       fetch(apiPathName)
         .then(res => res.json())
         .then(data => {
@@ -97,7 +107,7 @@ export default function EventCardHolder() {
           onChange={(e) => setNextSearchLocation(e.target.value)}
           className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
         />
-        <a href={(route.includes('organizer') ? 'dashboard' : 'experiences') + buildLinkSearchParams({search: nextSearchName, location: nextSearchLocation})}>
+        <a href={(link) + buildLinkSearchParams({search: nextSearchName, location: nextSearchLocation})}>
         <button className='mr-2 px-4 py-2 bg-blue-600'>Search</button>
         </a>
       </div>

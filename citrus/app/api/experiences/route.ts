@@ -2,6 +2,8 @@ import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
 import '@/lib/patch'
 
+import type { experiences } from '@prisma/client';
+
 const prisma = db.getClient();
 
 /**
@@ -20,10 +22,12 @@ const prisma = db.getClient();
  * @apiParam {String[]} [tags] The tags to use to filter results
  * @apiParam {String} [org_id] The id of the organization to use to filter results
  * @apiParam {String} [user_id] The id of the user to use to filter results
+ * @apiParam {String} [current_user_id] The id of the user currently signed in(if applicable)
  *
  * @apiSuccess {String} next_cursor The cursor to use to get the next page of results
  * @apiSuccess {String} prev_cursor The cursor to use to get the previous page of results
  * @apiSuccess {Number} limit The maximum number of results to return
+ * @apiSuccess {String} current_user_id The id of the user currently signed in(if applicable)
  * @apiSuccess {Object[]} experiences The events that match the query
  * @apiSuccess {String} experiences.id The id of the event
  * @apiSuccess {String} experiences.name The name of the event
@@ -44,6 +48,7 @@ const prisma = db.getClient();
  *      "next_cursor": "1",
  *      "prev_cursor": null,
  *      "limit": 10,
+ *      "current_user_id": null,
  *      "events": [
  *          {
  *              "id": "1",
@@ -56,7 +61,7 @@ const prisma = db.getClient();
  *              "tags": ["tag1", "tag2"],
  *              "attendees": [],
  *              "org_id": "1",
- *              "user_id": null
+ *              "user_id": null,
  *          }
  *      ]
  */
@@ -71,6 +76,7 @@ export async function GET(request: Request) {
     const end_time = searchParams.get('end_time');
     const location = searchParams.get('location');
     const tags = searchParams.get('tags')?.split(',');
+    const current_user_id = searchParams.get('current_user_id');
 
     let where_clause: any = {
         AND: [
@@ -152,15 +158,39 @@ export async function GET(request: Request) {
         skip = 0;
     }
 
-    const experiences = await prisma.experiences.findMany({
-        where: where_clause,
-        take: take,
-        cursor: cursor,
-        skip: skip,
-        orderBy: {
-            id: 'asc'
-        },
-    });
+    var experiences: experiences[] = [];
+    try{
+        if(current_user_id){
+            const statuses = await prisma.user_attending_status.findMany({
+                where: {
+                    username: current_user_id
+                },
+                include: {
+                    experiences: true,
+                }
+            })
+            console.log("Data from statuses")
+            for (var i = 0; i < statuses.length; i++) {
+                experiences.push(statuses[i].experiences)
+            }
+            console.log("Experiences" + experiences)
+        }
+        else{
+            experiences = await prisma.experiences.findMany({
+                where: where_clause,
+                take: take,
+                cursor: cursor,
+                skip: skip,
+                orderBy: {
+                    id: 'asc'
+                },
+            });
+        }
+    
+    }
+    catch (e) {
+        return db.handleError(e);
+    }
 
     var next_cursor = null;
     var prev_cursor = null;
@@ -169,7 +199,7 @@ export async function GET(request: Request) {
         next_cursor = experiences[experiences.length - 1].id;
         prev_cursor = experiences[0].id;
     }
-
+    
     return NextResponse.json({
         next_cursor: next_cursor,
         prev_cursor: prev_cursor,

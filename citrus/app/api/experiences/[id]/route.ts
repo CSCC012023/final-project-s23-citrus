@@ -1,6 +1,7 @@
 import * as db from '@/lib/db';
 import { NextResponse } from 'next/server';
 import '@/lib/patch'
+import { attending_status_type } from '@prisma/client';
 
 const prisma = db.getClient();
 
@@ -124,15 +125,36 @@ export async function GET(request: Request,
 export async function PUT(request: Request,
     { params }: { params: { id: string } }) {
     const id = params.id;
+    const { searchParams } = new URL(request.url);
+    const addUser: string | null = searchParams.get('addUser');
+
     const body = await request.json();
     try {
+
+
         const updatedEvent = await prisma.experiences.update({
             where: {
                 id: id
             },
-            data: body
+            data: {
+                attendees: {
+                    push: addUser ? addUser : undefined,
+                }
+            }
         });
-        return NextResponse.json(updatedEvent);
+        if(addUser !== undefined){
+            const createdStatus = await prisma.user_attending_status.create({
+                data: {
+                    username: addUser,
+                    event_id: id,
+                    attending_status_type: "interested"
+                },
+            })
+            return NextResponse.json({updatedEvent: updatedEvent, createdStatus: createdStatus});
+        }
+        else{
+            return NextResponse.json({updatedEvent: updatedEvent});
+        }
     } catch (e) {
         return db.handleError(e);
     }
