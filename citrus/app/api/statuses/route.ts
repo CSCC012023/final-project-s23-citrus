@@ -124,17 +124,26 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: "You must provide either a next_cursor or a prev_cursor, but not both" }, { status: 400 });
     }
 
+    if (!session) {
+        return NextResponse.json({ error: "You must be signed in to use this endpoint" }, { status: 401 });
+    }
 
     var cursor = undefined;
     var take = limit;
     var skip = 1;
     if (next_id) {
         cursor = {
-            event_id: next_id
+            username_event_id: {
+                username: session.user?.name,
+                event_id: next_id
+            }
         }
     } else if (prev_id) {
         cursor = {
-            event_id: prev_id
+            username_event_id: {
+                username: session.user?.name,
+                event_id: prev_id
+            }
         }
         take = -limit;
     } else {
@@ -153,11 +162,7 @@ export async function GET(request: Request) {
                             ...where_clause,
                             ...or_clause
                         }
-                        //where_clause
                     }
-                    // include where clause
-                    // from experiences api route
-                    // except prev_cursor and next_cursor (paginate based on statuses)
                 },
                 take: take,
                 cursor: cursor,

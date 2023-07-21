@@ -76,38 +76,37 @@ export async function GET(request: Request) {
     const end_time = searchParams.get('end_time');
     const location = searchParams.get('location');
     const tags = searchParams.get('tags')?.split(',');
-    const current_user_id = searchParams.get('current_user_id');
 
     let where_clause: any = {
         AND: [
-        {
-            location: {
-                contains: location != null ? location : undefined
+            {
+                location: {
+                    contains: location != null ? location : undefined
+                },
             },
-        },
-        {
-            category: category != null ? category : undefined,
-        },
-        {
-            start: {
-                gte: start_time != null ? new Date(start_time) : undefined
+            {
+                category: category != null ? category : undefined,
             },
-        },
-        {
-            end: {
-                lte: end_time != null ? new Date(end_time) : undefined
+            {
+                start: {
+                    gte: start_time != null ? new Date(start_time) : undefined
+                },
+            },
+            {
+                end: {
+                    lte: end_time != null ? new Date(end_time) : undefined
+                }
+            },
+            {
+                org_id: {
+                    equals: searchParams.get('org_id') != null ? searchParams.get('org_id') : undefined
+                }
+            },
+            {
+                user_id: {
+                    equals: searchParams.get('user_id') != null ? searchParams.get('user_id') : undefined
+                }
             }
-        },
-        {
-            org_id: {
-                equals: searchParams.get('org_id') != null ? searchParams.get('org_id') : undefined
-            }
-        },
-        {
-            user_id: {
-                equals: searchParams.get('user_id') != null ? searchParams.get('user_id') : undefined
-            }
-        }
         ]
     };
 
@@ -159,31 +158,16 @@ export async function GET(request: Request) {
     }
 
     var experiences: experiences[] = [];
-    try{
-        if(current_user_id){
-            const statuses = await prisma.user_attending_status.findMany({
-                where: {
-                    username: current_user_id
-                },
-                include: {
-                    experiences: true,
-                }
-            })
-            for (var i = 0; i < statuses.length; i++) {
-                experiences.push(statuses[i].experiences)
-            }
-        }
-        else{
-            experiences = await prisma.experiences.findMany({
-                where: where_clause,
-                take: take,
-                cursor: cursor,
-                skip: skip,
-                orderBy: {
-                    id: 'asc'
-                },
-            });
-        }
+    try {
+        experiences = await prisma.experiences.findMany({
+            where: where_clause,
+            take: take,
+            cursor: cursor,
+            skip: skip,
+            orderBy: {
+                id: 'asc'
+            },
+        });
 
     }
     catch (e) {
