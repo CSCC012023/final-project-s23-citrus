@@ -2,8 +2,10 @@
 
 import { useState, FormEvent, ChangeEvent} from "react";
 import styles from "@/app/(organizers)/organizer/create/create.module.css";
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { usePathname } from "next/navigation";
+import type { experiences } from '@prisma/client';
+import "@/lib/patch"
 
 import {
   Flex,
@@ -15,17 +17,29 @@ import {
   FormControl,
   Textarea,
 } from "@chakra-ui/react";
+import exp from "constants";
 
 
-export default function AddEvent() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [capacity, setCapacity] = useState("");
-  const [location, setLocation] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-  const [category, setCategory] = useState("");
-  const [tags, setTags] = useState("");
+export default function EditEvent(value: {experience: experiences}) {
+  const startTimeString = (value.experience.start as Date).toString();
+  const endTimeString = (value.experience.end as Date).toString();
+
+  // Remove the Z at the end of the string
+  const startTime = startTimeString.substring(0, startTimeString.length - 1);
+  const endTime = endTimeString.substring(0, endTimeString.length - 1);
+
+  // Build the tags string
+  var tagsString = (value.experience.tags as string[]).join(",");
+
+  const [name, setName] = useState(value.experience.name);
+  const [description, setDescription] = useState(value.experience.description);
+  const [capacity, setCapacity] = useState(value.experience.capacity);
+  const [location, setLocation] = useState(value.experience.location);
+  const [start, setStart] = useState(startTime);
+  const [end, setEnd] = useState(endTime);
+  const [category, setCategory] = useState(value.experience.category);
+  const [tags, setTags] = useState(tagsString);
+ 
 
   const { data: session } = useSession();
   const path = usePathname();
@@ -39,7 +53,7 @@ export default function AddEvent() {
   };
 
   const handleCapacityChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCapacity(event.target.value);
+    setCapacity(BigInt(event.target.value));
   };
 
   const handleLocationChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -64,16 +78,11 @@ export default function AddEvent() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const organizer_fields = {
-      "org_id": path.includes("organizer") ? session?.user?.name : null,
-      "user_id": path.includes("organizer") ? null : session?.user?.name,
-      "attendees": path.includes("organizer") ? [] : [session?.user?.name]
-    }
     // Handle form submission here
-    const res = await fetch('/api/experiences', {
-        method: 'POST',
-        body: JSON.stringify({"name" : name, "description": description, "capacity": parseInt(capacity), "location": location,
-          "start_time": start, "end_time": end, "category": category, "tags": tags.split(","), ...organizer_fields }),
+    const res = await fetch('/api/experiences/' + value.experience.id, {
+        method: 'PUT',
+        body: JSON.stringify({"name" : name, "description": description, "capacity": Number(capacity), "location": location,
+          "start": new Date(start), "end": new Date(end), "category": category, "tags": tags.split(",") }),
     });
   };
 
@@ -116,7 +125,7 @@ export default function AddEvent() {
                 <FormControl className="w-8/12 mx-auto">
                   <Input
                     type="text"
-                    placeholder="Event Name"
+                    placeholder={name}
                     value={name}
                     onChange={handleNameChange}
                     className={styles["custom-input"] + " w-full"}
@@ -138,7 +147,7 @@ export default function AddEvent() {
                   <Input
                     type="number"
                     placeholder="Event Capacity"
-                    value={capacity}
+                    value={capacity.toString()}
                     onChange={handleCapacityChange}
                     className={styles["custom-input"]}
                   />

@@ -181,6 +181,7 @@ export default function EventCardHolder() {
               eventDescription={event.description}
               eventLocation={event.location}
               eventID={event.id}
+              eventUserID={event.user_id}
               key={event.id}
             />
           ))}
