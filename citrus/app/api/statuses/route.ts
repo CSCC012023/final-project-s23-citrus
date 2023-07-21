@@ -199,3 +199,54 @@ export async function GET(request: Request) {
         experiences,
     });
 }
+
+/**
+ * @api {delete} /statuses/ Delete an event from a user's interested events
+ * @apiName DeleteInterestedEvent
+ * @apiGroup Events
+ * 
+ * @apiParam {String} id The id of the event to delete
+ * @apiParam {String} [user_id] The id of the user to delete the event from
+ * 
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "success": true
+ *   }
+ * 
+ * @apiErrorExample Error-Response:
+ *  HTTP/1.1 400 Bad Request
+ *  {
+ *    "error": "You must provide either a user_id or be signed in to use this endpoint"
+ *  }
+ * 
+ **/
+export async function DELETE(request: Request) {
+    const session = await getServerSession(authOptions);
+    const { searchParams } = new URL(request.url);
+    const event_id = searchParams.get('event_id');
+
+    if (!session) {
+        return NextResponse.json({ error: "You must be signed in to use this endpoint" }, { status: 400 });
+    } 
+    if (!event_id) {
+        return NextResponse.json({ error: "You must provide an event_id" }, { status: 400 });
+    }
+
+    try {
+        await prisma.user_attending_status.delete({
+            where: {
+                    username_event_id: {
+                        username: session.user?.name,
+                        event_id: event_id
+                    }
+                }
+            }
+        );
+    }
+    catch (e) {
+        return db.handleError(e);
+    }
+
+    return NextResponse.json({ success: true});
+}

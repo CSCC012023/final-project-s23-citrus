@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import InterestButton from '@/components/InterestButton'
+import UninterestButton from './UninterestButton';
 
 
 async function eventInfo(eventID: string) {
@@ -18,8 +19,13 @@ export default async function EventButton({eventID}: {eventID: string}){
 
     const data = await eventInfo(eventID);
 
+    if (data.user_id === session.user?.name) {
+        return <div></div>
+    }
+
     if(data.attendees.includes(session.user?.name)) {
-        return <p>You&apos;re already interested in this event.</p>
+        //return <p>You&apos;re already interested in this event.</p>
+        return <UninterestButton username={session.user?.name} eventID={eventID}/>
     }
 
     return (
