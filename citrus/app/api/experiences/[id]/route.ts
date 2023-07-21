@@ -148,7 +148,7 @@ export async function PUT(request: Request,
             data: body
         });
 
-        if (addUser !== undefined) {
+        if (addUser !== null) {
             if (!session?.user) {
                 return NextResponse.json({ status: 400, "error": "User not logged in"});
             }
