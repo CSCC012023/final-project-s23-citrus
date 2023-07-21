@@ -1,6 +1,6 @@
 # Sprint 2-4 Marking Scheme
  
-**Team Name:** [Team Name]  
+**Team Name:** citrus  
  
 *(Convention: N=sprint number, ex: sprintN.md means sprint2.md for sprint 2, and SR(N-1)md means SR1.md for sprint 2, that is Sprint Retrospective for Sprint 1, to be hold during planning meeting at the beginning of Sprint 2)*
  
@@ -212,7 +212,7 @@ Tracking on JIRA Total Mark: 23 / 24
  
     Your Mark: 4
 
-System Design Total Mark: 6 / 10 (-2 as updated version was not found in /doc/sprint2, used sprint1 to mark)
+System Design Total Mark: 8 / 10 ~~(-2 as updated version was not found in /doc/sprint2, used sprint1 to mark)~~ remarked
  
 ## Documentation (max 3 mark)
   
@@ -249,4 +249,4 @@ System Design Total Mark: 6 / 10 (-2 as updated version was not found in /doc/sp
  
 ## Total Mark
  
-90 / 95
+92 / 95
