@@ -36,13 +36,26 @@ function OrganizerCard( {organizer, isUser}: {organizer: any, isUser: boolean} )
         </div>
     )
 }
+
+function AttendeeDisplay( {areUsers, attendee, attendees}: {areUsers: boolean, attendee: any, attendees: any} ) {
+    if (areUsers) {
+        return (
+            <ul className="indent-8">{attendees.map(attendee)}</ul>
+        )
+    }
+    return (
+        <p className="indent-8">There seem to be no users currently attending this event.</p>
+    )
+}
+
 export default async function Page({ params }: { params: { id: string } }) {
     const data = await getEventData(params.id);
     const start_time = new Date(data.start);
     const end_time = new Date(data.end);
     const map_url = `https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=${data.location}`;
     const organizer = await getOrganizerData(data.user_id || data.org_id, data.user_id != null);
-
+    const attendees = data.attendees;
+    const attendee = (n: any) => <li> {n} </li>;
     return (
         <div className="w-9/12 m-auto">
             <h1 className="text-5xl text-bold">{data.name}</h1>
@@ -85,11 +98,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <div>
                 <h2 className="text-3xl text-bold">Users Attending</h2>
-                <p className="indent-8">{data.attendees}</p>
-            </div>
-            <div>
-                {/* @ts-expect-error Server Component */}
-                <EventButton eventID={params.id} />
+                <AttendeeDisplay areUsers={data.attendees.length != 0 || data.attendees != null} attendee={attendee} attendees={attendees} />
             </div>
         </div>
     );
