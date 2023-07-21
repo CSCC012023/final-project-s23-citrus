@@ -43,8 +43,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const end_time = new Date(data.end);
     const map_url = `https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=${data.location}`;
     const organizer = await getOrganizerData(data.user_id || data.org_id, data.user_id != null);
-    const attendees = data.attendees;
-    const attendee = (n: any) => <li> {n} </li>;
+
     return (
         <div className="w-9/12 m-auto">
             <h1 className="text-5xl text-bold">{data.name}</h1>
@@ -92,7 +91,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         <p className="indent-8">There seem to be no users currently attending this event.</p>
                     ) : (
                         <ul className="indent-8">
-                            {data.attendees.map((attendee: string) => <li> {attendee} </li>)}
+                            {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} </li>)}
                         </ul>
                     )
                 }
