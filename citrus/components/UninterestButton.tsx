@@ -2,9 +2,24 @@
 import { useRouter } from "next/navigation";
 
 async function onUninterestHandler(username: string | null | undefined, eventID: string){
-    const res = await fetch(`/api/experiences/${eventID}`, {
-        method: 'DELETE',
+    const res = await fetch(`/api/experiences/${eventID}`);
+    console.log(res);
+    const data = await res.json();
+    const attendees = data.attendees;
+    const index = attendees.indexOf(username);
+    if (index > -1) {
+        attendees.splice(index, 1);
+        const res2 = await fetch(`/api/experiences/${eventID}?addUser=false`, {
+            method: 'PUT',
+            body: JSON.stringify({"attendees": attendees}),
+        });
+        console.log(res2);
+    }
+
+    const res3 = await fetch(`/api/statuses?event_id=${eventID}`, {
+        method: 'DELETE'
     });
+    console.log(res3);
     
 }
 

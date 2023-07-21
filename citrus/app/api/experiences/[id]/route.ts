@@ -148,7 +148,7 @@ export async function PUT(request: Request,
             data: body
         });
 
-        if (addUser !== null) {
+        if (addUser === "true") {
             if (!session?.user) {
                 return NextResponse.json({ status: 400, "error": "User not logged in"});
             }
@@ -171,8 +171,7 @@ export async function PUT(request: Request,
             })
             // Return the updated event and the created status
             return NextResponse.json({ updatedEvent: updatedEvent, createdStatus: createdStatus });
-        }
-        else {
+        } else {
             return NextResponse.json({ updatedEvent: updatedEvent });
         }
     } catch (e) {
