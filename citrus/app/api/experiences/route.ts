@@ -169,11 +169,9 @@ export async function GET(request: Request) {
                     experiences: true,
                 }
             })
-            console.log("Data from statuses")
             for (var i = 0; i < statuses.length; i++) {
                 experiences.push(statuses[i].experiences)
             }
-            console.log("Experiences" + experiences)
         }
         else{
             experiences = await prisma.experiences.findMany({
@@ -186,7 +184,7 @@ export async function GET(request: Request) {
                 },
             });
         }
-    
+
     }
     catch (e) {
         return db.handleError(e);
@@ -199,7 +197,7 @@ export async function GET(request: Request) {
         next_cursor = experiences[experiences.length - 1].id;
         prev_cursor = experiences[0].id;
     }
-    
+
     return NextResponse.json({
         next_cursor: next_cursor,
         prev_cursor: prev_cursor,

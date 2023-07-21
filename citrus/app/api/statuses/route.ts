@@ -79,7 +79,6 @@ export async function GET(request: Request) {
     const location = searchParams.get('location');
     const tags = searchParams.get('tags')?.split(',');
 
-    console.log(location)
     var or_clause: any = undefined;
 
     let where_clause: any = {
@@ -125,7 +124,6 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: "You must provide either a next_cursor or a prev_cursor, but not both" }, { status: 400 });
     }
 
-    console.log("Where Clause: ", where_clause)
 
     var cursor = undefined;
     var take = limit;
@@ -146,7 +144,6 @@ export async function GET(request: Request) {
     var user_statuses: user_attending_status[] = [];
 
     if (session?.user) {
-        console.log(session.user.name)
         try {
             const statuses = await prisma.user_attending_status.findMany({
                 where: {
@@ -156,7 +153,7 @@ export async function GET(request: Request) {
                             ...where_clause,
                             ...or_clause
                         }
-                        //where_clause    
+                        //where_clause
                     }
                     // include where clause
                     // from experiences api route
@@ -172,9 +169,7 @@ export async function GET(request: Request) {
                     experiences: true,
                 },
             })
-            console.log("Query went through")
             user_statuses = statuses;
-            console.log("User_Statuses ", user_statuses)
             for (var i = 0; i < statuses.length; i++) {
                 experiences.push(statuses[i].experiences)
             }
@@ -198,17 +193,4 @@ export async function GET(request: Request) {
         limit: limit,
         experiences,
     });
-
-    // username event_id type
-    // x          3       true
-    // x          5       true
-    // x          7       true
-    // x 
-    // ... 
-
-    // x          23      true
-
-    // x          25      true
-
-    // cursor: cursor
 }

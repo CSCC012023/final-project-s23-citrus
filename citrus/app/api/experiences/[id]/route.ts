@@ -138,7 +138,6 @@ export async function PUT(request: Request,
         redirect('/login')
     }
 
-    console.log("Entered API route")
 
     try {
         // Update the fields of the event
@@ -170,7 +169,6 @@ export async function PUT(request: Request,
                     attending: "interested",
                 }
             })
-            console.log("Created status")
             // Return the updated event and the created status
             return NextResponse.json({ updatedEvent: updatedEvent, createdStatus: createdStatus });
         }
