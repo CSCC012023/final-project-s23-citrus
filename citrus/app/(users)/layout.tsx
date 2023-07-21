@@ -39,6 +39,9 @@ export default async function RootLayout({
                 <li className='flex-1'>
                   <a href="/">Home</a>
                 </li>
+                <li>
+                  <a href="/create">Create</a>
+                </li>
                 <li className='flex-1'>
                   <a href="/experiences">Experiences</a>
                 </li>
