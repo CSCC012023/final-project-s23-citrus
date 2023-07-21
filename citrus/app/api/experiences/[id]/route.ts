@@ -228,6 +228,12 @@ export async function DELETE(request: Request,
     { params }: { params: { id: string } }) {
     const id = params.id;
     try {
+        var deletedStatuses = await prisma.user_attending_status.deleteMany({
+            where: {
+                event_id: id
+            }
+        });
+
         const deletedEvent = await prisma.experiences.delete({
             where: {
                 id: id
