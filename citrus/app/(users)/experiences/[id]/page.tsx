@@ -3,7 +3,7 @@ import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/fr
 import EventButton from '@/components/EventButton';
 
 async function getEventData(id: string) {
-    const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 60}});
+    const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 0}});
     const data = await res.json();
     return data;
 }
@@ -36,6 +36,7 @@ function OrganizerCard( {organizer, isUser}: {organizer: any, isUser: boolean} )
         </div>
     )
 }
+
 export default async function Page({ params }: { params: { id: string } }) {
     const data = await getEventData(params.id);
     const start_time = new Date(data.start);
@@ -84,8 +85,22 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <p className="indent-8">{data.description}</p>
             </div>
             <div>
+                <h2 className="text-3xl text-bold">Users Attending</h2>
+
+                {
+                    data.attendees == null || data.attendees.length == 0 ? (
+                        <p className="indent-8">There seem to be no users currently attending this event.</p>
+                    ) : (
+                        <ul className="indent-8">
+                            {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} </li>)}
+                        </ul>
+                    )
+                }
+
+            </div>
+            <div>
                 {/* @ts-expect-error Server Component */}
-                <EventButton eventID={params.id} />;
+                <EventButton eventID={params.id} />
             </div>
         </div>
     );
