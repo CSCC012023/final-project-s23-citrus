@@ -201,7 +201,7 @@ export async function PUT(request: Request) {
     const email = body.email;
     const premium = body.premium;
     const phone_number = body.phone_number;
-    const socials = body.socials;
+    //const socials = body.socials;
 
     if (password !== undefined) {
         if (!schema.validate(password)) {
@@ -217,7 +217,7 @@ export async function PUT(request: Request) {
         email: email,
         premium: premium,
         phone_number: phone_number,
-        socials: socials
+        //socials: socials
     }
 
     try {
