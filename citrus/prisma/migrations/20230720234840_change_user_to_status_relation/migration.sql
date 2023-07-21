@@ -8,6 +8,7 @@
 -- AlterTable
 ALTER TABLE "users"."user_attending_status" ALTER COLUMN "event_id" SET NOT NULL;
 ALTER TABLE "users"."user_attending_status" ALTER COLUMN "attending" SET NOT NULL;
+COMMIT;
 
 -- AlterPrimaryKey
 ALTER TABLE "users"."user_attending_status" ALTER PRIMARY KEY USING COLUMNS ("username", "event_id");
