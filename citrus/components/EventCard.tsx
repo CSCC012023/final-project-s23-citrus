@@ -15,7 +15,7 @@ function deleteOnClick(eventID: string) {
 }
 
 function ManagementTools({ eventID, isUser }: { eventID: string, isUser: boolean }) {
-  const manageLink = (isUser) ? "/edit/" + eventID : "/organizer/dashboard" + eventID;
+  const manageLink = (isUser) ? "/edit/" + eventID : "/organizer/dashboard/" + eventID;
   return (
     <div className="flex flex-row">
       <a href={manageLink}>
