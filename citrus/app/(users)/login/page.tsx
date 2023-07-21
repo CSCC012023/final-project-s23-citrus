@@ -42,7 +42,7 @@ const App = (): JSX.Element => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission here
-    signIn('user-credentials', {username: username, password: password, callbackUrl: '/'})
+    signIn('user-credentials', {username: username, password: password, callbackUrl: '/user'})
   };
 
   return (
