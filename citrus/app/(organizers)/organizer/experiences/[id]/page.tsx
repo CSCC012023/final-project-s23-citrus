@@ -3,7 +3,7 @@ import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/fr
 import EventButton from '@/components/EventButton';
 
 async function getEventData(id: string) {
-    const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 60}});
+    const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 0}});
     const data = await res.json();
     return data;
 }
@@ -34,17 +34,6 @@ function OrganizerCard( {organizer, isUser}: {organizer: any, isUser: boolean} )
             <p className='font-bold text-2xl'><FontAwesomeIcon icon={faCircleInfo} className='text-3xl text-blue-600' /> Organized by</p>
             <p>This event was organized by the {organizer.org_id}.</p>
         </div>
-    )
-}
-
-function AttendeeDisplay( {areUsers, attendee, attendees}: {areUsers: boolean, attendee: any, attendees: any} ) {
-    if (areUsers) {
-        return (
-            <ul className="indent-8">{attendees.map(attendee)}</ul>
-        )
-    }
-    return (
-        <p className="indent-8">There seem to be no users currently attending this event.</p>
     )
 }
 
@@ -98,7 +87,15 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <div>
                 <h2 className="text-3xl text-bold">Users Attending</h2>
-                <AttendeeDisplay areUsers={data.attendees.length != 0 || data.attendees != null} attendee={attendee} attendees={attendees} />
+                {
+                    data.attendees == null || data.attendees.length == 0 ? (
+                        <p className="indent-8">There seem to be no users currently attending this event.</p>
+                    ) : (
+                        <ul className="indent-8">
+                            {data.attendees.map((attendee: string) => <li> {attendee} </li>)}
+                        </ul>
+                    )
+                }
             </div>
         </div>
     );
