@@ -253,9 +253,19 @@ export async function POST(request: Request) {
                     set: body.tags
                 },
                 org_id: body.org_id,
-                user_id: body.user_id
+                user_id: body.user_id,
+                attendees: body.attendees
             }
         });
+        for (var i = 0; i < body.attendees.length; i++) {
+            var attending_status = await prisma.user_attending_status.create({
+                data: {
+                    username: body.attendees[i],
+                    event_id: event.id,
+                    attending: "interested"
+                }
+            });
+        }
         return NextResponse.json(event);
     } catch (e) {
         return db.handleError(e);
