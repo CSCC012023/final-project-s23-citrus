@@ -1,18 +1,11 @@
 # Eventual
 
- > _Note:_ This document is meant to be written during (or shortly after) your initial planning meeting.     
- > It does not really make sense for you to edit this document much (if at all) while working on the project - Instead, at the end of the planning phase, you can refer back to this document and decide which parts of your plan you are happy with and which parts you would like to change.
-
-
 ## Iteration 03
 
  * Start date: Jul 11, 2023
  * End date: Jul 21, 2023
 
 ## Process
-
-Quick Introduction to the process
-
 #### Changes from previous iteration
 
 List the most significant changes you made to your process (if any).
@@ -25,10 +18,6 @@ List the most significant changes you made to your process (if any).
  * We will have more frequent meetings to review changes, and to ensure that everyone is on the same page. This includes:
     * (at least) one meeting a week to go over summarizing/debugging(relaying what has been accomplished in the past week/addressing specific code-related issues on either end)
     * (at least) one meeting a week to go over team/project issues(sprint pacing, current focuses, next steps)
-
- > *Note:* If you are not making any changes to your process, it means that you are happy with all of the decisions you made in the previous iterations.
- > In this case, list what you consider to be the most significant process decisions your team made. For each decision, explain why you consider it successful, and what success metric you are using (or could use) to assert that the decision is successful.
-
 
 #### Roles & responsibilities
 
@@ -71,17 +60,24 @@ _This entire section is mandatory._
 
 #### Goals and tasks
 
- * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
- * Order the items from most to least important.
- * Feel free (but not obligated) to specify some/all tasks as user stories.
+The main goal of this iteration is to implement more of the core functionality of our website, including:
+
+ * Viewing Interested Users(organizers and users alike)
+ * Viewing Interested Events(for users)
+ * Revamping event creation layout
+ * Allowing users to follow each other and view profiles
+ * ~~Building chat functionality~~ (was too large in scope for this sprint)
 
 #### Artifacts
 
 List/describe the artifacts you will produce in order to present your project idea.
 
- * Artifacts can be text, code, images, videos, interactive mock-ups and/or any other useful artifact you can think of.
- * Make sure to explain the purpose of each artifact (i.e. Why is it on your to-do list? Why is it useful for your team?)
- * Be concise, yet precise.         
-   For example: "Build the website" is not precise at all, but "Build a static home page and upload it somewhere, so that it is publicly accessible" is much clearer.
+ * Create an 'edit event' page for users to edit events they've created, and organizers editing any/ all events
+ 
+ * Create a 'create new event page' that allows organizers to create new events
 
+ * Create a 'search by date and time' filter for users to search for events in a specific time frame
 
+ * Create a page for users to view only the events they are interested in attending to better keep track
+
+ * Modify and create a separate event description page for users and organizers in order for them to view the list of attending users and distribute info/message to meet up
