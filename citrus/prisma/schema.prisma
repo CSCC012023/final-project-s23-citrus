@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider = "cockroachdb"
   url      = env("DATABASE_URL")
-  schemas  = ["experiences", "organizers", "users"]
+  schemas  = ["experiences", "organizers", "users", "messages"]
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -73,6 +73,8 @@ model users {
   user_attending_status user_attending_status[]
   accounts              Account[]
   sessions              Session[]
+  groups                Group[]
+  messages              Message[]
 
   @@schema("users")
 }
@@ -117,4 +119,30 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@schema("users")
+}
+
+// messaging API
+model Message {
+  id       String   @id @default(cuid())
+  text     String   @db.String(1000)
+  user_id  String   @db.String(32)
+  group_id String   @db.String(32)
+  created_at DateTime @db.Timestamptz(6) @default(now())
+  updated_at DateTime @updatedAt
+
+  user users @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
+  group Group @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("messages")
+}
+
+model Group {
+  id      String    @id @default(cuid())
+  name    String    @db.String(255)
+  created_at DateTime @db.Timestamptz(6) @default(now())
+  updated_at DateTime @updatedAt
+  users   users[] 
+  messages Message[]
+
+  @@schema("messages")
 }
