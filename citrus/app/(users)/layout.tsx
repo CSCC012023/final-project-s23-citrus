@@ -21,7 +21,6 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions);
-
   const correctUserType = (!session) || (session.user && session.user.userType != 'organizer');
 
   return (
