@@ -53,8 +53,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     const [showQRCode, setShowQRCode] = useState(false);
 
     const generateQRCodeContent = () => {
-        // You can modify this function to determine what data to encode in the QR code
-        // For example, you can use the event ID or any other relevant information.
         return `EventID:${params.id}`;
       };
 
