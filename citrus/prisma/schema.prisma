@@ -49,25 +49,24 @@ model organizers {
 }
 
 model user_attending_status {
-  username    String                 @db.String(32)
-  event_id    String                 @db.Uuid
+  username    String                @db.String(32)
+  event_id    String                @db.Uuid
   attending   attending_status_type
-  experiences experiences            @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users       users                  @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
-
+  experiences experiences           @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       users                 @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([username, event_id])
   @@schema("users")
 }
 
 model users {
-  username              String                 @id @db.String(32)
-  pass                  String                 @db.String(60)
-  email                 String                 @unique @db.String(255)
-  phone_number          String?                @unique @db.String(15)
+  username              String                  @id @db.String(32)
+  pass                  String                  @db.String(60)
+  email                 String                  @unique @db.String(255)
+  phone_number          String?                 @unique @db.String(15)
   instagram             String?
   facebook              String?
-  premium               Boolean?               @default(false)
+  premium               Boolean?                @default(false)
   interests             String[]
   experiences           experiences[]
   user_attending_status user_attending_status[]
@@ -75,7 +74,19 @@ model users {
   sessions              Session[]
   groups                Group[]
   messages              Message[]
+  followedBy Follows[] @relation("following")
+  following  Follows[] @relation("follower")
 
+  @@schema("users")
+}
+
+model Follows {
+  follower_username  String @db.String(32)
+  following_username String @db.String(32)
+  follower           users  @relation("following", fields: [follower_username], references: [username], onDelete: NoAction, onUpdate: NoAction)
+  following          users  @relation("follower", fields: [following_username], references: [username], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([follower_username, following_username])
   @@schema("users")
 }
 
@@ -123,26 +134,26 @@ model Account {
 
 // messaging API
 model Message {
-  id       String   @id @default(cuid())
-  text     String   @db.String(1000)
-  user_id  String   @db.String(32)
-  group_id String   @db.String(32)
-  created_at DateTime @db.Timestamptz(6) @default(now())
+  id         String   @id @default(cuid())
+  text       String   @db.String(1000)
+  user_id    String   @db.String(32)
+  group_id   String   @db.String(32)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @updatedAt
 
-  user users @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
+  user  users @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
   group Group @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@schema("messages")
 }
 
 model Group {
-  id      String    @id @default(cuid())
-  name    String    @db.String(255)
-  created_at DateTime @db.Timestamptz(6) @default(now())
-  updated_at DateTime @updatedAt
-  users   users[] 
-  messages Message[]
+  id         String    @id @default(cuid())
+  name       String    @db.String(255)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @updatedAt
+  users      users[]
+  messages   Message[]
 
   @@schema("messages")
 }

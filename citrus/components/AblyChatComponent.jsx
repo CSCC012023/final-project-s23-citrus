@@ -4,7 +4,7 @@ import { useChannel } from "@/effects/AblyReactEffect";
 import styles from './AblyChatComponent.module.css';
 import { useSession } from 'next-auth/react'
 
-const AblyChatComponent = () => {
+const AblyChatComponent = (channelID) => {
   const { data: session } = useSession()
   let inputBox = null;
   let messageEnd = null;
@@ -13,7 +13,7 @@ const AblyChatComponent = () => {
   const [receivedMessages, setMessages] = useState([]);
   const messageTextIsEmpty = messageText.trim().length === 0;
 
-  const [channel, ably] = useChannel("chat-demo", (message) => {
+  const [channel, ably] = useChannel(channelID.channelID, (message) => {
     const history = receivedMessages.slice(-199);
     setMessages([...history, message]);
   }, session.user.name);
@@ -30,7 +30,7 @@ const AblyChatComponent = () => {
   }
 
   const handleKeyPress = (event) => {
-    if (event.charCode !== 13 || messageTextIsEmpty) {
+    if (event.code !== "Enter" || messageTextIsEmpty) {
       return;
     }
     sendChatMessage(messageText);
@@ -58,7 +58,7 @@ const AblyChatComponent = () => {
           value={messageText}
           placeholder="Type a message..."
           onChange={e => setMessageText(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           className={styles.textarea}
         ></textarea>
         <button type="submit" className={styles.button} disabled={messageTextIsEmpty}>Send</button>
