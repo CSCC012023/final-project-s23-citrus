@@ -44,7 +44,7 @@ export default async function RootLayout({
                   <a href="/experiences">Experiences</a>
                 </li>
                 <li className='flex-1'>
-                  <a href="/profile">About</a>
+                  <a href="/profile">Profile</a>
                 </li>
                 <NavBarLogin />
                 <li>

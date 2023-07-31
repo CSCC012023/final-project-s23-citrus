@@ -108,9 +108,11 @@ schema
         username: true,
         email: true,
         premium: true,
+        phone_number: true,
         instagram: true,
         facebook: true,
-        experiences: true
+        experiences: true,
+        interests: true,
     };
 
     try {
@@ -239,6 +241,7 @@ export async function PUT(request: Request) {
     const phone_number = body.phone_number;
     const instagram = body.instagram;
     const facebook = body.facebook;
+    const interests = body.interests;
 
     if (password !== undefined) {
         if (!schema.validate(password)) {
@@ -255,7 +258,8 @@ export async function PUT(request: Request) {
         premium: premium,
         phone_number: phone_number,
         instagram: instagram,
-        facebook: facebook
+        facebook: facebook,
+        interests: interests,
     }
 
     try {
