@@ -1,6 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import EventButton from '@/components/EventButton';
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import TextBoxInput from '@/components/TextBoxInput';
 
 async function getEventData(id: string) {
     const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 0}});
@@ -18,6 +21,12 @@ async function getOrganizerData(id: string, isUser: boolean) {;
         const data = await res.json();
         return data;
     }
+}
+
+async function getUserStatusData(user_id: string, event_id: string){
+    const res = await fetch(process.env.BASE_API_URL + `api/statuses/${event_id}?user_id=${user_id}`);
+    const data = await res.json();
+    return data;
 }
 
 function OrganizerCard( {organizer, isUser}: {organizer: any, isUser: boolean} ) {
@@ -43,6 +52,14 @@ export default async function Page({ params }: { params: { id: string } }) {
     const end_time = new Date(data.end);
     const map_url = `https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=${data.location}`;
     const organizer = await getOrganizerData(data.user_id || data.org_id, data.user_id != null);
+    const session = await getServerSession(authOptions);
+    let status_data;
+    let renderTextBoxInput = false;
+    if(session != null && data.attendees.includes(session.user?.name)){
+        renderTextBoxInput = true;
+        status_data = await getUserStatusData(String(session.user?.name), params.id);
+        console.log("!!!!!!!!!" + status_data);
+    }
 
     return (
         <div className="w-9/12 m-auto">
@@ -98,6 +115,12 @@ export default async function Page({ params }: { params: { id: string } }) {
                 }
 
             </div>
+
+            <div>
+                {renderTextBoxInput && <TextBoxInput/>}
+                {renderTextBoxInput && <p className="indent-8">You have {status_data.username} extra tickets.</p>}
+            </div>
+                
             <div>
                 {/* @ts-expect-error Server Component */}
                 <EventButton eventID={params.id} />
