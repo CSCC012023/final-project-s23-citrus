@@ -6,6 +6,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth/next';
 import NavBarLogin from '@/components/NavBarLogin'
 import SessionProviderWrapper from '@/components/SessionProvider'
+import Link from 'next/link'; // Import the Link component
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,9 +40,6 @@ export default async function RootLayout({
                 <li className='flex-1'>
                   <a href="/">Home</a>
                 </li>
-                <li>
-                  <a href="/create">Create</a>
-                </li>
                 <li className='flex-1'>
                   <a href="/experiences">Experiences</a>
                 </li>
@@ -58,9 +56,11 @@ export default async function RootLayout({
           <div className='flex-1'>
             {correctUserType ? children : <h1>You are not logged in as the correct type of user.</h1>}
           </div>
-          <footer className='flex justify-center space-x-4 bg-blue-600
+          <footer className='flex justify-center space-x-4 bg-navy
           text-xl'>
-            <p>Test</p>
+            <Link href="/contact"> {/* Replace "your-desired-page-url" with the actual URL */}
+                <button>Contact Us</button> {/* Replace <p> with <button> */}
+            </Link>
           </footer>
         </SessionProviderWrapper>
       </body>
