@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider = "cockroachdb"
   url      = env("DATABASE_URL")
-  schemas  = ["experiences", "organizers", "users", "messages"]
+  schemas  = ["experiences", "messages", "organizers", "users"]
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -64,18 +64,18 @@ model users {
   pass                  String                  @db.String(60)
   email                 String                  @unique @db.String(255)
   phone_number          String?                 @unique @db.String(15)
-  instagram             String?
-  facebook              String?
   premium               Boolean?                @default(false)
   interests             String[]
+  facebook              String?
+  instagram             String?
   experiences           experiences[]
-  user_attending_status user_attending_status[]
-  accounts              Account[]
-  sessions              Session[]
-  groups                Group[]
   messages              Message[]
-  followedBy Follows[] @relation("following")
-  following  Follows[] @relation("follower")
+  accounts              Account[]
+  followedBy            Follows[]               @relation("following")
+  following             Follows[]               @relation("follower")
+  sessions              Session[]
+  user_attending_status user_attending_status[]
+  groups                Group[]                 @relation("GroupTousers")
 
   @@schema("users")
 }
@@ -90,49 +90,39 @@ model Follows {
   @@schema("users")
 }
 
-enum attending_status_type {
-  attending
-  attended
-  interested
-
-  @@schema("users")
-}
-
 model Session {
   id               String      @id @default(cuid())
   sessionToken     String      @unique
   userId           String
   expires          DateTime
-  user             users       @relation(fields: [userId], references: [username], onDelete: Cascade)
-  organizers       organizers? @relation(fields: [organizersOrg_id], references: [org_id])
   organizersOrg_id String?     @db.String(32)
+  organizers       organizers? @relation(fields: [organizersOrg_id], references: [org_id])
+  user             users       @relation(fields: [userId], references: [username], onDelete: Cascade)
 
   @@schema("users")
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String      @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.String
-  access_token      String? @db.String
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.String
+  id_token          String?
   session_state     String?
-
-  user             users       @relation(fields: [userId], references: [username], onDelete: Cascade)
-  organizers       organizers? @relation(fields: [organizersOrg_id], references: [org_id])
-  organizersOrg_id String?     @db.String(32)
+  organizersOrg_id  String?     @db.String(32)
+  organizers        organizers? @relation(fields: [organizersOrg_id], references: [org_id])
+  user              users       @relation(fields: [userId], references: [username], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@schema("users")
 }
 
-// messaging API
 model Message {
   id         String   @id @default(cuid())
   text       String   @db.String(1000)
@@ -140,9 +130,8 @@ model Message {
   group_id   String   @db.String(32)
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @updatedAt
-
-  user  users @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
-  group Group @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  group      Group    @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user       users    @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
 
   @@schema("messages")
 }
@@ -152,8 +141,16 @@ model Group {
   name       String    @db.String(255)
   created_at DateTime  @default(now()) @db.Timestamptz(6)
   updated_at DateTime  @updatedAt
-  users      users[]
   messages   Message[]
+  users      users[]   @relation("GroupTousers")
 
   @@schema("messages")
+}
+
+enum attending_status_type {
+  attending
+  attended
+  interested
+
+  @@schema("users")
 }
