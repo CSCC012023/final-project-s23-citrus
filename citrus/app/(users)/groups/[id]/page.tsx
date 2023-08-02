@@ -1,6 +1,12 @@
 "use client"
 import Head from 'next/head'
 import AblyChatComponent from '@/components/AblyChatComponent'
+import { getSession } from 'next-auth/react'
+
+async function userInGroup(groupID: string) {
+  const session = await getSession();
+  
+}
 
 export default function Home({ params }: { params: { id: string } }) {
     return (

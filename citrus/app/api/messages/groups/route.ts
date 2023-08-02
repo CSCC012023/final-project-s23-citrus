@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import * as db from "@/lib/db"
+import "@/lib/patch"
 
 const prisma = db.getClient()
 /*
@@ -9,10 +10,11 @@ const prisma = db.getClient()
     @desc Get all groups that the user is in
     @access Private
 */
-export async function GET(request: Request) {
+export async function GET() {
     const session = await getServerSession(authOptions)
+
     if (!session || !session.user) {
-        return new Response("Unauthorized", { status: 401 })
+        return NextResponse.json("Unauthorized", { status: 401 })
     }
 
     const user = await prisma.users.findUnique({
@@ -25,6 +27,7 @@ export async function GET(request: Request) {
     })
 
     const groups = user.groups
+    console.log(groups)
 
     return NextResponse.json(
         groups,
