@@ -2,6 +2,8 @@ import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
 import '@/lib/patch'
 
+import type { users } from '@prisma/client';
+
 const prisma = db.getClient();
 
 const bcrypt = require('bcrypt');
@@ -22,6 +24,7 @@ schema
  *
  * @apiParam {String} [next_cursor] The cursor to use to get the next page of results
  * @apiParam {String} [prev_cursor] The cursor to use to get the previous page of results
+ * @apiParam {String} [search] The search query to use to filter results
  * @apiParam {Number} [limit=10] The maximum number of results to return
  *
  * @apiSuccess {String} next_cursor The cursor to use to get the next page of results
@@ -65,15 +68,42 @@ schema
     const { searchParams } = new URL(request.url);
     const next_id = searchParams.get('next_cursor');
     const prev_id = searchParams.get('prev_cursor');
+    const search = searchParams.get('search');
     const limit = Number(searchParams.get('limit')) || 10;
 
-    let where_clause: any = {
-        username: {
-            gt: next_id != null ? next_id : undefined,
-            lt: prev_id != null ? prev_id : undefined
-        }
-    };
+    let where_clause: any = {};
 
+    if (search) {
+        where_clause = {
+            ...where_clause,
+            username: {
+                contains: search
+            }
+        };
+    }
+
+    if (next_id && prev_id) {
+        return NextResponse.json({ error: "You must provide either a next_cursor or a prev_cursor, but not both" }, { status: 400 });
+    }
+
+    var cursor = undefined;
+    var take = limit;
+    var skip = 1;
+    if (next_id) {
+        cursor = {
+            username: next_id
+        }
+    } else if (prev_id) {
+        cursor = {
+            username: prev_id
+        }
+        take = -limit;
+    } else {
+        skip = 0;
+    }
+
+    var users: users[] = [];
+    
     let select = {
         username: true,
         email: true,
@@ -83,32 +113,36 @@ schema
         experiences: true
     };
 
-    if (next_id && prev_id) {
-        // If both cursors are provided, indicate an error
-        return NextResponse.json(
-            { error: "You must provide either a next_cursor or a prev_cursor, but not both" },
-            { status: 400 });
-    }
-    // Retrieve the users from the database
-    const res = await prisma.users.findMany({
-        where: where_clause,
-        take: limit,
-        orderBy: {
-            username: 'desc'
-        },
-        select: select
-    });
+    try {
+        users = await prisma.users.findMany({
+            where: where_clause,
+            take: take,
+            select: select,
+            cursor: cursor,
+            skip: skip,
+            orderBy: {
+                username: 'asc'
+            },
+        });
 
-    const users = res;
-    // Set up the new cursors to return
-    const next_cursor = users.length != 0 ? users[users.length - 1].username : null;
-    const prev_cursor = users.length != 0 ? users[0].username : null;
+    }
+    catch (e) {
+        return db.handleError(e);
+    }
+
+    var next_cursor = null;
+    var prev_cursor = null;
+
+    if (users.length > 0) {
+        next_cursor = users[users.length - 1].username;
+        prev_cursor = users[0].username;
+    }
 
     return NextResponse.json({
-        "next_cursor": next_cursor,
-        "prev_cursor": prev_cursor,
-        "limit": limit,
-        users
+        next_cursor: next_cursor,
+        prev_cursor: prev_cursor,
+        limit: limit,
+        users,
     });
 }
 
