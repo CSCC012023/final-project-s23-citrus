@@ -31,28 +31,23 @@ const prisma = db.getClient();
 
 export async function GET(request: Request,
     { params }: { params: { id: string } }) {
-    const session = await getServerSession(authOptions);
     const { searchParams } = new URL(request.url);
     const event_id = params.id;
     const user_id = searchParams.get('user_id');
 
-    if (!session) {
-        return NextResponse.json({ error: "You must be signed in to use this endpoint" }, { status: 401 });
-    }
-    if (session?.user) {
-        try {
-            const status = await prisma.user_attending_status.findFirst({
-                where: {
-                    username: user_id,
-                    event_id: event_id,
-                },
-            })
-            console.log(status);
+    
+    try {
+        const status = await prisma.user_attending_status.findFirst({
+            where: {
+                username: user_id,
+                event_id: event_id,
+            },
+        })
+        console.log(status);
           
-            return NextResponse.json(status);
-        }
-        catch (e) {
-            return db.handleError(e);
-        }
+        return NextResponse.json(status);
+    }
+    catch (e) {
+        return db.handleError(e);
     }
 }

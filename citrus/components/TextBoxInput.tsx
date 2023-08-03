@@ -1,7 +1,17 @@
-'use client'
+"use client"
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { useRouter } from "next/navigation";
 
-const TextBoxInput = () => {
+async function onPrepaidTicketHandler(eventID: string, tickets: BigInt){
+  const res = await fetch(`/api/experiences/${eventID}?addUser=true?ticketsAdded=${tickets}`, {
+      method: 'PUT',
+      body: JSON.stringify({}),
+  });
+}
+
+export default function TextBoxInput({username, eventID, prepaid_tickets}: {username: string | null | undefined, 
+  eventID: string, prepaid_tickets: BigInt}){
+  const router = useRouter();
   const [inputValue, setInputValue] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -10,11 +20,11 @@ const TextBoxInput = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // You can perform any action with the input value here
+    
     console.log('Submitted value:', inputValue);
-    // For example, you could send the value to an API or store it in the state of a parent component
-    // reset the input field after submission
+    const res = async () => {await onPrepaidTicketHandler(eventID, prepaid_tickets)}
     setInputValue('');
+    router.refresh();
   };
 
   return (
@@ -23,7 +33,7 @@ const TextBoxInput = () => {
         type="text"
         value={inputValue}
         onChange={handleChange}
-        placeholder="Enter number of EXTRA prepaid tickets here"
+        placeholder="Enter number of extra tickets (INCLUSIVE)"
         className="w-52 h-8 p-2 border rounded mr-2"
       />
     <button className="text-center text-white font-semibold z-10 i h-8 w-52 bg-gradient-to-br from-yellow-400 to-yellow-600 items-center 
@@ -33,5 +43,3 @@ const TextBoxInput = () => {
     </form>
   );
 };
-
-export default TextBoxInput;
