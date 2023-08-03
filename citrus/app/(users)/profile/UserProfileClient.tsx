@@ -1,10 +1,8 @@
 "use client";
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import styles from './profile.module.css';
 import { Heading } from '@chakra-ui/react';
-
-
+import { useRouter } from "next/navigation";
 
 async function updateUserProfile(data: any) {
   try {
@@ -18,6 +16,8 @@ async function updateUserProfile(data: any) {
 
     if (res.ok) {
       console.log('Profile updated successfully!');
+      const router = useRouter();
+      router.refresh();
     } else {
       console.error('Failed to update profile:', res.status);
     }
@@ -57,16 +57,16 @@ export default function UserProfileClient() {
     // Assuming you have a user ID in userData
     const updatedData = {
       username: session?.user?.name,
-      phone_number: phoneNumber,
-      instagram: instagram,
-      facebook: facebook,
-      interests: interests, // Use the interests array in the updated data
+      phone_number: phoneNumber == "" ? undefined : phoneNumber,
+      instagram: instagram == "" ? undefined : instagram,
+      facebook: facebook == "" ? undefined : facebook,
+      interests: interests.length == 0  ? undefined : interests, // Use the interests array in the updated data
     };
 
     await updateUserProfile(updatedData);
 
   };
-
+  
   return (
     <>
       <Heading size="lg" mb={4}>
