@@ -1,11 +1,10 @@
 .container {
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 100vh;
     background-color: rgb(1, 1, 32);
+    
   }
-  
   .center {
     text-align: center;
   }
@@ -21,6 +20,9 @@
     font-size: 20px;
     color: white;
     margin-bottom: 20px;
+    margin-left: 100px;
+    margin-right: 100px;
+
   }
   
   .phoneNumber {
@@ -35,12 +37,6 @@
   .custom-background {
     background-color: rgb(1, 1, 32);
   }
-
-  /* .custom-avatar {
-    width: 100px;
-    height: 100px;
-
-  } */
 
   .custom-input {
     border: 1px solid #ccc;
@@ -63,22 +59,55 @@
     border-radius: 4px;
   }
 
+  .container2 {
+    margin: 3in;
+  }
+  
+  .center8 {
+    text-align: center;
+    margin: 3in;
 
-  /* .custom-box-content {
-    flex-grow: 1; /* Ensure the content expands to fill the box */
-  /* }
+  }
+  
+  .heading2 {
+    font-size: 2em;
+    margin-bottom: 1em;
+  }
+  
+  .description2 {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 1.5em;
+  }
+  
+  .phoneNumber {
+    font-size: 1.1em;
+  }
 
-  .custom-box-footer {
-    margin-top: 1rem; /* Add some space above the footer */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(1, 1, 32);
+}
 
+.logoAndContentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem; /* Adjust the margin-top value to move everything higher */
+}
 
+.logoContainer {
+  /* Add styles for the logo container */
+  text-align: center;
+}
 
+.logoContainer img {
+  width: 150px; /* Adjust the width to your desired size */
+  height: 150px; /* Adjust the height to your desired size */
+  margin: 50px; /* Add margin around the logo */
+}
 
-
-
-
-  /* .custom-avatar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  } */
+/* Add other styles as you have in your existing CSS */

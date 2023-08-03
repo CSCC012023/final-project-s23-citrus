@@ -53,10 +53,10 @@ export default async function RootLayout({
               </ul>
             </nav>
           </header>
-          <div className='flex-1'>
+          <div className="flex-1" style={{ flex: '1 0 auto' }}>
             {correctUserType ? children : <h1>You are not logged in as the correct type of user.</h1>}
           </div>
-          <footer className='flex justify-center space-x-4 bg-navy
+          <footer className='flex justify-center space-x-4 bg-navy text-xl sticky bottom-0
           text-xl'>
             <Link href="/contact"> {/* Replace "your-desired-page-url" with the actual URL */}
                 <button>Contact Us</button> {/* Replace <p> with <button> */}
