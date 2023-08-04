@@ -81,7 +81,7 @@ export async function GET(request: Request,
  * @apiParam {String} [description] The description of the event
  * @apiParam {String} [location] The location of the event
  * @apiParam {String} [start] The start date of the event
- * @apiParam {String} The end date of the event
+ * @apiParam {String} [end] The end date of the event
  * @apiParam {String} [category] The category of the event
  * @apiParam {String[]} [tags] The tags of the event
  * @apiParam {String[]} [attendees] The attendees of the event
@@ -105,6 +105,7 @@ export async function GET(request: Request,
  *  {
  *    "id": "1",
  *    "name": "Event 1",
+ *    "capacity": 400,
  *    "description": "This is the first event",
  *    "location": "New York",
  *    "start": "2021-01-01T00:00:00.000Z",
@@ -129,7 +130,8 @@ export async function PUT(request: Request,
     { params }: { params: { id: string } }) {
     const id = params.id;
     const { searchParams } = new URL(request.url);
-    const addUser: string | null = searchParams.get("addUser")
+    const addUser: string | null = searchParams.get("addUser");
+    const ticketsAdded: bigint | null = BigInt(Number(searchParams.get("ticketsAdded")));
 
     const session = await getServerSession(authOptions);
     const body = await request.json() || undefined;
@@ -161,6 +163,17 @@ export async function PUT(request: Request,
                     attendees: [...updatedEvent.attendees, session?.user.name]
                 }
             })
+            if(ticketsAdded != null){
+                // Update the capacity of the event
+                const updatedCapacity = await prisma.experiences.update({
+                    where:{
+                        id: id
+                    },
+                    data: {
+                        capacity: updatedEvent.capacity - ticketsAdded
+                    }
+                })
+            }
             // Create the corresponding row in the user_attending_status table
             const createdStatus = await prisma.user_attending_status.create({
                 data: {
@@ -169,6 +182,7 @@ export async function PUT(request: Request,
                     attending: "interested",
                 }
             })
+
             // Return the updated event and the created status
             return NextResponse.json({ updatedEvent: updatedEvent, createdStatus: createdStatus });
         } else {

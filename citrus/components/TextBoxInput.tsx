@@ -1,37 +1,42 @@
 "use client"
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from "next/navigation";
+import { experiences } from '@prisma/client';
 
-async function onPrepaidTicketHandler(eventID: string, tickets: BigInt){
+async function onPrepaidTicketHandler(username: string, eventID: string, tickets: BigInt){
   const res = await fetch(`/api/experiences/${eventID}?addUser=true?ticketsAdded=${tickets}`, {
       method: 'PUT',
       body: JSON.stringify({}),
   });
+  const status_res = await fetch(process.env.BASE_API_URL + `api/statuses/${eventID}?user_id=${username}?ticketsAdded=${tickets}`, {
+      method: 'PUT',
+      body: JSON.stringify({})
+  })
 }
 
-export default function TextBoxInput({username, eventID, prepaid_tickets}: {username: string | null | undefined, 
-  eventID: string, prepaid_tickets: BigInt}){
+export default function TextBoxInput({username, eventID, currentEvent}: {username: string, 
+  eventID: string, currentEvent: experiences}){
   const router = useRouter();
-  const [inputValue, setInputValue] = useState('');
+  const [extraTickets, setExtraTickets] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    setExtraTickets(e.target.value);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    console.log('Submitted value:', inputValue);
-    const res = async () => {await onPrepaidTicketHandler(eventID, prepaid_tickets)}
-    setInputValue('');
+    const res = async () => {await onPrepaidTicketHandler(username, eventID, BigInt(extraTickets))}
+    setExtraTickets("");
     router.refresh();
+    
   };
 
   return (
     <form className="flex-row" onSubmit={handleSubmit}>
       <input
         type="text"
-        value={inputValue}
+        value={extraTickets}
         onChange={handleChange}
         placeholder="Enter number of extra tickets (INCLUSIVE)"
         className="w-52 h-8 p-2 border rounded mr-2"

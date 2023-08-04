@@ -8,8 +8,12 @@ async function getUserStatusData(user_id: string | null | undefined, event_id: s
 export default async function StatusDisplay({username, event_id, flag}: {username: string | null | undefined, event_id: string, 
 flag: string}){
     const status_data = await getUserStatusData(username, event_id);
-    
+    if(flag == "tickets"){
+        return(
+            <p className="indent-8">You have {status_data.prepaid_tickets} extra tickets.</p>
+        )
+    }
     return(
-        <p className="indent-8">You have {status_data.prepaid_tickets} extra tickets.</p>
+       status_data.prepaid_tickets
     )
 }

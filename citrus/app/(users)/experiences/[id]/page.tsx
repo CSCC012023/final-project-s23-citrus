@@ -101,7 +101,9 @@ export default async function Page({ params }: { params: { id: string } }) {
                         <p className="indent-8">There seem to be no users currently attending this event.</p>
                     ) : (
                         <ul className="indent-8">
-                            {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} </li>)}
+                            {/* @ts-expect-error Client Component */}
+                            {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} {<StatusDisplay 
+                            username={attendee} event_id={params.id} flag="WIP"/>} </li>)}
                         </ul>
                     )
                 }
@@ -109,10 +111,11 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
 
             <div>
-                {renderTextBoxInput && <TextBoxInput/>}
+                {renderTextBoxInput && session != null && session.user != null && session.user.name != null && 
+                <TextBoxInput username={session.user.name} eventID={params.id} currentEvent={data}/>}
                 {/* @ts-expect-error Client Component */}
                 {renderTextBoxInput && session != null && session.user != null && <StatusDisplay username={session?.user.name} 
-                event_id={params.id} flag="WIP" />}
+                event_id={params.id} flag="tickets" />}
             </div>
                 
             <div>
