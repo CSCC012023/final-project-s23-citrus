@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { experiences } from '@prisma/client';
 
 async function onPrepaidTicketHandler(username: string, eventID: string, tickets: BigInt){
-  const res = await fetch(`/api/experiences/${eventID}?addUser=true?ticketsAdded=${tickets}`, {
+  const res = await fetch(process.env.BASE_API_URL + `/api/experiences/${eventID}?addUser=true?ticketsAdded=${tickets}`, {
       method: 'PUT',
       body: JSON.stringify({}),
   });
@@ -26,7 +26,20 @@ export default function TextBoxInput({username, eventID, currentEvent}: {usernam
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    const res = async () => {await onPrepaidTicketHandler(username, eventID, BigInt(extraTickets))}
+    //const res = async () => {await onPrepaidTicketHandler(username, eventID, BigInt(extraTickets))}
+
+    fetch(process.env.BASE_API_URL + `/api/experiences/${eventID}?addUser=true?ticketsAdded=${extraTickets}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({})
+      }).then();
+    
+    fetch(process.env.BASE_API_URL + `/api/statuses/${eventID}?user_id=${username}?ticketsAdded=${extraTickets}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({})
+      }).then();
+
     setExtraTickets("");
     router.refresh();
     
