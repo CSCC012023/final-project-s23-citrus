@@ -38,9 +38,7 @@ export default function ConnectWithPeople() {
         .then(data => {
           setUsers(users => [...users, ...data.users]);
           setNextCursor(data.next_cursor);
-        })
-      console.log(apiPathName);
-      console.log(users);
+        });
     };
   }, [apiPathName]);
 
