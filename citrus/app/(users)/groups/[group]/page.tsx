@@ -1,20 +1,16 @@
 "use client"
-import Head from 'next/head'
 import AblyChatComponent from '@/components/AblyChatComponent'
-import { getSession } from 'next-auth/react'
 
-async function userInGroup(groupID: string) {
-  const session = await getSession();
-  
-}
+export default function Home({ params }: { params: { group: string } }) {
+    const groupID = params.group.split('-')[0]
+    const groupName = params.group.split('-')[1]
 
-export default function Home({ params }: { params: { id: string } }) {
     return (
       <div className="container">
   
         <main>
-          <h1 className="title">Next.js Chat Demo</h1>
-          <AblyChatComponent channelID={params.id}/>
+          <h1 className="title">{groupName}</h1>
+          <AblyChatComponent channelID={groupID}/>
         </main>
   
         <style jsx>{`
@@ -49,15 +45,6 @@ export default function Home({ params }: { params: { id: string } }) {
             background: linear-gradient(to right, #363795, #005C97);
           }
   
-          footer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            width: 100vw;
-            height: 100px;
-          }
-  
           .logo {
             display: block;
             height: 20px;
@@ -71,20 +58,6 @@ export default function Home({ params }: { params: { id: string } }) {
             top: 0; 
             border: 0; 
             right: 0; 
-          }
-  
-          .octo-arm {
-            transform-origin: 130px 106px;
-          }
-  
-          .github-corner:hover .octo-arm {
-            animation: octocat-wave 560ms ease-in-out;
-          }
-          
-          @keyframes octocat-wave {
-            0%, 100%{transform:rotate(0)}
-            20%,60%{transform:rotate(-25deg)}
-            40%,80%{transform:rotate(10deg)}}
           }
   
           @media (min-width: 600px) {

@@ -6,8 +6,6 @@ export async function GET(request: Request) {
     const clientId = searchParams.get("clientId");
     if (!clientId) return NextResponse.json({ error: "clientId is required" }, { status: 400 })
 
-    console.log("clientId", clientId)
-
     const client = new Ably.Realtime(process.env.ABLY_API_KEY as string);
     const tokenRequestData = await client.auth.createTokenRequest({ clientId: clientId});
     return NextResponse.json(tokenRequestData);

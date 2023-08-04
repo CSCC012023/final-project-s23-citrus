@@ -61,14 +61,9 @@ export async function GET(request:Request, { params }: { params: { id: string } 
 
 export async function POST(request: Request,
     { params }: { params: { id: string } }) {
-    console.log("POST REQUESTED")
     const body = await request.json();
     const { text } = body;
     const session = await getServerSession(authOptions);
-
-    console.log(text)
-    console.log(session)
-    console.log(params.id)
 
     if (!session || !session.user) {
         return NextResponse.json("Unauthorized", { status: 401 })

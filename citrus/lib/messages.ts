@@ -21,11 +21,40 @@ export async function getGroupsForUser() {
     })
 
     const groups = user.groups
-    console.log(groups)
 
     return groups
 }
 
-export async function getUsersForGroup(groupID: string) {
+export async function getGroup(groupID: string) {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+        return "Unauthorized"
+    }
 
+    const group = await prisma.groups.findUnique({
+        where: {
+            id: groupID
+        },
+    })
+
+    return group
+}
+
+export async function getUsersForGroup(groupID: string) {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+        return "Unauthorized"
+    }
+
+    const group = await prisma.groups.findUnique({
+        where: {
+            id: groupID
+        },
+        include: {
+            users: true
+        }
+    })
+
+    const users = group.users
+    return users
 }

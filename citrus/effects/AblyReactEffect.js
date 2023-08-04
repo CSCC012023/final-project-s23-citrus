@@ -3,7 +3,7 @@ import Ably from "ably/promises";
 import { getSession } from 'next-auth/react'
 import { useEffect } from 'react'
 
-const ably = new Ably.Realtime.Promise({ authUrl: '/api/messages/ably?clientId=' + 3 });  
+const ably = new Ably.Realtime.Promise({ authUrl: '/api/messages/ably?clientId=nextjs' });  
 
 export function useChannel(channelName, callbackOnMessage) {  
     const channel = ably.channels.get(channelName);

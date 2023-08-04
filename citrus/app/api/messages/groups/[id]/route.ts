@@ -5,6 +5,46 @@ import * as db from "@/lib/db";
 
 const prisma = db.getClient();
 
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    const session = await getServerSession(authOptions);
+    console.log(params.id)
+
+    if (!session || !session.user) {
+        return NextResponse.json("Unauthorized", { status: 401 })
+    }
+
+    try {
+        const group = await prisma.Group.findUnique({
+            where: {
+                id: params.id
+            },
+            select: {
+                users: {
+                    select: {
+                        username: true
+                    }
+                }
+            },
+        })
+
+        const users = group.users.map((user: any) => {
+            return user.username
+        })
+        console.log(users)
+
+        if (users.includes(session.user.name)) {
+            return NextResponse.json(
+                group,
+                { status: 200 }
+            )
+        } else {
+            return NextResponse.json("Unauthorized", { status: 401 })
+        }
+    } catch (e) {
+        return db.handleError(e)
+    }
+}
+
 export async function PUT(request: Request,
     { params }: { params: { id: string } }) {
 
