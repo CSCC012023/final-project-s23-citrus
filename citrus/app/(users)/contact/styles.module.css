@@ -1,0 +1,113 @@
+.container {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    background-color: rgb(1, 1, 32);
+    
+  }
+  .center {
+    text-align: center;
+  }
+  
+  .heading {
+    font-size: 50px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  .description {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 20px;
+    margin-left: 100px;
+    margin-right: 100px;
+
+  }
+  
+  .phoneNumber {
+    font-size: 24px;
+    color: white;
+  }
+  
+  .custom-heading {
+    font-size: 50px;
+  }
+
+  .custom-background {
+    background-color: rgb(1, 1, 32);
+  }
+
+  .custom-input {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    color: black;
+  }
+  .custom-box {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+
+    /* height: 100%; */
+  }
+  .custom-acc-button {
+    border: 1px solid #ccc;
+    padding:  0.5rem;
+    border-radius: 4px;
+  }
+
+  .container2 {
+    margin: 3in;
+  }
+  
+  .center8 {
+    text-align: center;
+    margin: 3in;
+
+  }
+  
+  .heading2 {
+    font-size: 2em;
+    margin-bottom: 1em;
+  }
+  
+  .description2 {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 1.5em;
+  }
+  
+  .phoneNumber {
+    font-size: 1.1em;
+  }
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(1, 1, 32);
+}
+
+.logoAndContentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem; /* Adjust the margin-top value to move everything higher */
+}
+
+.logoContainer {
+  /* Add styles for the logo container */
+  text-align: center;
+}
+
+.logoContainer img {
+  width: 150px; /* Adjust the width to your desired size */
+  height: 150px; /* Adjust the height to your desired size */
+  margin: 50px; /* Add margin around the logo */
+}
+
+/* Add other styles as you have in your existing CSS */
