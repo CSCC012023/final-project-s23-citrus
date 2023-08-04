@@ -38,6 +38,7 @@
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-barcode": "^1.4.6",
+    "react-datepicker": "^4.16.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
     "react-infinite-scroll-component": "^6.1.0",
@@ -46,14 +47,12 @@
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
   },
-  
   "browser": {
-  "fs": false,
-  "os": false,
-  "path": false,
-  "dns": false,
-  "net": false,
-  "tls": false
+    "fs": false,
+    "os": false,
+    "path": false,
+    "dns": false,
+    "net": false,
+    "tls": false
   }
-
 }
