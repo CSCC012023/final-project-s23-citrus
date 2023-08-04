@@ -2,7 +2,6 @@ export default async function GroupChatHolder() {
     const res = await fetch('http://localhost:3000/api/messages/groups')
     const body = await res.json()
     const groups = body.groups
-    console.log(groups)
     return (
         <div>
             <h1>Groups</h1>

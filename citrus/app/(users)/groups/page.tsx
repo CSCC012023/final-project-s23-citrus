@@ -1,6 +1,7 @@
 import GroupChatHolder from "@/components/GroupChatHolder"
 import { use } from "react";
 import { getGroupsForUser } from "@/lib/messages"
+export const dynamic = "force-dynamic"
 
 function GroupCard({ group }: { group: any }) {
     return (
@@ -12,6 +13,9 @@ function GroupCard({ group }: { group: any }) {
 
 export default function Page() {
     const groups = use(getGroupsForUser())
+    if (groups === "Unauthorized") {
+        return <div>loading...</div>
+    }
     return (
         <div className="text-center">
             <h1 className="text-3xl mx-auto">Groups</h1>

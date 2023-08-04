@@ -20,7 +20,6 @@ export default function AblyChatComponent(channelID) {
 
   function sendChatMessage(messageText) {
     channel.publish({ name: "chat-message", data: messageText });
-    console.log("SWAG")
     fetch('/api/messages/groups/' + channelID.channelID + '/messages',
       {
         method: 'POST',
@@ -32,7 +31,6 @@ export default function AblyChatComponent(channelID) {
         })
       }).then((response) => {
         if (response.ok) {
-          console.log(response)
         }
       }
     )

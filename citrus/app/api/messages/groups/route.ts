@@ -27,7 +27,6 @@ export async function GET() {
     })
 
     const groups = user.groups
-    console.log(groups)
 
     return NextResponse.json(
         groups,

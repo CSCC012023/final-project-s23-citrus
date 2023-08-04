@@ -7,7 +7,6 @@ const prisma = db.getClient();
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
-    console.log(params.id)
 
     if (!session || !session.user) {
         return NextResponse.json("Unauthorized", { status: 401 })
@@ -30,7 +29,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
         const users = group.users.map((user: any) => {
             return user.username
         })
-        console.log(users)
 
         if (users.includes(session.user.name)) {
             return NextResponse.json(

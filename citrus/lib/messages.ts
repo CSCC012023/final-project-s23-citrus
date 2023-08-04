@@ -31,7 +31,7 @@ export async function getGroup(groupID: string) {
         return "Unauthorized"
     }
 
-    const group = await prisma.groups.findUnique({
+    const group = await prisma.Group.findUnique({
         where: {
             id: groupID
         },
@@ -57,4 +57,30 @@ export async function getUsersForGroup(groupID: string) {
 
     const users = group.users
     return users
+}
+
+export async function isUserInGroup(username: string, groupID: string) {
+    try {
+        const group = await prisma.Group.findUnique({
+            where: {
+                id: groupID,
+            },
+            select: {
+                users: {
+                    select: {
+                        username: true
+                    } 
+                }
+            }
+        }) 
+
+        const usernames = group.users.map((user: any) => user.username)
+
+        if (usernames.includes(username)) {
+            return true
+        }
+        return false
+    } catch (e) {
+        return false
+    }
 }
