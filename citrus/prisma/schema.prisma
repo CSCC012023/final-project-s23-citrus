@@ -49,11 +49,12 @@ model organizers {
 }
 
 model user_attending_status {
-  username    String                @db.String(32)
-  event_id    String                @db.Uuid
-  attending   attending_status_type
-  experiences experiences           @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users       users                 @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
+  username        String                @db.String(32)
+  event_id        String                @db.Uuid
+  attending       attending_status_type
+  prepaid_tickets BigInt                @default(0)
+  experiences     experiences           @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users           users                 @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([username, event_id])
   @@schema("users")
