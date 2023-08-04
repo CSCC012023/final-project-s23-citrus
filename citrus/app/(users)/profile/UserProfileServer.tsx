@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { useEffect, useState } from 'react';
+import '@/lib/patch'
 
 export default async function UserProfileServer(){
 
@@ -20,7 +21,7 @@ export default async function UserProfileServer(){
         <p>Phone Number: {userData.phone_number}</p>
         <p>Instagram: {userData.instagram}</p>
         <p>Facebook: {userData.facebook}</p>
-        <p>Interests: {userData.interests ? userData.interests.join(", ") : ""}</p>
+        <p>Interests: {userData.interests.length > 0 ? userData.interests.join(", ") : ""}</p>
         </>
     );
 }

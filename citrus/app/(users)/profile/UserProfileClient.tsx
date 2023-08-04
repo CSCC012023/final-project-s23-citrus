@@ -3,6 +3,7 @@ import { FormEvent, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { Heading } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
+import '@/lib/patch'
 
 async function updateUserProfile(data: any) {
   try {
@@ -16,8 +17,6 @@ async function updateUserProfile(data: any) {
 
     if (res.ok) {
       console.log('Profile updated successfully!');
-      const router = useRouter();
-      router.refresh();
     } else {
       console.error('Failed to update profile:', res.status);
     }
@@ -64,9 +63,10 @@ export default function UserProfileClient() {
     };
 
     await updateUserProfile(updatedData);
-
   };
   
+  const router = useRouter();
+
   return (
     <>
       <Heading size="lg" mb={4}>
@@ -75,27 +75,28 @@ export default function UserProfileClient() {
     <form onSubmit={handleSubmit}>
       <label>
         Phone Number:
-        <input type="text" value={phoneNumber} 
+        <input type="text" value={phoneNumber} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
         onChange={(e) => setPhoneNumber(e.target.value)} />
         
       </label>
       <br />
       <label>
         Instagram:
-        <input type="text" value={instagram}
+        <input type="text" value={instagram} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
         onChange={(e) => setInstagram(e.target.value)} />
       </label>
       <br />
       <label>
         Facebook:
-        <input type="text" value={facebook} 
+        <input type="text" value={facebook} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
         onChange={(e) => setFacebook(e.target.value)} />
       </label>
       <br />
       <label>
         Interests:
         <div>
-          <input type="text" value={interest} onChange={handleInterestChange} />
+          <input type="text" value={interest} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
+           onChange={handleInterestChange} />
           <button type="button" onClick={handleAddInterest}>
             Add
           </button>
@@ -112,7 +113,7 @@ export default function UserProfileClient() {
         </ul>
       </label>
       <br />
-      <button type="submit">Update Profile</button>
+      <button type="submit" onClick={() => {router.refresh()}}>Update Profile</button>
     </form>
     </>
   );

@@ -30,10 +30,12 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
     let select = {
         username: true,
+        phone_number: true,
         email: true,
         instagram: true,
         facebook: true,
         premium: true,
+        interests: true,
         experiences: true
     };
 

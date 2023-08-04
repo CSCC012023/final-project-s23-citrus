@@ -24,8 +24,6 @@ return (
           <UserProfileServer />
         </div>
         <div className={styles["custom-box"]}>
-            {/* @ts-expect-error Server Component */}
-
           <UserProfileClient />
         </div>
       </div>
