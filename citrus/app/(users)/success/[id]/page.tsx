@@ -1,19 +1,48 @@
-'use client'
 import axios from "axios"
-import Stripe from 'stripe'
+import { stripe } from "@/app/api/payment/route";
+import { NextResponse, NextRequest } from "next/server";
+import * as db from "@/lib/db"
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
 export default async function Page({ params }: { params: { id: string } }) {
 
-  const res = await fetch('stripe.com/api/v1/checkout/sesssions/' + params.id,{ method: 'GET'})
-  const currentSession = await res.json();
+  const session = await getServerSession(authOptions)
+
+  if (!session || !session.user) {
+    return NextResponse.redirect('/api/auth/login')
+  }
+
+  const prisma = db.getClient();
+
+  let update = {
+      premium: true,
+  }
+
+  const currentSession = await stripe.checkout.sessions.retrieve(
+    params.id
+  )
+
+  console.log(currentSession)
   
   if (currentSession.payment_status === 'paid' && currentSession.status === 'open') {
    // LOGIC FOR UPDATING USER
 
-   const expireSession = await fetch('stripe.com/api/v1/checkout/sesssions/' + params.id + '/expire',{ method: 'POST'})
-  }
+   try {
+      await prisma.users.update({
+        where: {username: session.user.name},
+        data: update
+      });
+    } catch (e) {
+        return db.handleError(e);
+    }
 
+   // Replace with stripe.checkout.sessions.expire()
+   const expireSession = await stripe.checkout.sessions.expire(
+    params.id
+   )
+  }
 
 
   return (
