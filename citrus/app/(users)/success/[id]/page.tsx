@@ -26,8 +26,9 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   console.log(currentSession)
   
-  if (currentSession.payment_status === 'paid' && currentSession.status === 'open') {
+  if (currentSession.payment_status === 'paid') {
    // LOGIC FOR UPDATING USER
+   console.log('hello')
 
    try {
       await prisma.users.update({
@@ -39,9 +40,11 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
 
    // Replace with stripe.checkout.sessions.expire()
-   const expireSession = await stripe.checkout.sessions.expire(
-    params.id
-   )
+   if (currentSession.status == 'open'){
+      const expireSession = await stripe.checkout.sessions.expire(
+        params.id
+      )
+   }
   }
 
 
