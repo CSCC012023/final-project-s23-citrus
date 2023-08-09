@@ -75,6 +75,17 @@ export default function AddEvent() {
         body: JSON.stringify({"name" : name, "description": description, "capacity": parseInt(capacity), "location": location,
           "start_time": start, "end_time": end, "category": category, "tags": tags.split(","), ...organizer_fields }),
     });
+
+    if (res.status === 200) {
+      window.alert("Event created successfully!");
+    }
+    else if (res.body) {
+      const body = await res.json();
+      window.alert("Event creation failed. " + body.error);
+    }
+    else {
+      window.alert("Event creation failed. " + res.statusText);
+    }
   };
 
   if (!session) {

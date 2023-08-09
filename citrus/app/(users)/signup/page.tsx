@@ -3,6 +3,7 @@
 
 import { useState, FormEvent, ChangeEvent} from "react";
 import styles from "./signup.module.css";
+import { redirect } from 'next/navigation'
 
 import {
   Flex,
@@ -18,7 +19,6 @@ import {
   FormHelperText,
   InputRightElement
 } from "@chakra-ui/react";
-
 
 const App = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,6 +51,15 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       method: 'POST',
       body: JSON.stringify({"username" : username, "password": password, email: email }),
   });
+  if (res.status === 200) {
+      // Redirect to home page
+      //redirect("/login");
+  } else if (res.body) {
+    const body = await res.json();
+    window.alert(body.error);
+  } else {
+    window.alert("Error signing up. Please try again.");
+  }
 };
 
   return (
