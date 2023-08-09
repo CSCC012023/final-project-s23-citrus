@@ -3,6 +3,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import * as db from '@/lib/db';
 import { NextResponse } from 'next/server';
 import "@/lib/patch"
+import { parse } from "path";
 
 
 const prisma = db.getClient();
@@ -96,15 +97,16 @@ export async function PUT(request: Request,
     const event_id = params.id;
     const user_id = searchParams.get('user_id');
     const ticketsAdded = searchParams.get('ticketsAdded');
+    const prepaid_tickets = ticketsAdded !== null ? parseInt(ticketsAdded) : 0;
       
     try {
-        const status = await prisma.user_attending_status.update({
+        const status = await prisma.user_attending_status.updateMany({
             where: {
                 username: user_id,
                 event_id: event_id,
             },
             data: {
-                prepaid_tickets: ticketsAdded,
+                prepaid_tickets: prepaid_tickets,
             },
         })
           

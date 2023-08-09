@@ -3,17 +3,6 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from "next/navigation";
 import { experiences } from '@prisma/client';
 
-async function onPrepaidTicketHandler(username: string, eventID: string, tickets: BigInt){
-  const res = await fetch(process.env.BASE_API_URL + `/api/experiences/${eventID}?addUser=true?ticketsAdded=${tickets}`, {
-      method: 'PUT',
-      body: JSON.stringify({}),
-  });
-  const status_res = await fetch(process.env.BASE_API_URL + `api/statuses/${eventID}?user_id=${username}?ticketsAdded=${tickets}`, {
-      method: 'PUT',
-      body: JSON.stringify({})
-  })
-}
-
 export default function TextBoxInput({username, eventID, currentEvent}: {username: string, 
   eventID: string, currentEvent: experiences}){
   const router = useRouter();
@@ -26,15 +15,13 @@ export default function TextBoxInput({username, eventID, currentEvent}: {usernam
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    //const res = async () => {await onPrepaidTicketHandler(username, eventID, BigInt(extraTickets))}
-
-    fetch(process.env.BASE_API_URL + `/api/experiences/${eventID}?addUser=true?ticketsAdded=${extraTickets}`,
+    fetch(`/api/experiences/${eventID}?addUser=false&ticketsAdded=${extraTickets}`,
       {
         method: 'PUT',
         body: JSON.stringify({})
       }).then();
     
-    fetch(process.env.BASE_API_URL + `/api/statuses/${eventID}?user_id=${username}?ticketsAdded=${extraTickets}`,
+    fetch(`/api/statuses/${eventID}?user_id=${username}&ticketsAdded=${extraTickets}`,
       {
         method: 'PUT',
         body: JSON.stringify({})
@@ -52,7 +39,7 @@ export default function TextBoxInput({username, eventID, currentEvent}: {usernam
         value={extraTickets}
         onChange={handleChange}
         placeholder="Enter number of extra tickets (INCLUSIVE)"
-        className="w-52 h-8 p-2 border rounded mr-2"
+        className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
       />
     <button className="text-center text-white font-semibold z-10 i h-8 w-52 bg-gradient-to-br from-yellow-400 to-yellow-600 items-center 
         rounded-full shadow-2xl cursor-pointer absolute overflow-hidden transform hover:scale-x-105
