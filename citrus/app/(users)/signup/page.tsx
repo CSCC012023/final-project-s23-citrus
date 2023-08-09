@@ -4,6 +4,7 @@
 import { useState, FormEvent, ChangeEvent} from "react";
 import styles from "./signup.module.css";
 import { redirect } from 'next/navigation'
+import { BASE_URL } from "@/lib/db";
 
 import {
   Flex,
@@ -52,8 +53,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       body: JSON.stringify({"username" : username, "password": password, email: email }),
   });
   if (res.status === 200) {
-      // Redirect to home page
-      //redirect("/login");
+      redirect(BASE_URL + "/login");
   } else if (res.body) {
     const body = await res.json();
     window.alert(body.error);

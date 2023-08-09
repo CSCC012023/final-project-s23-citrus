@@ -135,7 +135,7 @@ export async function PUT(request: Request,
     const body = await request.json() || undefined;
 
     if (session === null && addUser != null) {
-        redirect('/login')
+        redirect(db.BASE_URL + '/login')
     }
 
 
