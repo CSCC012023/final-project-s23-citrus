@@ -16,6 +16,7 @@ export default function ChatContainer(params) {
     grid-template-rows: 1fr 100px;
     min-height: 100vh;
     background-color: #eee;
+    max-width: 100vw;
   }
 
   main {

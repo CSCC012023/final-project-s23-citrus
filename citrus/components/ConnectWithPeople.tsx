@@ -4,8 +4,6 @@ import { ReadonlyURLSearchParams, usePathname, useSearchParams } from 'next/navi
 import type { users } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import "react-datepicker/dist/react-datepicker.css";
-import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 function buildAPISearchParams(searchParams: ReadonlyURLSearchParams, basePathName: string) {
   var apiPathName = basePathName
@@ -16,6 +14,24 @@ function buildAPISearchParams(searchParams: ReadonlyURLSearchParams, basePathNam
     apiPathName += '&' + params.toString();
   }
   return apiPathName;
+}
+
+function followUser(username: string) {
+  fetch('/api/followers', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        alert('You are now following ' + username);
+      } else {
+        alert('There was an error following ' + username);
+      }
+    });
 }
 
 export default function ConnectWithPeople() {
@@ -102,6 +118,7 @@ export default function ConnectWithPeople() {
               <a href={`/profile/${user.username}`}>
                 <button className="px-4 py-2 bg-black text-white rounded">View Profile</button>
               </a>
+              <button className="px-4 py-2 bg-black text-white rounded" onClick={() => followUser(user.username)}>Connect</button>
             </div>
           ))}
         </InfiniteScroll>

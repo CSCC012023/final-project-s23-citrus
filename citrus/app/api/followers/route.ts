@@ -11,31 +11,31 @@ export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
     const body = await request.json();
 
-/*     if (!session || !session.user) {
+    if (!session || !session.user) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    } */
+    }
 
     try {
         const follows = await prisma.Follows.create({
             data: {
-                follower_username: body.username1,
+                follower_username: session.user.name,
                 following_username: body.username
             }
         })
 
         const group = await prisma.Group.create({
             data: {
-                name: `${body.username1} & ${body.username}`,
+                name: `${session.user.name} & ${body.username}`,
                 users: {
                     connect: [
-                        { username: body.username1 },
+                        { username: session.user.name },
                         { username: body.username }
                     ]
                 }
             }
         })
         return NextResponse.json(
-            { follows, group },
+            { follows, group, success: true },
             { status: 200 }
         )
     } catch (e) {
