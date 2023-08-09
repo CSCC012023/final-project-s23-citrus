@@ -3,6 +3,9 @@ import { FormEvent, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { Heading } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
+import Link from 'next/link'; // Import the Link component
+
+
 import '@/lib/patch'
 
 async function updateUserProfile(data: any) {
@@ -115,6 +118,13 @@ export default function UserProfileClient() {
       <br />
       <button type="submit" onClick={() => {router.refresh()}}>Update Profile</button>
     </form>
+    <div className="mt-4">
+        <Link href="/pricing">
+          <span className="text-blue-500 font-semibold cursor-pointer">
+            Pricing
+          </span>
+        </Link>
+      </div>
     </>
   );
 }
