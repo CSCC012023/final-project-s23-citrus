@@ -3,7 +3,6 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 var client = null;
-export const BASE_URL = process.env.PROTOCOL_SCHEME + process.env.VERCEL_URL;
 
 const errorToStatus = {
     'P2000': '400',

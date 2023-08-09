@@ -18,7 +18,7 @@ import {
   FormHelperText,
   InputRightElement
 } from "@chakra-ui/react";
-import { BASE_URL } from "@/lib/db";
+import { BASE_URL } from "@/lib/vars";
 import { redirect } from "next/navigation";
 
 

@@ -2,6 +2,7 @@ import axios from "axios"
 import { stripe } from "@/app/api/payment/route";
 import { redirect } from "next/navigation"
 import * as db from "@/lib/db"
+import { BASE_URL } from "@/lib/vars"
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
@@ -11,7 +12,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions)
 
   if (!session || !session.user) {
-    redirect(db.BASE_URL + '/login')
+    redirect(BASE_URL + '/login')
   }
 
   const prisma = db.getClient();

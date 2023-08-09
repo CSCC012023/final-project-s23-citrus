@@ -4,7 +4,7 @@
 import { useState, FormEvent, ChangeEvent} from "react";
 import styles from "./signup.module.css";
 import { redirect } from 'next/navigation'
-import { BASE_URL } from "@/lib/db";
+import { BASE_URL } from "@/lib/vars";
 
 import {
   Flex,

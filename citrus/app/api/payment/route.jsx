@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import * as db from "@/lib/db"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
+import { BASE_URL } from "@/lib/vars";
 
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -13,7 +14,7 @@ export async function POST (request) {
 
 
     if (!session || !session.user) {
-        redirect(db.BASE_URL + '/login')
+        redirect(BASE_URL + '/login')
     }
 
     let data = await request.json();
@@ -27,8 +28,8 @@ export async function POST (request) {
             }
         ],
         mode: 'payment',
-        success_url: db.BASE_URL + '/success/{CHECKOUT_SESSION_ID}',
-        cancel_url: db.BASE_URL+ '/cancel',
+        success_url: BASE_URL + '/success/{CHECKOUT_SESSION_ID}',
+        cancel_url: BASE_URL+ '/cancel',
     })
 
     return NextResponse.json(stripeSession.url)
