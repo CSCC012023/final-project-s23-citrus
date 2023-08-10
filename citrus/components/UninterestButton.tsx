@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 
 async function onUninterestHandler(username: string | null | undefined, eventID: string){
     const res = await fetch(`/api/experiences/${eventID}`);
-    console.log(res);
     const data = await res.json();
     const attendees = data.attendees;
     const index = attendees.indexOf(username);
@@ -13,14 +12,11 @@ async function onUninterestHandler(username: string | null | undefined, eventID:
             method: 'PUT',
             body: JSON.stringify({"attendees": attendees}),
         });
-        console.log(res2);
     }
 
     const res3 = await fetch(`/api/statuses?event_id=${eventID}`, {
         method: 'DELETE'
-    });
-    console.log(res3);
-    
+    });    
 }
 
 export default function UninterestButton({username, eventID}: {username: string | null | undefined, eventID: string}){

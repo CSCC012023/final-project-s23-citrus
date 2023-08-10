@@ -17,14 +17,14 @@
     "downlevelIteration": true,
     "plugins": [
       {
-        "name": "next"
+        "name": "next",
       }
     ],
     "paths": {
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "effects/AblyReactEffect.js"],
   "exclude": ["node_modules"],
   "typeRoots": ["./node_modules/@types", "./types"],
 }

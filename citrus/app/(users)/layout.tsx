@@ -21,7 +21,6 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions);
-
   const correctUserType = (!session) || (session.user && session.user.userType != 'organizer');
 
   return (
@@ -45,6 +44,9 @@ export default async function RootLayout({
                 </li>
                 <li className='flex-1'>
                   <a href="/about">About</a>
+                </li>
+                <li className='flex-1'>
+                  <a href="/groups">Chats</a>
                 </li>
                 <NavBarLogin />
                 <li>
