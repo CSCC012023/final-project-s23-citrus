@@ -5,6 +5,7 @@ import { attending_status_type } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { BASE_URL } from '@/lib/vars';
 
 const prisma = db.getClient();
 
@@ -135,7 +136,7 @@ export async function PUT(request: Request,
     const body = await request.json() || undefined;
 
     if (session === null && addUser != null) {
-        redirect('/login')
+        redirect(BASE_URL + '/login')
     }
 
 

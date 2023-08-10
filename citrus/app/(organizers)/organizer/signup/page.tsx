@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState, FormEvent, ChangeEvent} from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import styles from "./signup.module.css";
 
 import {
@@ -18,6 +18,8 @@ import {
   FormHelperText,
   InputRightElement
 } from "@chakra-ui/react";
+import { BASE_URL } from "@/lib/vars";
+import { redirect } from "next/navigation";
 
 
 const App = (): JSX.Element => {
@@ -48,13 +50,21 @@ const App = (): JSX.Element => {
     // Handle form submission here
     const res = await fetch('/api/organizers', {
       method: 'POST',
-      body: JSON.stringify({org_id : org_id, display_name: org_id, password: password, email: email }),
+      body: JSON.stringify({ org_id: org_id, display_name: org_id, password: password, email: email }),
     });
+    if (res.status === 200) {
+      redirect(BASE_URL + "/organizer/login");
+    } else if (res.body) {
+      const body = await res.json();
+      window.alert(body.error);
+    } else {
+      window.alert("Error signing up. Please try again.");
+    }
   };
 
   return (
     <Flex
-     className={styles["custom-background"]}
+      className={styles["custom-background"]}
       flexDirection="column"
       width="100vw"
       height="100vh"

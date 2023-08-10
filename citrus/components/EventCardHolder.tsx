@@ -68,11 +68,11 @@ export default function EventCardHolder() {
       link = 'dashboard';
     }
   }
-  else if(session?.user && route.includes('user')){
+  else if(session?.user && route.includes('myExperiences')){
     if (session?.user) {
       //basePathName = '/api/experiences?current_user_id=' + session.user.name;
       basePathName = '/api/statuses';
-      link = 'user';
+      link = 'myExperiences';
     }
   } 
   else {
@@ -97,7 +97,7 @@ export default function EventCardHolder() {
   
 
   useEffect(() => {
-    if ((session?.user && (route.includes('organizer')) || route.includes('experiences') || route.includes('user'))) {
+    if ((session?.user && (route.includes('organizer')) || route.includes('experiences') || route.includes('myExperiences'))) {
       fetch(apiPathName)
         .then(res => res.json())
         .then(data => {

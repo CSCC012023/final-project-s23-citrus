@@ -220,7 +220,6 @@ export async function GET(request: Request) {
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *  {
- *     "id": "1",
  *     "name": "Event 1",
  *     "description": "This is the first event",
  *     "location": "New York",
@@ -240,6 +239,20 @@ export async function POST(request: Request) {
     const end_time = new Date(body.end_time);
 
     try {
+        if (body.user_id) {
+            const user = await prisma.users.findUnique({
+                where: {
+                    username: body.user_id
+                }
+            });
+            if (!user) {
+                return NextResponse.json({ error: "Organizing user does not exist." }, { status: 400 });
+            } 
+            if (user.premium == false) {
+                return NextResponse.json({ error: "Organizing user does not have premium." }, { status: 400 });
+            }
+        }
+
         const event = await prisma.experiences.create({
             data: {
                 name: body.name,
