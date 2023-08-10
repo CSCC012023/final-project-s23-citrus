@@ -1,11 +1,7 @@
 "use client";
 import { FormEvent, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { Heading } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
-import Link from 'next/link'; // Import the Link component
-
-
 import '@/lib/patch'
 
 async function updateUserProfile(data: any) {
@@ -66,6 +62,7 @@ export default function UserProfileClient() {
     };
 
     await updateUserProfile(updatedData);
+    router.refresh();
   };
 
   const router = useRouter();
@@ -122,7 +119,7 @@ export default function UserProfileClient() {
             </li>
           ))}
         </ul>
-      <button className="border p-4 mt-8 rounded-lg bg-blue-900" type="submit" onClick={() => { router.refresh() }}>Update Profile</button>
+      <button className="border p-4 mt-8 rounded-lg bg-blue-900" type="submit">Update Profile</button>
     </form >
     </>
   );

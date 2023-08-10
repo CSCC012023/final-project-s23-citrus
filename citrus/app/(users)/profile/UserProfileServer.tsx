@@ -1,6 +1,5 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { useEffect, useState } from 'react';
 import '@/lib/patch'
 
 export default async function UserProfileServer(){
