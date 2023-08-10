@@ -94,13 +94,18 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <p className="indent-8">{data.description}</p>
             </div>
             <div>
+                <div>
+                    <br></br>
+                </div>
                 <h2 className="text-3xl text-bold">Users Attending</h2>
-
+                <div>
+                    <br></br>
+                </div>
                 {
                     data.attendees == null || data.attendees.length == 0 ? (
                         <p className="indent-8">There seem to be no users currently attending this event.</p>
                     ) : (
-                        <ul className="indent-8">
+                        <ul className="indent-8 text-bold">
                             {/* @ts-expect-error Client Component */}
                             {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} {<StatusDisplay 
                             username={attendee} event_id={params.id} flag="WIP"/>} </li>)}

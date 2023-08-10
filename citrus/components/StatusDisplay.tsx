@@ -10,10 +10,25 @@ flag: string}){
     const status_data = await getUserStatusData(username, event_id);
     if(flag == "tickets"){
         return(
-            <p className="indent-8">You have {status_data.prepaid_tickets} extra tickets.</p>
+            //<p className="indent-8">You have {status_data.prepaid_tickets} extra tickets.</p>
+            <div>
+                <br></br>
+            </div>
         )
     }
-    return(
-       status_data.prepaid_tickets
-    )
+    if(status_data.prepaid_tickets == '0' || status_data.prepaid_tickets == null){
+        return(
+            <div>
+                <p className="indent-8">Has no extra tickets.</p>
+                <br></br>
+            </div>
+        )
+    } else{
+        return(
+            <div>
+                <p className="indent-8">has {status_data.prepaid_tickets} extra tickets.</p>
+                <br></br>
+            </div>
+        )
+    }
 }

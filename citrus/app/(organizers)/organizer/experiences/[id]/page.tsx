@@ -90,7 +90,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     data.attendees == null || data.attendees.length == 0 ? (
                         <p className="indent-8">There seem to be no users currently attending this event.</p>
                     ) : (
-                        <ul className="indent-8">
+                        <ul className="indent-8 text-bold">
                             {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} </li>)}
                         </ul>
                     )
