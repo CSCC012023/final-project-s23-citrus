@@ -1,5 +1,6 @@
 import * as db from '@/lib/db'
 import { NextResponse } from 'next/server';
+import '@/lib/patch'
 
 const prisma = db.getClient();
 
@@ -19,10 +20,8 @@ const prisma = db.getClient();
  *         "username": "sampleUsername",
  *         "email": "sampleEmail@mail.com",
  *         "phone_number": "16471234567",
- *         "socials": [
- *             "https://www.instagram.com/sampleUsername/", 
- *             "https://www.facebook.com/sampleUsername/"
- *         ],
+ *         "instagram": "https://www.instagram.com/sampleUsername/",
+ *         "facebook": "https://www.facebook.com/sampleUsername/"
  *         "premium": true,
  *         "experiences": []
  *     }
@@ -32,10 +31,12 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
     let select = {
         username: true,
+        phone_number: true,
         email: true,
         instagram: true,
         facebook: true,
         premium: true,
+        interests: true,
         experiences: true
     };
 
