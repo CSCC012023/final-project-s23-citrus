@@ -16,7 +16,7 @@ return (
     
     <div className={styles["custom-background"]} style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", flexDirection: "column" }}>
       {/* Big Header */}
-      <h1 className="user-profile-header">User Profile</h1>
+      <h1 className="font-extrabold text-6xl">User Profile</h1>
 
       <div style={{ display: "flex" }}>
         <div className={styles["custom-box"]}>

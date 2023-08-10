@@ -15,13 +15,13 @@ export default async function UserProfileServer(){
     if (!userData)    return <p>Loading user data...</p>;
 
     return (
-        <>
+        <div className="text-2xl">
         <p>Name: {userData.username}</p>
         <p>Email: {userData.email}</p>
         <p>Phone Number: {userData.phone_number}</p>
         <p>Instagram: {userData.instagram}</p>
         <p>Facebook: {userData.facebook}</p>
         <p>Interests: {userData.interests && userData.interests.length > 0 ? userData.interests.join(", ") : ""}</p>
-        </>
+        </div>
     );
 }

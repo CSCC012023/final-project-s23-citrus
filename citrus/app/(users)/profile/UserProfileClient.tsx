@@ -62,69 +62,68 @@ export default function UserProfileClient() {
       phone_number: phoneNumber == "" ? undefined : phoneNumber,
       instagram: instagram == "" ? undefined : instagram,
       facebook: facebook == "" ? undefined : facebook,
-      interests: interests.length == 0  ? undefined : interests, // Use the interests array in the updated data
+      interests: interests.length == 0 ? undefined : interests, // Use the interests array in the updated data
     };
 
     await updateUserProfile(updatedData);
   };
-  
+
   const router = useRouter();
 
   return (
     <>
-      <Heading size="lg" mb={4}>
+      <h1 className='text-xl font-extrabold'>
         Edit Profile
-      </Heading>
-    <form onSubmit={handleSubmit}>
-      <label>
-        Phone Number:
-        <input type="text" value={phoneNumber} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
-        onChange={(e) => setPhoneNumber(e.target.value)} />
-        
-      </label>
-      <br />
-      <label>
-        Instagram:
-        <input type="text" value={instagram} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
-        onChange={(e) => setInstagram(e.target.value)} />
-      </label>
-      <br />
-      <label>
-        Facebook:
-        <input type="text" value={facebook} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
-        onChange={(e) => setFacebook(e.target.value)} />
-      </label>
-      <br />
-      <label>
-        Interests:
+      </h1>
+      <form onSubmit={handleSubmit} className="flex-col content-center gap-2.5 text-center">
         <div>
-          <input type="text" value={interest} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
-           onChange={handleInterestChange} />
-          <button type="button" onClick={handleAddInterest}>
-            Add
-          </button>
+          <label>
+            Phone Number
+          </label>
+          <br />
+          <input type="text" value={phoneNumber} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
+            onChange={(e) => setPhoneNumber(e.target.value)} />
+        </div>
+        <div>
+          <label>
+            Instagram
+          </label>
+          <br />
+          <input type="text" value={instagram} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
+            onChange={(e) => setInstagram(e.target.value)} />
+        </div>
+        <div>
+          <label>
+            Facebook
+            <br />
+          </label>
+          <input type="text" value={facebook} className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-black"
+            onChange={(e) => setFacebook(e.target.value)} />
+        </div>
+        <div>
+          <label>
+            Interests
+          </label>
+          <div>
+            <input type="text" value={interest} className="py-2 border border-gray-300 rounded-md text-black"
+              onChange={handleInterestChange} />
+            <button type="button" className="border p-3 rounded-lg bg-blue-900" onClick={handleAddInterest}>
+              Add
+            </button>
+          </div>
         </div>
         <ul>
           {interests.map((item, index) => (
             <li key={index}>
               {item}{' '}
-              <button type="button" onClick={() => handleRemoveInterest(index)}>
+              <button type="button" className="border p-4 rounded-lg bg-blue-900" onClick={() => handleRemoveInterest(index)}>
                 Remove
               </button>
             </li>
           ))}
         </ul>
-      </label>
-      <br />
-      <button type="submit" onClick={() => {router.refresh()}}>Update Profile</button>
-    </form>
-    <div className="mt-4">
-        <Link href="/pricing">
-          <span className="text-blue-500 font-semibold cursor-pointer">
-            Pricing
-          </span>
-        </Link>
-      </div>
+      <button className="border p-4 mt-8 rounded-lg bg-blue-900" type="submit" onClick={() => { router.refresh() }}>Update Profile</button>
+    </form >
     </>
   );
 }

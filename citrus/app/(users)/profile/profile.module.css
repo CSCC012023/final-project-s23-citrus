@@ -3,7 +3,7 @@
   }
 
   .custom-background {
-    background-color: rgb(1, 1, 32);
+    background-color: rgb(0, 0, 0);
   }
 
   .custom-avatar {
@@ -24,11 +24,11 @@
   }
   .custom-box {
     border: 1px solid #ccc;
-    padding: 1rem;
+    padding: 3rem;
     border-radius: 4px;
     margin-bottom: 1rem;
     margin: 20px; /* Add a margin of 20px around the custom-box */
-
+    background-color: rgb(37, 99, 235);
     display: flex; /* Display the container as a flex container */
     flex-direction: column; /* Stack the content vertically */
     align-items: center; /* Center the content horizontally */
@@ -78,12 +78,4 @@ max-width: 100%; /* Limit the maximum width of the container */
 
 .blackText {
   color: black;
-}
-
-.user-profile-header {
-  font-size: 108px; /* Increase the font size to 48px (or any other desired value) */
-  font-weight: bold;
-  margin-bottom: 50px;
-  text-align: center;
-  margin-top: 20px; /* Add a margin of 20px to the top */
 }
