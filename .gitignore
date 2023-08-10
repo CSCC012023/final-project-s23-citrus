@@ -39,3 +39,6 @@ citrus/next-env.d.ts
 #data
 cockroach-data/
 node_modules/
+
+#VS Code files
+*.code-workspace
