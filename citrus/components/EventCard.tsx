@@ -42,7 +42,7 @@ export default function EventCard({ eventName, eventDescription, eventLocation, 
         <p>{eventLocation}</p>
       </a>
       <div className="justify-center flex">
-        {(path.includes("organizer") || (session?.user && session.user.name === eventUserID && path.endsWith('user'))) ? <ManagementTools eventID={eventID} isUser={eventUserID !== null} /> : null}
+        {(path.includes("organizer") || (session?.user && session.user.name === eventUserID && path.endsWith('myExperiences'))) ? <ManagementTools eventID={eventID} isUser={eventUserID !== null} /> : null}
       </div>
     </div>
   );
