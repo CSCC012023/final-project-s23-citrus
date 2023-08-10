@@ -1,6 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faLocationDot, faUser, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import EventButton from '@/components/EventButton';
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import TextBoxInput from '@/components/TextBoxInput';
+import StatusDisplay from '@/components/StatusDisplay';
 
 async function getEventData(id: string) {
     const res = await fetch(process.env.BASE_API_URL + `api/experiences/${id}`, { next: {revalidate: 0}});
@@ -43,6 +47,11 @@ export default async function Page({ params }: { params: { id: string } }) {
     const end_time = new Date(data.end);
     const map_url = `https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=${data.location}`;
     const organizer = await getOrganizerData(data.user_id || data.org_id, data.user_id != null);
+    const session = await getServerSession(authOptions);
+    let renderTextBoxInput = false;
+    if(session != null && data.attendees.includes(session.user?.name)){
+        renderTextBoxInput = true;
+    }
 
     return (
         <div className="w-9/12 m-auto">
@@ -92,12 +101,23 @@ export default async function Page({ params }: { params: { id: string } }) {
                         <p className="indent-8">There seem to be no users currently attending this event.</p>
                     ) : (
                         <ul className="indent-8">
-                            {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} </li>)}
+                            {/* @ts-expect-error Client Component */}
+                            {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} {<StatusDisplay 
+                            username={attendee} event_id={params.id} flag="WIP"/>} </li>)}
                         </ul>
                     )
                 }
 
             </div>
+
+            <div>
+                {renderTextBoxInput && session != null && session.user != null && session.user.name != null && 
+                <TextBoxInput username={session.user.name} eventID={params.id} currentEvent={data}/>}
+                {/* @ts-expect-error Client Component */}
+                {renderTextBoxInput && session != null && session.user != null && <StatusDisplay username={session?.user.name} 
+                event_id={params.id} flag="tickets" />}
+            </div>
+                
             <div>
                 {/* @ts-expect-error Server Component */}
                 <EventButton eventID={params.id} />

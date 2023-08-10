@@ -6,8 +6,7 @@ async function onInterestHandler(username: string | null | undefined, eventID: s
         method: 'PUT',
         body: JSON.stringify({}),
     });
-    // Figure out how to make the page reload, or make this component reload
-    
+    // Figure out how to make the page reload, or make this component reload 
 }
 
 export default function InterestButton({username, eventID}: {username: string | null | undefined, eventID: string}){
