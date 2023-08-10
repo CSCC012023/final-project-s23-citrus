@@ -35,7 +35,7 @@ export default async function RootLayout({
               height={200}
             />
             <nav className='ml-auto my-auto mr-10'>
-              <ul className='flex text-xl space-x-20'>
+              <ul className='flex text-xl space-x-10'>
                 <li className='flex-1'>
                   <a href="/">Home</a>
                 </li>
@@ -44,6 +44,12 @@ export default async function RootLayout({
                 </li>
                 <li className='flex-1'>
                   <a href="/profile">Profile</a>
+                </li>
+                <li className='flex-none'>
+                  <a href="/myExperiences">My Events</a>
+                </li>
+                <li className='flex-1'>
+                  <a href="/connect-with-people">People</a>
                 </li>
                 <li className='flex-1'>
                   <a href="/groups">Chats</a>
