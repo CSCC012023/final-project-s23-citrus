@@ -76,7 +76,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <div className='flex flex-row space-x-20 justify-center my-5'>
                 <div>
                     <p className='font-bold text-2xl'><FontAwesomeIcon icon={faCalendar} className='text-3xl text-blue-600' /> When</p>
-                    <p className=''>{start_time.toLocaleString([], {dateStyle: 'long', timeStyle: 'short'})} to <br></br>{end_time.toLocaleString([], {dateStyle: 'long', timeStyle: 'short'})}</p>
+                    <p className=''>{start_time.toLocaleString([], {dateStyle: 'long', timeStyle: 'short'})} to {end_time.toLocaleString([], {dateStyle: 'long', timeStyle: 'short'})}</p>
                 </div>
                 <div>
                     <p className='font-bold text-2xl'><FontAwesomeIcon icon={faLocationDot} className='text-3xl text-blue-600' /> Where </p>
@@ -94,33 +94,26 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <p className="indent-8">{data.description}</p>
             </div>
             <div>
-                <div>
-                    <br></br>
-                </div>
+
                 <h2 className="text-3xl text-bold">Users Attending</h2>
-                <div>
-                    <br></br>
-                </div>
+
                 {
                     data.attendees == null || data.attendees.length == 0 ? (
                         <p className="indent-8">There seem to be no users currently attending this event.</p>
                     ) : (
                         <ul className="indent-8 text-bold">
                             {/* @ts-expect-error Client Component */}
-                            {data.attendees.map((attendee: string) => <li key={attendee}> {attendee} {<StatusDisplay 
-                            username={attendee} event_id={params.id} flag="WIP"/>} </li>)}
+                            {data.attendees.map((attendee: string) => <li key={attendee}> <div className="flex flex-row"><strong>{attendee}</strong> {<StatusDisplay 
+                            username={attendee} event_id={params.id}/>}</div></li>)}
                         </ul>
                     )
                 }
 
             </div>
 
-            <div>
+            <div className="my-5">
                 {renderTextBoxInput && session != null && session.user != null && session.user.name != null && 
                 <TextBoxInput username={session.user.name} eventID={params.id} currentEvent={data}/>}
-                {/* @ts-expect-error Client Component */}
-                {renderTextBoxInput && session != null && session.user != null && <StatusDisplay username={session?.user.name} 
-                event_id={params.id} flag="tickets" />}
             </div>
                 
             <div>
