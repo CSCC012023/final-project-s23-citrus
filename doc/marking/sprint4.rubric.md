@@ -207,7 +207,7 @@ Your Mark: 20 / 20
   1 mark = at least one is present
   0 marks = None present
 
-  Your Mark: 0
+  Your Mark: 2
 
 - CRC Cards [or equivalent, if the team is not using CRC) (max 4 marks)
 
@@ -217,7 +217,7 @@ Your Mark: 20 / 20
   - 1 mark = The majority of class names do not match the collaborator names or the responsibilities of the majority of the classes are not stated or are unclear
   - 0 marks = No CRC provided or the provided document does not match the CRC model
 
-  Your Mark: 0
+  Your Mark: 2
 
 - Software Architecture Diagram (max 4 marks)
 
@@ -230,11 +230,13 @@ Your Mark: 20 / 20
   - 1 mark = The Architecture Diagram is present, it is not formatted well, and it is unclear what Architecture it follows. There is no web link or other reference lending support to the presented diagram.
   - 0 marks = No diagram present or the presented document does not look like a software architecture diagram
 
-  Your Mark: 0
+  Your Mark: 2
 
-System Design Total Mark: 0 / 10
+System Design Total Mark: 6 / 10
 
-> "Invalid PDF" Please always check your submission. Maybe it got corrupted after the initial marks were put it? Very unlikely. There is nothing I can do.
+> ~~"Invalid PDF" Please always check your submission. Maybe it got corrupted after the initial marks were put it? Very unlikely. There is nothing I can do.~~
+> CRC has to be more detailed & formatted properly & more detail required for Soft Arch dia.
+
 
 ## Documentation (max 3 mark)
 
@@ -275,7 +277,7 @@ Your Mark: 14 / 14
 
 ## Total Mark
 
-70 / 95
+76 / 95
 
 Just wanted to say, it was a pleasure to be your TA for this course. You all have done some amazing work on this project during the past four sprints, and I really hope this project and course helps with everyone's job search and start of your swe career, should you choose to go down this path. Have a great summer and best of luck with your future endeavours! :)
 
