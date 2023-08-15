@@ -1,0 +1,157 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "multiSchema"]
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+  schemas  = ["experiences", "messages", "organizers", "users"]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model experiences {
+  id                    String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                  String                  @db.String(255)
+  capacity              BigInt
+  location              String
+  start                 DateTime                @db.Timestamptz(6)
+  end                   DateTime                @db.Timestamptz(6)
+  description           String
+  category              String
+  tags                  String[]
+  attendees             String[]
+  org_id                String?                 @db.String(32)
+  user_id               String?                 @db.String(32)
+  organizers            organizers?             @relation(fields: [org_id], references: [org_id], onDelete: NoAction, onUpdate: NoAction)
+  users                 users?                  @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
+  user_attending_status user_attending_status[]
+
+  @@unique([name, org_id], map: "event_unique_event")
+  @@unique([name, user_id], map: "event_unique_user")
+  @@schema("experiences")
+}
+
+model organizers {
+  org_id                String        @id @db.String(32)
+  display_name          String?       @db.String(64)
+  organizer_description String?
+  pass                  String        @db.String(60)
+  email                 String?       @unique @db.String(255)
+  phone_number          String?       @unique @db.String(13)
+  socials               String[]
+  premium               Boolean?      @default(false)
+  experiences           experiences[]
+  accounts              Account[]
+  sessions              Session[]
+
+  @@schema("organizers")
+}
+
+model user_attending_status {
+  username        String                @db.String(32)
+  event_id        String                @db.Uuid
+  attending       attending_status_type
+  prepaid_tickets BigInt                @default(0)
+  experiences     experiences           @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users           users                 @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([username, event_id])
+  @@schema("users")
+}
+
+model users {
+  username              String                  @id @db.String(32)
+  pass                  String                  @db.String(60)
+  email                 String                  @unique @db.String(255)
+  phone_number          String?                 @unique @db.String(15)
+  premium               Boolean?                @default(false)
+  interests             String[]
+  facebook              String?
+  instagram             String?
+  experiences           experiences[]
+  messages              Message[]
+  accounts              Account[]
+  followedBy            Follows[]               @relation("following")
+  following             Follows[]               @relation("follower")
+  sessions              Session[]
+  user_attending_status user_attending_status[]
+  groups                Group[]                 @relation("GroupTousers")
+
+  @@schema("users")
+}
+
+model Follows {
+  follower_username  String @db.String(32)
+  following_username String @db.String(32)
+  follower           users  @relation("following", fields: [follower_username], references: [username], onDelete: NoAction, onUpdate: NoAction)
+  following          users  @relation("follower", fields: [following_username], references: [username], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([follower_username, following_username])
+  @@schema("users")
+}
+
+model Session {
+  id               String      @id @default(cuid())
+  sessionToken     String      @unique
+  userId           String
+  expires          DateTime
+  organizersOrg_id String?     @db.String(32)
+  organizers       organizers? @relation(fields: [organizersOrg_id], references: [org_id])
+  user             users       @relation(fields: [userId], references: [username], onDelete: Cascade)
+
+  @@schema("users")
+}
+
+model Account {
+  id                String      @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  organizersOrg_id  String?     @db.String(32)
+  organizers        organizers? @relation(fields: [organizersOrg_id], references: [org_id])
+  user              users       @relation(fields: [userId], references: [username], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@schema("users")
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  text       String   @db.String(1000)
+  user_id    String   @db.String(32)
+  group_id   String   @db.String(32)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @updatedAt
+  group      Group    @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user       users    @relation(fields: [user_id], references: [username], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("messages")
+}
+
+model Group {
+  id         String    @id @default(cuid())
+  name       String    @db.String(255)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @updatedAt
+  messages   Message[]
+  users      users[]   @relation("GroupTousers")
+
+  @@schema("messages")
+}
+
+enum attending_status_type {
+  attending
+  attended
+  interested
+
+  @@schema("users")
+}

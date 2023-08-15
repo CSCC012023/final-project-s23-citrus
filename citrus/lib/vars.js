@@ -1,0 +1,1 @@
+export const BASE_URL = process.env.PROTOCOL_SCHEME + process.env.VERCEL_URL;
